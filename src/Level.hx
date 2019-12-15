@@ -17,12 +17,12 @@ class Level extends dn.Process {
 		project = new ogmo.Project(hxd.Res.map.feel, false);
 		data = project.getLevelByName("level");
 
+		// Init collisions
 		var l = data.getLayerByName("collisions");
 		for(cy in 0...l.cHei)
-		for(cx in 0...l.cWid) {
+		for(cx in 0...l.cWid)
 			if( l.getIntGrid(cx,cy)==1 )
 				setCollision(cx,cy,true);
-		}
 	}
 
 	public inline function isValid(cx,cy) return cx>=0 && cx<wid && cy>=0 && cy<hei;
@@ -48,7 +48,11 @@ class Level extends dn.Process {
 	public function render() {
 		root.removeChildren();
 
-		/** Raw render **/
+		var bg = new h2d.Bitmap(h2d.Tile.fromColor(0x151C23), root);
+		bg.scaleX = data.pxWid;
+		bg.scaleY = data.pxHei;
+
+		/** Raw render **
 		for(l in data.layersReversed)
 			switch l.name {
 				case "collisions": l.render(root);
