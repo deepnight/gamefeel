@@ -52,7 +52,7 @@ class Level extends dn.Process {
 		bg.scaleX = data.pxWid;
 		bg.scaleY = data.pxHei;
 
-		/** Raw render **
+		/** Raw render **/
 		for(l in data.layersReversed)
 			switch l.name {
 				case "collisions": l.render(root);

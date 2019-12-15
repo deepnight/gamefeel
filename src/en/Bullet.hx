@@ -22,7 +22,6 @@ class Bullet extends Entity {
 	}
 
 	function onBulletHitWall(hitX:Float,hitY:Float) {
-		fx.markerFree(hitX, hitY, 0.2, 0xffcc00);
 		destroy();
 	}
 
