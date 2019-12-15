@@ -6,6 +6,10 @@ class Mob extends Entity {
 	public function new(x,y) {
 		super(x,y);
 		ALL.push(this);
+
+		var g = new h2d.Graphics(spr);
+		g.beginFill(0xff0000);
+		g.drawRect(-radius, -hei, radius*2, hei);
 	}
 
 	override function dispose() {

@@ -6,6 +6,10 @@ class Hero extends Entity {
 	public function new(x,y) {
 		super(x,y);
 		ca = Main.ME.controller.createAccess("hero");
+
+		var g = new h2d.Graphics(spr);
+		g.beginFill(0x00ff00);
+		g.drawRect(-radius, -hei, radius*2, hei);
 	}
 
 	override function dispose() {
