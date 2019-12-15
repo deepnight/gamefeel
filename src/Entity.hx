@@ -68,7 +68,7 @@ class Entity {
 		return dir = v>0 ? 1 : v<0 ? -1 : dir;
 	}
 
-	public inline function isAlive() {
+	public function isAlive() {
 		return !destroyed;
 	}
 

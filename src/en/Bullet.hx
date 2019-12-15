@@ -31,6 +31,15 @@ class Bullet extends Entity {
 
 		super.update();
 
+		// Mobs
+		for(e in Mob.ALL) {
+			if( e.isAlive() && footX>=e.footX-e.radius && footX<=e.footX+e.radius && footY>=e.footY-e.hei && footY<=e.footY ) {
+				e.hit(1);
+				destroy();
+			}
+		}
+
+		// Walls
 		if( !level.isValid(cx,cy) || level.hasCollision(cx,cy) )
 			onBulletHitWall(
 				(cx+0.5)*Const.GRID - Math.cos(ang)*Const.GRID*0.5,
