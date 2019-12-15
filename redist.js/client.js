@@ -727,7 +727,10 @@ var Entity = function(x,y) {
 $hxClasses["Entity"] = Entity;
 Entity.__name__ = "Entity";
 Entity.prototype = {
-	setPosCase: function(x,y) {
+	isAlive: function() {
+		return !this.destroyed;
+	}
+	,setPosCase: function(x,y) {
 		this.cx = x;
 		this.cy = y;
 		this.xr = 0.5;
@@ -797,7 +800,7 @@ Entity.prototype = {
 			a.t -= Game.ME.tmod / Const.FPS;
 			if(a.t <= 0) {
 				this.actions.splice(i,1);
-				if(!this.destroyed) {
+				if(this.isAlive()) {
 					a.cb();
 				}
 			} else {
@@ -806,14 +809,14 @@ Entity.prototype = {
 		}
 	}
 	,isLocked: function() {
-		if(!this.destroyed) {
+		if(this.isAlive()) {
 			return this.cd.fastCheck.h.hasOwnProperty(16777216);
 		} else {
 			return true;
 		}
 	}
 	,canAct: function() {
-		if(!this.destroyed && !this.isLocked()) {
+		if(this.isAlive() && !this.isLocked()) {
 			return !this.isChargingAction();
 		} else {
 			return false;
@@ -1574,6 +1577,7 @@ Lang.init = function(lid) {
 };
 var Level = function() {
 	this.collMap = new haxe_ds_IntMap();
+	this.useSimpleRendering = true;
 	this.invalidated = true;
 	dn_Process.call(this,Game.ME);
 	this.createRootInLayers(Game.ME.scroller,Const.DP_BG);
@@ -1829,16 +1833,34 @@ Level.prototype = $extend(dn_Process.prototype,{
 		bg.scaleX = this.data.pxWid;
 		bg.posChanged = true;
 		bg.scaleY = this.data.pxHei;
-		var _g = 0;
-		var _g1 = this.data.layersReversed;
-		while(_g < _g1.length) {
-			var l = _g1[_g];
-			++_g;
-			if(l.name == "collisions") {
-				l.render(this.root);
+		if(this.useSimpleRendering) {
+			var _g = 0;
+			var _g1 = this.data.layersReversed;
+			while(_g < _g1.length) {
+				var l = _g1[_g];
+				++_g;
+				if(l.name == "collisions") {
+					l.render(this.root);
+				}
+			}
+		} else {
+			var _g2 = 0;
+			var _g11 = this.data.layersReversed;
+			while(_g2 < _g11.length) {
+				var l1 = _g11[_g2];
+				++_g2;
+				switch(l1.name) {
+				case "collisions":case "entities":
+					break;
+				case "front":
+					var e = l1.render(this.root);
+					e.set_filter(new h2d_filter_Glow(0,0.4,32,2,2,true));
+					break;
+				default:
+					l1.render(this.root);
+				}
 			}
 		}
-		return;
 	}
 	,postUpdate: function() {
 		dn_Process.prototype.postUpdate.call(this);
@@ -6659,6 +6681,19 @@ en_Bullet.prototype = $extend(Entity.prototype,{
 		this.dx = Math.cos(this.ang) * 0.3 * this.speed;
 		this.dy = Math.sin(this.ang) * 0.3 * this.speed;
 		Entity.prototype.update.call(this);
+		var _g = 0;
+		var _g1 = en_Mob.ALL;
+		while(_g < _g1.length) {
+			var e = _g1[_g];
+			++_g;
+			if(e.isAlive() && (this.cx + this.xr) * Const.GRID >= (e.cx + e.xr) * Const.GRID - e.radius && (this.cx + this.xr) * Const.GRID <= (e.cx + e.xr) * Const.GRID + e.radius && (this.cy + this.yr) * Const.GRID >= (e.cy + e.yr) * Const.GRID - e.hei && (this.cy + this.yr) * Const.GRID <= (e.cy + e.yr) * Const.GRID) {
+				e.hit(1);
+				if(!this.destroyed) {
+					this.destroyed = true;
+					Entity.GC.push(this);
+				}
+			}
+		}
 		var tmp;
 		var _this = Game.ME.level;
 		var cx = this.cx;
@@ -7222,6 +7257,7 @@ en_Hero.prototype = $extend(Entity.prototype,{
 	,__class__: en_Hero
 });
 var en_Mob = function(x,y) {
+	this.life = 5;
 	Entity.call(this,x,y);
 	en_Mob.ALL.push(this);
 	var g = new h2d_Graphics(this.spr);
@@ -7235,6 +7271,26 @@ en_Mob.prototype = $extend(Entity.prototype,{
 	dispose: function() {
 		Entity.prototype.dispose.call(this);
 		HxOverrides.remove(en_Mob.ALL,this);
+	}
+	,isAlive: function() {
+		if(Entity.prototype.isAlive.call(this)) {
+			return this.life > 0;
+		} else {
+			return false;
+		}
+	}
+	,hit: function(dmg) {
+		this.life -= dmg;
+		if(this.life <= 0) {
+			this.life = 0;
+			this.onDie();
+		}
+	}
+	,onDie: function() {
+		if(!this.destroyed) {
+			this.destroyed = true;
+			Entity.GC.push(this);
+		}
 	}
 	,__class__: en_Mob
 });
@@ -16307,6 +16363,7 @@ h2d_col_Point.prototype = {
 };
 var h2d_filter_Filter = function() {
 	this.enable = true;
+	this.smooth = false;
 	this.boundsExtend = 0.;
 	this.autoBounds = true;
 };
@@ -16334,6 +16391,40 @@ h2d_filter_Filter.prototype = {
 	}
 	,__class__: h2d_filter_Filter
 };
+var h2d_filter_Blur = function(radius,gain,quality,linear) {
+	if(linear == null) {
+		linear = 0.;
+	}
+	if(quality == null) {
+		quality = 1.;
+	}
+	if(gain == null) {
+		gain = 1.;
+	}
+	if(radius == null) {
+		radius = 1.;
+	}
+	h2d_filter_Filter.call(this);
+	this.smooth = true;
+	this.pass = new h3d_pass_Blur(radius,gain,linear,quality);
+};
+$hxClasses["h2d.filter.Blur"] = h2d_filter_Blur;
+h2d_filter_Blur.__name__ = "h2d.filter.Blur";
+h2d_filter_Blur.__super__ = h2d_filter_Filter;
+h2d_filter_Blur.prototype = $extend(h2d_filter_Filter.prototype,{
+	sync: function(ctx,s) {
+		this.boundsExtend = this.pass.radius * 2;
+	}
+	,draw: function(ctx,t) {
+		var out = t.innerTex;
+		var old = out.filter;
+		out.set_filter(h3d_mat_Filter.Linear);
+		this.pass.apply(ctx,out);
+		out.set_filter(old);
+		return t;
+	}
+	,__class__: h2d_filter_Blur
+});
 var h2d_filter_ColorMatrix = function(m) {
 	h2d_filter_Filter.call(this);
 	this.pass = new h3d_pass_ColorMatrix(m);
@@ -16351,6 +16442,67 @@ h2d_filter_ColorMatrix.prototype = $extend(h2d_filter_Filter.prototype,{
 		return h2d_Tile.fromTexture(tout);
 	}
 	,__class__: h2d_filter_ColorMatrix
+});
+var h2d_filter_Glow = function(color,alpha,radius,gain,quality,smoothColor) {
+	if(smoothColor == null) {
+		smoothColor = false;
+	}
+	if(quality == null) {
+		quality = 1.;
+	}
+	if(gain == null) {
+		gain = 1.;
+	}
+	if(radius == null) {
+		radius = 1.;
+	}
+	if(alpha == null) {
+		alpha = 1.;
+	}
+	if(color == null) {
+		color = 16777215;
+	}
+	h2d_filter_Blur.call(this,radius,gain,quality);
+	this.color = color;
+	this.alpha = alpha;
+	this.smoothColor = smoothColor;
+	var _this = this.pass.shader;
+	_this.constModified = true;
+	_this.hasFixedColor__ = true;
+};
+$hxClasses["h2d.filter.Glow"] = h2d_filter_Glow;
+h2d_filter_Glow.__name__ = "h2d.filter.Glow";
+h2d_filter_Glow.__super__ = h2d_filter_Blur;
+h2d_filter_Glow.prototype = $extend(h2d_filter_Blur.prototype,{
+	setParams: function() {
+		var _this = this.pass.shader.fixedColor__;
+		var c = this.color;
+		_this.x = (c >> 16 & 255) / 255;
+		_this.y = (c >> 8 & 255) / 255;
+		_this.z = (c & 255) / 255;
+		_this.w = (c >>> 24) / 255;
+		this.pass.shader.fixedColor__.w = this.smoothColor ? this.alpha * 1.5 : this.alpha;
+		var _this1 = this.pass.shader;
+		_this1.constModified = true;
+		_this1.smoothFixedColor__ = this.smoothColor;
+	}
+	,draw: function(ctx,t) {
+		this.setParams();
+		var tex = t.innerTex;
+		var old = tex.filter;
+		var save = ctx.textures.allocTileTarget("glowSave",t);
+		h3d_pass_Copy.run(tex,save,h2d_BlendMode.None);
+		tex.set_filter(h3d_mat_Filter.Linear);
+		this.pass.apply(ctx,tex);
+		tex.set_filter(old);
+		if(this.knockout) {
+			h3d_pass_Copy.run(save,tex,h2d_BlendMode.Erase);
+		} else {
+			h3d_pass_Copy.run(save,tex,h2d_BlendMode.Alpha);
+		}
+		return t;
+	}
+	,__class__: h2d_filter_Glow
 });
 var h3d_BufferFlag = $hxEnums["h3d.BufferFlag"] = { __ename__ : true, __constructs__ : ["Dynamic","Triangles","Quads","Managed","RawFormat","NoAlloc","UniformBuffer"]
 	,Dynamic: {_hx_index:0,__enum__:"h3d.BufferFlag",toString:$estr}
