@@ -36,6 +36,7 @@ class Entity {
 	public var sprScaleX = 1.0;
 	public var sprScaleY = 1.0;
 	public var entityVisible = true;
+	public var hasCollisions = true;
 
     public var spr : HSprite;
 	public var colorAdd : h3d.Vector;
@@ -245,11 +246,11 @@ class Entity {
 		while( steps>0 ) {
 			xr+=step;
 
-			if( xr>=0.6 && level.hasCollision(cx+1,cy) ) {
+			if( hasCollisions && xr>=0.6 && level.hasCollision(cx+1,cy) ) {
 				xr = 0.6;
 			}
 
-			if( xr<=0.4 && level.hasCollision(cx-1,cy) ) {
+			if( hasCollisions && xr<=0.4 && level.hasCollision(cx-1,cy) ) {
 				xr = 0.4;
 			}
 
@@ -270,12 +271,12 @@ class Entity {
 		while( steps>0 ) {
 			yr+=step;
 
-			if( yr>1 && level.hasCollision(cx,cy+1) ) {
+			if( hasCollisions && yr>1 && level.hasCollision(cx,cy+1) ) {
 				dy = 0;
 				yr = 1;
 			}
 
-			if( yr<0.5 && level.hasCollision(cx,cy-1) )
+			if( hasCollisions && yr<0.5 && level.hasCollision(cx,cy-1) )
 				yr = 0.5;
 
 			while( yr>1 ) { yr--; cy++; }
