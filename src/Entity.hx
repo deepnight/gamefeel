@@ -25,10 +25,12 @@ class Entity {
     public var bdy = 0.;
 	public var dxTotal(get,never) : Float; inline function get_dxTotal() return dx+bdx;
 	public var dyTotal(get,never) : Float; inline function get_dyTotal() return dy+bdy;
-	public var frict = 0.82;
+	public var frict = 0.87;
 	public var bumpFrict = 0.93;
+	public var gravity = 0.003;
 	public var hei : Float = Const.GRID;
 	public var radius = Const.GRID*0.5;
+	public var onGround(get,never) : Bool; inline function get_onGround() return level.hasCollision(cx,cy+1) && yr==1 && dy>=0;
 
 	public var dir(default,set) = 1;
 	public var sprScaleX = 1.0;
@@ -176,7 +178,13 @@ class Entity {
 		while( steps>0 ) {
 			xr+=step;
 
-			// [ add X collisions checks here ]
+			if( xr>=0.6 && level.hasCollision(cx+1,cy) ) {
+				xr = 0.6;
+			}
+
+			if( xr<=0.4 && level.hasCollision(cx-1,cy) ) {
+				xr = 0.4;
+			}
 
 			while( xr>1 ) { xr--; cx++; }
 			while( xr<0 ) { xr++; cx--; }
@@ -188,12 +196,20 @@ class Entity {
 		if( M.fabs(bdx)<=0.0005*tmod ) bdx = 0;
 
 		// Y
+		if( !onGround )
+			dy+=gravity*tmod;
 		var steps = M.ceil( M.fabs(dyTotal*tmod) );
 		var step = dyTotal*tmod / steps;
 		while( steps>0 ) {
 			yr+=step;
 
-			// [ add Y collisions checks here ]
+			if( yr>1 && level.hasCollision(cx,cy+1) ) {
+				dy = 0;
+				yr = 1;
+			}
+
+			if( yr<0.5 && level.hasCollision(cx,cy-1) )
+				yr = 0.5;
 
 			while( yr>1 ) { yr--; cy++; }
 			while( yr<0 ) { yr++; cy--; }
