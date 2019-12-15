@@ -48,6 +48,8 @@ class Entity {
 	public var centerX(get,never) : Float; inline function get_centerX() return footX;
 	public var centerY(get,never) : Float; inline function get_centerY() return footY-hei*0.5;
 
+	var actions : Array<{ id:String, cb:Void->Void, t:Float }> = [];
+
     public function new(x:Int, y:Int) {
         uid = Const.NEXT_UNIQ;
         ALL.push(this);
@@ -153,8 +155,73 @@ class Entity {
 		#end
 	}
 
+
+	function chargeAction(id:String, sec:Float, cb:Void->Void) {
+		if( isChargingAction(id) )
+			cancelAction(id);
+		actions.push({ id:id, cb:cb, t:sec});
+	}
+
+	public function isChargingAction(?id:String) {
+		if( id==null )
+			return actions.length>0;
+
+		for(a in actions)
+			if( a.id==id )
+				return true;
+
+		return false;
+	}
+
+	public function cancelAction(?id:String) {
+		if( id==null )
+			actions = [];
+		else {
+			var i = 0;
+			while( i<actions.length ) {
+				if( actions[i].id==id )
+					actions.splice(i,1);
+				else
+					i++;
+			}
+		}
+	}
+
+	function updateActions() {
+		var i = 0;
+		while( i<actions.length ) {
+			var a = actions[i];
+			a.t -= tmod/Const.FPS;
+			if( a.t<=0 ) {
+				actions.splice(i,1);
+				if( isAlive() )
+					a.cb();
+			}
+			else
+				i++;
+		}
+	}
+
+	public function lockS(t:Float, ?allowLower=false) {
+		if( !isAlive() )
+			return;
+
+		if( allowLower )
+			cd.setS("lock", t, true);
+		else
+			cd.setS("lock", t, false);
+	}
+
+	public function isLocked() return isAlive() ? cd.has("lock") : true;
+	public inline function getLockS() return isAlive() ? cd.getS("lock") : 0.;
+
+	public function canAct() {
+		return isAlive() && !isLocked() && !isChargingAction();
+	}
+
     public function preUpdate() {
 		cd.update(tmod);
+		updateActions();
     }
 
     public function postUpdate() {
