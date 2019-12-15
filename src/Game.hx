@@ -11,6 +11,8 @@ class Game extends Process {
 	public var level : Level;
 	public var hud : ui.Hud;
 
+	public var hero : en.Hero;
+
 	public function new() {
 		super(Main.ME);
 		ME = this;
@@ -27,7 +29,12 @@ class Game extends Process {
 		fx = new Fx();
 		hud = new ui.Hud();
 
-		trace(Lang.t._("Game is ready."));
+		var oe = level.getEntities("hero")[0];
+		hero = new en.Hero(oe.cx, oe.cy);
+
+		for(oe in level.getEntities("mob"))
+			new en.Mob(oe.cx, oe.cy);
+
 	}
 
 	public function onCdbReload() {

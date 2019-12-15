@@ -40,6 +40,10 @@ class Level extends dn.Process {
 		return isValid(cx,cy) ? collMap.get(coordId(cx,cy))==true : true;
 	}
 
+	public inline function getEntities(id:String) {
+		return data.getLayerByName("entities").getEntities(id);
+	}
+
 
 	public function render() {
 		// Debug level render
