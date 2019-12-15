@@ -25,9 +25,9 @@ class Entity {
     public var bdy = 0.;
 	public var dxTotal(get,never) : Float; inline function get_dxTotal() return dx+bdx;
 	public var dyTotal(get,never) : Float; inline function get_dyTotal() return dy+bdy;
-	public var frict = 0.87;
+	public var frict = 0.89;
 	public var bumpFrict = 0.93;
-	public var gravity = 0.003;
+	public var gravity = 0.025;
 	public var hei : Float = Const.GRID;
 	public var radius = Const.GRID*0.5;
 	public var onGround(get,never) : Bool; inline function get_onGround() return level.hasCollision(cx,cy+1) && yr==1 && dy>=0;
