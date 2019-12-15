@@ -8,6 +8,7 @@ class Level extends dn.Process {
 	var invalidated = true;
 	var project : ogmo.Project;
 	var data : ogmo.Level;
+	var useSimpleRendering = true;
 
 	var collMap : Map<Int,Bool> = new Map();
 
@@ -52,24 +53,25 @@ class Level extends dn.Process {
 		bg.scaleX = data.pxWid;
 		bg.scaleY = data.pxHei;
 
-		/** Raw render **/
-		for(l in data.layersReversed)
-			switch l.name {
-				case "collisions": l.render(root);
-				case _:
-			}
-		return;
-		/****/
-
-		for(l in data.layersReversed)
-			switch l.name {
-				case "collisions","entities": // nope
-				case "front":
-					var e = l.render(root);
-					e.filter = new h2d.filter.Glow(0x0, 0.4, 32, 2, 2, true);
-				case _: l.render(root);
-			}
-
+		if( useSimpleRendering ) {
+			// Simple rendering
+			for(l in data.layersReversed)
+				switch l.name {
+					case "collisions": l.render(root);
+					case _:
+				}
+		}
+		else {
+			// Full rendering
+			for(l in data.layersReversed)
+				switch l.name {
+					case "collisions","entities": // nope
+					case "front":
+						var e = l.render(root);
+						e.filter = new h2d.filter.Glow(0x0, 0.4, 32, 2, 2, true);
+					case _: l.render(root);
+				}
+		}
 	}
 
 	override function postUpdate() {
