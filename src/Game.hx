@@ -12,6 +12,7 @@ class Game extends Process {
 	public var hud : ui.Hud;
 
 	public var hero : en.Hero;
+	var bg : h2d.Bitmap;
 
 	public function new() {
 		super(Main.ME);
@@ -20,6 +21,8 @@ class Game extends Process {
 		ca.setLeftDeadZone(0.2);
 		ca.setRightDeadZone(0.2);
 		createRootInLayers(Main.ME.root, Const.DP_BG);
+
+		bg = new h2d.Bitmap(h2d.Tile.fromColor(0x3B1D2D), root);
 
 		scroller = new h2d.Layers();
 		root.add(scroller, Const.DP_BG);
@@ -36,6 +39,7 @@ class Game extends Process {
 		for(oe in level.getEntities("mob"))
 			new en.Mob(oe.cx, oe.cy);
 
+		Process.resizeAll();
 	}
 
 	public function onCdbReload() {
@@ -58,6 +62,12 @@ class Game extends Process {
 		for(e in Entity.ALL)
 			e.destroy();
 		gc();
+	}
+
+	override function onResize() {
+		super.onResize();
+		bg.scaleX = w()/Const.SCALE;
+		bg.scaleY = h()/Const.SCALE;
 	}
 
 	override function update() {
