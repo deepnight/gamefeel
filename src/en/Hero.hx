@@ -30,9 +30,11 @@ class Hero extends Entity {
 			var spd = 0.015 * cd.getRatio("airControl");
 			if( ca.rightDown() ) {
 				dx+=spd*tmod;
+				dir = 1;
 			}
 			else if( ca.leftDown() ) {
 				dx-=spd*tmod;
+				dir = -1;
 			}
 			else
 				dx*=Math.pow(frict,tmod);
