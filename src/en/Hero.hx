@@ -7,9 +7,23 @@ class Hero extends Entity {
 		super(x,y);
 		ca = Main.ME.controller.createAccess("hero");
 
+		// Debug render
 		var g = new h2d.Graphics(spr);
+		g.lineStyle(1,0x00ff00);
+		var ay = -hei-4;
+		g.moveTo(-5,ay);
+		g.lineTo(5,ay);
+
+		g.moveTo(2,ay-3);
+		g.lineTo(5,ay);
+
+		g.moveTo(2,ay+3);
+		g.lineTo(5,ay);
+
+		g.lineStyle(0);
 		g.beginFill(0x00ff00);
 		g.drawRect(-radius, -hei, radius*2, hei);
+		g.endFill();
 	}
 
 	override function dispose() {
@@ -49,9 +63,10 @@ class Hero extends Entity {
 			}
 
 			if( ca.xDown() && !cd.has("shootLock") ) {
-				chargeAction("shoot", 0.15, function() {
+				chargeAction("shoot", 0., function() {
 					var b = new en.Bullet(this);
 					b.speed = 1;
+					lockS(0.15);
 				});
 			}
 		}

@@ -160,7 +160,10 @@ class Entity {
 	function chargeAction(id:String, sec:Float, cb:Void->Void) {
 		if( isChargingAction(id) )
 			cancelAction(id);
-		actions.push({ id:id, cb:cb, t:sec});
+		if( sec<=0 )
+			cb();
+		else
+			actions.push({ id:id, cb:cb, t:sec});
 	}
 
 	public function isChargingAction(?id:String) {
@@ -226,8 +229,8 @@ class Entity {
     }
 
     public function postUpdate() {
-        spr.x = (cx+xr)*Const.GRID;
-        spr.y = (cy+yr)*Const.GRID;
+        spr.x = Std.int( (cx+xr)*Const.GRID );
+        spr.y = Std.int( (cy+yr)*Const.GRID );
         spr.scaleX = dir*sprScaleX;
         spr.scaleY = sprScaleY;
 		spr.visible = entityVisible;
