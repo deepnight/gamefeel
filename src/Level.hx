@@ -47,6 +47,16 @@ class Level extends dn.Process {
 
 	public function render() {
 		root.removeChildren();
+
+		/** Raw render **/
+		for(l in data.layersReversed)
+			switch l.name {
+				case "collisions": l.render(root);
+				case _:
+			}
+		return;
+		/****/
+
 		for(l in data.layersReversed)
 			switch l.name {
 				case "collisions","entities": // nope
