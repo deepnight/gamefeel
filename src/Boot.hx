@@ -29,9 +29,9 @@ class Boot extends hxd.App {
 		#end
 
 		var tmod = hxd.Timer.tmod * speed;
-		#if debug
-		tmod *= hxd.Key.isDown(hxd.Key.NUMPAD_ADD) || Main.ME!=null && Main.ME.ca.ltDown() ? 5 : 1;
-		#end
+		// #if debug
+		// tmod *= hxd.Key.isDown(hxd.Key.NUMPAD_ADD) || Main.ME!=null && Main.ME.ca.ltDown() ? 5 : 1;
+		// #end
 		dn.heaps.Controller.beforeUpdate();
 		dn.Process.updateAll(tmod);
 	}
