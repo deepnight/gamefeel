@@ -23,6 +23,12 @@ class Camera extends dn.Process {
 		return M.ceil( Game.ME.h() / Const.SCALE );
 	}
 
+	public function setPosition(tx,ty) {
+		x = tx;
+		y = ty;
+		target = null;
+	}
+
 	public function recenter() {
 		if( target!=null ) {
 			x = target.centerX;

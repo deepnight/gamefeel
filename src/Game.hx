@@ -33,7 +33,11 @@ class Game extends Process {
 
 		var oe = level.getEntities("hero")[0];
 		hero = new en.Hero(oe.cx, oe.cy);
-		camera.target = hero;
+		var camLock = level.getEntities("cam")[0];
+		if( camLock==null )
+			camera.target = hero;
+		else
+			camera.setPosition(camLock.x, camLock.y);
 
 		for(oe in level.getEntities("mob"))
 			new en.Mob(oe.cx, oe.cy);

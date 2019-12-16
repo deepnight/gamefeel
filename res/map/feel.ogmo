@@ -29,7 +29,7 @@
       "gridSize": {"x": 16, "y": 16},
       "exportID": "40336861",
       "arrayMode": 0,
-      "legend": {"0": "#00000000", "1": "#7385adff"}
+      "legend": {"0": "#00000000", "1": "#7385adba"}
     },
     {
       "definition": "tile",
@@ -106,6 +106,42 @@
         ]
       },
       "color": "#ff0000ff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 16, "y": 16},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": [],
+      "values": []
+    },
+    {
+      "exportID": "50340576",
+      "name": "cam",
+      "limit": -1,
+      "size": {"x": 16, "y": 16},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#0084ffff",
       "tileX": false,
       "tileY": false,
       "tileSize": {"x": 16, "y": 16},
