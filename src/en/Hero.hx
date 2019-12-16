@@ -84,6 +84,9 @@ class Hero extends Entity {
 		if( options.flashes )
 			fx.flashBangS(0xffcc00, 0.09, 0.1);
 
+		if( options.heroSquashAndStrech )
+			skew(1.2,0.9);
+
 		var b = new en.Bullet(this);
 		b.speed = 1;
 		cd.setS("gunRecoil", 0.1);
@@ -130,8 +133,8 @@ class Hero extends Entity {
 			if( burstCount<=0 && ca.xDown() && !cd.has("shootLock") )
 				chargeAction("shoot", options.gunAiming ? 0.35 : 0., function() {
 					burstCount = 4;
-					if( options.heroSquashAndStrech )
-						skew(1.2,0.9);
+					// if( options.heroSquashAndStrech )
+						// skew(1.2,0.9);
 				});
 
 			if( burstCount>0 ) {
