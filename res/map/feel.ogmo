@@ -29,7 +29,7 @@
       "gridSize": {"x": 16, "y": 16},
       "exportID": "40336861",
       "arrayMode": 0,
-      "legend": {"0": "#00000000", "1": "#ffffffff"}
+      "legend": {"0": "#00000000", "1": "#7385adff"}
     },
     {
       "definition": "tile",
