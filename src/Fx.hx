@@ -164,7 +164,69 @@ class Fx extends dn.Process {
 			else if( hasCollision(p,-2,0) )
 				p.dx = M.fabs(p.dx*0.9);
 		}
+	}
 
+	public function hitWall(x:Float, y:Float, normalDir:Int) {
+		// Main impact
+		var p = allocTopAdd(getTile("fxShoot"), x-normalDir*rnd(1,3), y+rnd(0,2,true) );
+		p.setCenterRatio(0,0.5);
+		p.setFadeS(1, 0, 0.03);
+		p.colorAnimS( 0xffb600, 0xff4a00, 0.06 );
+		p.scaleX = normalDir*rnd(0.7,1);
+		p.scaleY = rnd(2,3,true);
+		p.scaleXMul = 0.94;
+		p.scaleYMul = 0.91;
+		p.lifeS = 0.12;
+
+		// Falling dots
+		for(i in 0...5) {
+			var p = allocTopAdd(getTile("pixel"), x, y+rnd(0,2,true));
+			p.setFadeS(rnd(0.5,0.9), 0, rnd(0.2, 0.5));
+			p.alphaFlicker = 0.4;
+			p.colorAnimS( Color.interpolateInt( 0xffd524, 0xff6606, rnd(0,1) ), 0x990000, rnd(0.3,2) );
+			p.dx = normalDir*rnd(0.3,2);
+			p.dy = rnd(-1,0.5);
+			p.gy = rnd(0.1, 0.2);
+			p.frict = rnd(0.92,0.95);
+			p.lifeS = rnd(0.4,2);
+			p.onUpdate = _physics;
+		}
+
+		// Stuck dots
+		for(i in 0...7) {
+			var p = allocTopAdd(getTile("pixel"), x+rnd(0,1,true)*-normalDir, y+rnd(0,6,true));
+			p.colorAnimS( Color.interpolateInt( 0xffd524, 0xff6606, rnd(0,1) ), 0x990000, rnd(0.3,2) );
+			p.setFadeS(rnd(0.5,0.9), rnd(0.2,0.4), rnd(1, 2));
+			p.alphaFlicker = 0.4;
+			p.lifeS = rnd(2,3);
+		}
+	}
+
+	public function hitEntity(x:Float, y:Float, normalDir:Int) {
+		// Main impact
+		var p = allocTopAdd(getTile("fxShoot"), x-normalDir*rnd(1,3), y+rnd(0,2,true) );
+		p.setCenterRatio(0,0.5);
+		p.setFadeS(1, 0, 0.03);
+		p.colorAnimS( 0xffb600, 0xff4a00, 0.06 );
+		p.scaleX = normalDir*rnd(0.7,1);
+		p.scaleY = rnd(2,3,true);
+		p.scaleXMul = 0.94;
+		p.scaleYMul = 0.91;
+		p.lifeS = 0.12;
+
+		// Falling dots
+		for(i in 0...5) {
+			var p = allocTopAdd(getTile("pixel"), x, y+rnd(0,2,true));
+			p.setFadeS(rnd(0.5,0.9), 0, rnd(0.2, 0.5));
+			p.alphaFlicker = 0.4;
+			p.colorAnimS( Color.interpolateInt( 0xffd524, 0xff6606, rnd(0,1) ), 0x990000, rnd(0.3,2) );
+			p.dx = normalDir*rnd(0.3,2);
+			p.dy = rnd(-1,0.5);
+			p.gy = rnd(0.1, 0.2);
+			p.frict = rnd(0.92,0.95);
+			p.lifeS = rnd(0.4,2);
+			p.onUpdate = _physics;
+		}
 	}
 
 	public function gunShot(x:Float, y:Float, dir:Int) {

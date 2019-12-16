@@ -14,6 +14,8 @@ class Bullet extends Entity {
 		ang = e.dirToAng();
 		frict = 1;
 		gravity = 0;
+		radius = 2;
+		hei = 0;
 
 		var g = new h2d.Graphics(spr);
 		g.beginFill(0xffcc00);
@@ -26,6 +28,8 @@ class Bullet extends Entity {
 	}
 
 	function onBulletHitWall(hitX:Float,hitY:Float) {
+		if( options.bulletImpactFx )
+			fx.hitWall( hitX, hitY, M.radDistance(ang,0)<=M.PIHALF ? -1 : 1 );
 		destroy();
 	}
 
@@ -39,6 +43,10 @@ class Bullet extends Entity {
 		for(e in Mob.ALL) {
 			if( e.isAlive() && footX>=e.footX-e.radius && footX<=e.footX+e.radius && footY>=e.footY-e.hei && footY<=e.footY ) {
 				e.hit(1);
+				if( options.bulletImpactFx ) {
+					var normalDir = M.radDistance(ang,0)<=M.PIHALF ? -1 : 1;
+					fx.hitEntity( e.centerX+normalDir*4, footY, normalDir );
+				}
 				destroy();
 			}
 		}
