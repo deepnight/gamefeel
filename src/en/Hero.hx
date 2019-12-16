@@ -82,7 +82,7 @@ class Hero extends Entity {
 			game.camera.bump(-dir*2, 0);
 
 		if( options.flashes )
-			fx.flashBangS(0xffcc00, 0.09, 0.1);
+			fx.flashBangS(0xffcc00, 0.04, 0.1);
 
 		if( options.heroSquashAndStrech )
 			skew(1.2,0.9);
@@ -92,7 +92,7 @@ class Hero extends Entity {
 			animOffsetX+=-dir*rnd(1,3);
 		}
 
-		var b = new en.Bullet(this);
+		var b = new en.Bullet(this, rnd(0,1,true));
 		b.speed = 1;
 		cd.setS("gunRecoil", 0.1);
 		cd.setS("gunHolding", getLockS());
@@ -135,7 +135,7 @@ class Hero extends Entity {
 			}
 
 			// Shoot
-			if( burstCount<=0 && ca.xDown() && !cd.has("shootLock") )
+			if( burstCount<=0 && ( ca.xDown() || ca.ltDown() ) && !cd.has("shootLock") )
 				chargeAction("shoot", options.gunAiming ? 0.35 : 0., function() {
 					burstCount = 4;
 					// if( options.heroSquashAndStrech )
