@@ -7,7 +7,7 @@ class Bullet extends Entity {
 
 	public function new(e:Entity) {
 		super(0,0);
-		setPosPixel(e.centerX, e.centerY+3);
+		setPosPixel(e.centerX, e.centerY+1);
 		ALL.push(this);
 
 		hasCollisions = false;
@@ -26,8 +26,8 @@ class Bullet extends Entity {
 	}
 
 	override function update() {
-		dx = Math.cos(ang)*0.3*speed;
-		dy = Math.sin(ang)*0.3*speed;
+		dx = Math.cos(ang)*0.42*speed;
+		dy = Math.sin(ang)*0.42*speed;
 
 		super.update();
 
