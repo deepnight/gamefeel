@@ -45,6 +45,7 @@ class Entity {
 
     public var spr : HSprite;
 	public var colorAdd : h3d.Vector;
+	var colorMatrix : h3d.Matrix;
 	var debugLabel : Null<h2d.Text>;
 
 	public var footX(get,never) : Float; inline function get_footX() return (cx+xr)*Const.GRID;
@@ -66,6 +67,8 @@ class Entity {
         spr = new HSprite(Assets.tiles);
         Game.ME.scroller.add(spr, Const.DP_MAIN);
 		spr.colorAdd = colorAdd = new h3d.Vector();
+		colorMatrix = h3d.Matrix.I();
+		spr.filter = new h2d.filter.ColorMatrix(colorMatrix);
 		spr.setCenterRatio(0.5,1);
 		spr.set("pixel");
     }
@@ -240,6 +243,11 @@ class Entity {
 		skewY = y;
 	}
 
+	public function blink(c:UInt) {
+		colorMatrix.colorAdd( Color.addAlphaF(c) );
+		cd.setF("keepBlink",1);
+	}
+
     public function preUpdate() {
 		cd.update(tmod);
 		updateActions();
@@ -258,10 +266,54 @@ class Entity {
 		skewX += (1-skewX)*0.2;
 		skewY += (1-skewY)*0.2;
 
+		// Temp offseting
 		spr.x+=animOffsetX;
 		spr.y+=animOffsetY;
 		animOffsetX *= Math.pow(0.8,tmod);
 		animOffsetY *= Math.pow(0.8,tmod);
+
+		// Blink
+		if( !cd.has("keepBlink") ) {
+			var spd = 0.3;
+			colorMatrix._11 += (1-colorMatrix._11)*spd;
+			colorMatrix._12 += (0-colorMatrix._12)*spd;
+			colorMatrix._13 += (0-colorMatrix._13)*spd;
+			colorMatrix._14 += (0-colorMatrix._14)*spd;
+
+			colorMatrix._21 += (0-colorMatrix._21)*spd;
+			colorMatrix._22 += (1-colorMatrix._22)*spd;
+			colorMatrix._23 += (0-colorMatrix._23)*spd;
+			colorMatrix._24 += (0-colorMatrix._24)*spd;
+
+			colorMatrix._31 += (0-colorMatrix._31)*spd;
+			colorMatrix._32 += (0-colorMatrix._32)*spd;
+			colorMatrix._33 += (1-colorMatrix._33)*spd;
+			colorMatrix._34 += (0-colorMatrix._34)*spd;
+
+			colorMatrix._41 += (0-colorMatrix._41)*spd;
+			colorMatrix._42 += (0-colorMatrix._42)*spd;
+			colorMatrix._43 += (0-colorMatrix._43)*spd;
+			colorMatrix._44 += (1-colorMatrix._44)*spd;
+			// _12 *= v;
+			// _13 *= v;
+			// _14 *= v;
+			// _21 *= v;
+			// _22 *= v;
+			// _23 *= v;
+			// _24 *= v;
+			// _31 *= v;
+			// _32 *= v;
+			// _33 *= v;
+			// _34 *= v;
+			// _41 *= v;
+			// _42 *= v;
+			// _43 *= v;
+			// _44 *= v;
+			// colorMatrix.multiply
+			// colorAdd.r*=Math.pow(0.60, tmod);
+			// colorAdd.g*=Math.pow(0.55, tmod);
+			// colorAdd.b*=Math.pow(0.50, tmod);
+		}
 
 		// Debug
 		if( debugLabel!=null ) {
@@ -311,6 +363,7 @@ class Entity {
 			if( hasCollisions && yr>1 && level.hasCollision(cx,cy+1) ) {
 				dy = 0;
 				yr = 1;
+				bdy = 0;
 				onLand( (footY-fallStartY)/Const.GRID );
 			}
 
