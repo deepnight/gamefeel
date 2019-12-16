@@ -137,6 +137,88 @@ class Fx extends dn.Process {
 		});
 	}
 
+	inline function hasCollision(p:HParticle, offX=0., offY=0.) {
+		return game.level.hasCollision( Std.int((p.x+offX)/Const.GRID), Std.int((p.y+offY)/Const.GRID) );
+	}
+
+	function _physics(p:HParticle) {
+		if( Math.isNaN(p.data0) )
+			p.data0 = irnd(1,2);
+
+		// Bounce on ground
+		if( hasCollision(p,0,1) && p.dy>0 ) {
+			if( p.data0-->0 ) {
+				p.dy = -M.fabs(p.dy*0.7);
+			}
+			else {
+				p.rotation = 0;
+				p.frict = 0.8;
+				p.dy = p.gy = 0;
+				p.dr = 0;
+			}
+		}
+		else if( !hasCollision(p,0,2) ) {
+			// Bounce on walls
+			if( hasCollision(p,2,0) )
+				p.dx = -M.fabs(p.dx*0.9);
+			else if( hasCollision(p,-2,0) )
+				p.dx = M.fabs(p.dx*0.9);
+		}
+
+	}
+
+	public function gunShot(x:Float, y:Float, dir:Int) {
+		// Long main line
+		var p = allocTopAdd(getTile("fxShoot"), x,y);
+		p.setCenterRatio(0,0.5);
+		p.setFadeS(1, 0, 0.03);
+		p.colorAnimS( 0xffb600, 0xff4a00, 0.06 );
+		p.scaleX = dir*rnd(3,4);
+		p.scaleY = rnd(1.2,1.4,true);
+		p.lifeS = 0.06;
+
+		// Core
+		for(i in 0...6) {
+			var p = allocTopAdd(getTile("fxShoot"), x+rnd(0,1,true), y+rnd(0,1,true));
+			p.setCenterRatio(0,0.5);
+			p.setFadeS(rnd(0.8,1), 0, 0.03);
+			p.colorAnimS( 0xffb600, 0xff4a00, rnd(0,0.06) );
+			p.scaleX = dir*rnd(0.7,1.5);
+			p.scaleY = rnd(1.5,2.5,true);
+			p.lifeS = rnd(0.03,0.06);
+		}
+
+		// Small lines
+		var n = irnd(9,10);
+		for(i in 0...n) {
+			var ang = -0.9 + 1.8*(i+1)/n + rnd(0,0.1,true);
+			var p = allocTopAdd(getTile("fxLineDir"), x,y);
+			p.setFadeS(rnd(0.6,0.9), 0, 0.05);
+			p.rotation = ang;
+			p.moveAng(ang, rnd(4,8));
+			p.colorize(0xef5100);
+			p.scaleX = rnd(0.2,0.4);
+			p.scaleY = rnd(1,2,true);
+			p.scaleXMul = rnd(0.97,0.99);
+			p.frict = rnd(0.82,0.84);
+			p.lifeS = rnd(0.03,0.06);
+		}
+	}
+
+	public function cartridge(x:Float, y:Float, dir:Int) {
+		var p = allocTopNormal(getTile("fxCartridge"), x+rnd(0,1,true), y);
+		p.setFadeS(1, 0, rnd(5,7));
+		p.colorize(0xefc04b);
+		p.dy = -rnd(3,4);
+		p.dx = dir*rnd(1,2);
+		p.scaleX = rnd(1,1.5);
+		p.gy = 0.25;
+		p.frict = 0.96;
+		p.dr = dir*rnd(0.1,0.2);
+		p.onUpdate = _physics;
+		p.lifeS = rnd(12,15);
+	}
+
 	override function update() {
 		super.update();
 

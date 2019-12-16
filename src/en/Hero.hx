@@ -84,6 +84,12 @@ class Hero extends Entity {
 		lockS(0.15);
 		cd.setS("gunRecoil", 0.1);
 		cd.setS("gunHolding", getLockS());
+
+		if( options.cartridges )
+			fx.cartridge(centerX, centerY, -dir);
+
+		if( options.gunShotFx )
+			fx.gunShot(centerX+dir*8, centerY-1, dir);
 	}
 
 	var burstCount = 0;
@@ -125,6 +131,8 @@ class Hero extends Entity {
 			if( burstCount>0 && !cd.hasSetS("burstLock",0.02) ) {
 				burstCount--;
 				shoot();
+				if( burstCount<=0 && !options.gunAiming )
+					lockS(0.35); // to compensate for the missing aiming phase
 			}
 		}
 	}
