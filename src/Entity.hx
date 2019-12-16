@@ -241,6 +241,8 @@ class Entity {
 		}
     }
 
+	function onLand() {}
+
 
     public function update() {
 		// X
@@ -277,6 +279,7 @@ class Entity {
 			if( hasCollisions && yr>1 && level.hasCollision(cx,cy+1) ) {
 				dy = 0;
 				yr = 1;
+				onLand();
 			}
 
 			if( hasCollisions && yr<0.5 && level.hasCollision(cx,cy-1) )

@@ -8,7 +8,6 @@ class Hero extends Entity {
 		super(x,y);
 		ca = Main.ME.controller.createAccess("hero");
 
-		// Debug render
 		var c = 0x00ff00;
 		var g = new h2d.Graphics(spr);
 		g.beginFill(Color.interpolateInt(c,0x0,0.4));
@@ -26,6 +25,14 @@ class Hero extends Entity {
 
 		ca.dispose();
 		ca = null;
+	}
+
+	override function onLand() {
+		super.onLand();
+		if( options.camShakes ) {
+			game.camera.bump(0,3);
+			game.camera.shakeS(0.5, 0.2);
+		}
 	}
 
 	override function postUpdate() {
