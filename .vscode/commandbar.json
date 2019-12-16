@@ -38,15 +38,6 @@
 			"priority": -21
 		},
 		{
-			"text": "🅰️ Build POT",
-			"color": "white",
-			"commandType":"palette",
-			"command": "workbench.action.tasks.runTask|Lang",
-			"alignment": "right",
-			"skipTerminateQuickPick": false,
-			"priority": -40
-		},
-		{
 			"text": "📦 Redist",
 			"color": "lightgreen",
 			"command": "haxelib run redistHelper hl.dx.hxml js.hxml -o redist.$ -P Gamefeel",

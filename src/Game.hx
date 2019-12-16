@@ -9,7 +9,6 @@ class Game extends Process {
 	public var camera : Camera;
 	public var scroller : h2d.Layers;
 	public var level : Level;
-	public var hud : ui.Hud;
 
 	public var hero : en.Hero;
 	var bg : h2d.Bitmap;
@@ -30,7 +29,6 @@ class Game extends Process {
 		camera = new Camera();
 		level = new Level();
 		fx = new Fx();
-		hud = new ui.Hud();
 
 		var oe = level.getEntities("hero")[0];
 		hero = new en.Hero(oe.cx, oe.cy);
@@ -84,7 +82,7 @@ class Game extends Process {
 			// Exit
 			if( ca.isKeyboardPressed(Key.ESCAPE) )
 				if( !cd.hasSetS("exitWarn",3) )
-					trace(Lang.t._("Press ESCAPE again to exit."));
+					trace("Press ESCAPE again to exit.");
 				else
 					hxd.System.exit();
 			#end

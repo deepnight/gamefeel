@@ -8,7 +8,6 @@ class Entity {
 	public var destroyed(default,null) = false;
 	public var ftime(get,never) : Float; inline function get_ftime() return game.ftime;
 	public var tmod(get,never) : Float; inline function get_tmod() return Game.ME.tmod;
-	public var hud(get,never) : ui.Hud; inline function get_hud() return Game.ME.hud;
 	public var hero(get,never) : en.Hero; inline function get_hero() return Game.ME.hero;
 
 	public var cd : dn.Cooldown;

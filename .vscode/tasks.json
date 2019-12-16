@@ -30,6 +30,7 @@
             },
             "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
         },
+
         {
             "label": "JS release",
             "type": "hxml",
@@ -37,28 +38,6 @@
             "presentation": {
                 "reveal": "never",
                 "panel": "dedicated",
-                "clear": true
-            },
-            "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
-        },
-        {
-            "label": "Flash release",
-            "type": "hxml",
-            "file": "swf.hxml",
-            "presentation": {
-                "reveal": "never",
-                "panel": "dedicated",
-                "clear": true
-            },
-            "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
-        },
-        {
-            "label": "Lang",
-            "type": "hxml",
-            "file": "langParser.hxml",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared",
                 "clear": true
             },
             "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
