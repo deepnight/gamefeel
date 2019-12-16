@@ -3,6 +3,8 @@ package en;
 class Hero extends Entity {
 	var ca : dn.heaps.Controller.ControllerAccess;
 	var gun : h2d.Graphics;
+	var skewX = 1.;
+	var skewY = 1.;
 
 	public function new(x,y) {
 		super(x,y);
@@ -27,6 +29,11 @@ class Hero extends Entity {
 		ca = null;
 	}
 
+	public inline function skew(x:Float, y:Float) {
+		skewX = x;
+		skewY = y;
+	}
+
 	override function onLand(cHei) {
 		super.onLand(cHei);
 
@@ -41,10 +48,20 @@ class Hero extends Entity {
 			dx*=0.5;
 			lockS( 0.4*pow );
 		}
+
+		if( options.heroSquashAndStrech ) {
+			var pow = M.fclamp(cHei/3, 0, 1);
+			skew(1+0.2*pow, 1-0.6*pow);
+		}
 	}
 
 	override function postUpdate() {
 		super.postUpdate();
+
+		spr.scaleX *= skewX;
+		spr.scaleY *= skewY;
+		skewX += (1-skewX)*0.2;
+		skewY += (1-skewY)*0.2;
 
 		gun.x = 3;
 		gun.y = -hei*0.4;
@@ -81,7 +98,6 @@ class Hero extends Entity {
 
 		var b = new en.Bullet(this);
 		b.speed = 1;
-		lockS(0.15);
 		cd.setS("gunRecoil", 0.1);
 		cd.setS("gunHolding", getLockS());
 
@@ -123,14 +139,15 @@ class Hero extends Entity {
 			}
 
 			// Shoot
-			if( burstCount<=0 && ca.xDown() && !cd.has("shootLock") ) {
+			if( burstCount<=0 && ca.xDown() && !cd.has("shootLock") )
 				chargeAction("shoot", options.gunAiming ? 0.35 : 0., function() {
-					burstCount = 3;
+					burstCount = 4;
 				});
-			}
-			if( burstCount>0 && !cd.hasSetS("burstLock",0.02) ) {
+
+			if( burstCount>0 ) {
 				burstCount--;
 				shoot();
+				lockS(0.05);
 				if( burstCount<=0 && !options.gunAiming )
 					lockS(0.35); // to compensate for the missing aiming phase
 			}
