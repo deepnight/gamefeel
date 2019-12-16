@@ -67,6 +67,7 @@ class Entity {
         Game.ME.scroller.add(spr, Const.DP_MAIN);
 		spr.colorAdd = colorAdd = new h3d.Vector();
 		spr.setCenterRatio(0.5,1);
+		spr.set("pixel");
     }
 
 	inline function set_dir(v) {
