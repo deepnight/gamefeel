@@ -49,7 +49,7 @@ class Entity {
 	public var centerX(get,never) : Float; inline function get_centerX() return footX;
 	public var centerY(get,never) : Float; inline function get_centerY() return footY-hei*0.5;
 
-	var actions : Array<{ id:String, cb:Void->Void, t:Float }> = [];
+	var actions : Array<{ id:String, cb:Void->Void, startT:Float, curT:Float }> = [];
 
     public function new(x:Int, y:Int) {
         uid = Const.NEXT_UNIQ;
@@ -163,9 +163,15 @@ class Entity {
 		if( sec<=0 )
 			cb();
 		else
-			actions.push({ id:id, cb:cb, t:sec});
+			actions.push({ id:id, cb:cb, startT:sec, curT:sec});
 	}
 
+	public function getChargeRatio(id:String) {
+		for(a in actions)
+			if( a.id==id )
+				return 1-a.curT/a.startT;
+		return 0.;
+	}
 	public function isChargingAction(?id:String) {
 		if( id==null )
 			return actions.length>0;
@@ -195,8 +201,8 @@ class Entity {
 		var i = 0;
 		while( i<actions.length ) {
 			var a = actions[i];
-			a.t -= tmod/Const.FPS;
-			if( a.t<=0 ) {
+			a.curT -= tmod/Const.FPS;
+			if( a.curT<=0 ) {
 				actions.splice(i,1);
 				if( isAlive() )
 					a.cb();
