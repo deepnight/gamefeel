@@ -7,7 +7,7 @@ class Bullet extends Entity {
 
 	public function new(e:Entity) {
 		super(0,0);
-		setPosPixel(e.centerX, e.centerY);
+		setPosPixel(e.centerX, e.centerY+3);
 		ALL.push(this);
 
 		hasCollisions = false;

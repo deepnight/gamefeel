@@ -15,9 +15,9 @@ class Hero extends Entity {
 		g.endFill();
 
 		gun = new h2d.Graphics(spr);
-		gun.beginFill(Color.interpolateInt(c,0x0,0.2)); gun.drawRect(3,1,4,4); // back hand
-		gun.beginFill(0xffffff); gun.drawRect(-3,-3,12,6); // gun
-		gun.beginFill(c); gun.drawRect(-2,2,4,4); // front hand
+		gun.beginFill(Color.interpolateInt(c,0x0,0.2)); gun.drawRect(3,-1,4,4); // back hand
+		gun.beginFill(0xffffff); gun.drawRect(-3,-5,12,6); // gun
+		gun.beginFill(c); gun.drawRect(-2,0,4,4); // front hand
 	}
 
 	override function dispose() {
@@ -45,10 +45,48 @@ class Hero extends Entity {
 
 	override function postUpdate() {
 		super.postUpdate();
+
 		gun.x = 3;
-		gun.y = -hei*0.5;
+		gun.y = -hei*0.4;
+		if( options.basicAnimations ) {
+			var isWalking = onGround && M.fabs(dxTotal)>=0.1;
+			gun.x += ( isWalking ? -2 + Math.cos(ftime*0.2)*3 : 0 );
+			gun.y += isWalking ? M.fabs( Math.sin(0.2+ftime*0.3)*1 ) : 0;
+
+			if( options.gunAiming ) {
+				if( cd.has("gunRecoil") ) {
+					gun.rotation = -0.3 * cd.getRatio("gunRecoil");
+					gun.x -= 4 * cd.getRatio("gunRecoil");
+					// gun.y-=2;
+				}
+				else if( isChargingAction("shoot") || cd.has("gunHolding") ) {
+					gun.x+=2;
+					// gun.y-=2;
+					gun.rotation = 0;
+				}
+				else {
+					gun.y+=2;
+					gun.rotation = 0.4;
+				}
+			}
+		}
 	}
 
+	function shoot() {
+		if( options.camShakes )
+			game.camera.bump(-dir*2, 0);
+
+		if( options.flashes )
+			fx.flashBangS(0xffcc00, 0.09, 0.1);
+
+		var b = new en.Bullet(this);
+		b.speed = 1;
+		lockS(0.15);
+		cd.setS("gunRecoil", 0.1);
+		cd.setS("gunHolding", getLockS());
+	}
+
+	var burstCount = 0;
 	override function update() {
 		super.update();
 
@@ -80,17 +118,13 @@ class Hero extends Entity {
 
 			// Shoot
 			if( ca.xDown() && !cd.has("shootLock") ) {
-				chargeAction("shoot", 0., function() {
-					if( options.camShakes )
-						game.camera.bump(-dir*2, 0);
-
-					if( options.flashes )
-						fx.flashBangS(0xffcc00, 0.09, 0.1);
-
-					var b = new en.Bullet(this);
-					b.speed = 1;
-					lockS(0.15);
+				chargeAction("shoot", options.gunAiming ? 0.2 : 0., function() {
+					burstCount = 3;
 				});
+			}
+			if( burstCount>0 && !cd.hasSetS("burstLock",0.07) ) {
+				burstCount--;
+				shoot();
 			}
 		}
 	}
