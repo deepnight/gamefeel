@@ -209,8 +209,8 @@ class Fx extends dn.Process {
 		var p = allocTopNormal(getTile("fxCartridge"), x+rnd(0,1,true), y);
 		p.setFadeS(1, 0, rnd(5,7));
 		p.colorize(0xefc04b);
+		p.dx = dir*rnd(0.7,2.8);
 		p.dy = -rnd(3,4);
-		p.dx = dir*rnd(1,2);
 		p.scaleX = rnd(1,1.5);
 		p.gy = 0.25;
 		p.frict = 0.96;
