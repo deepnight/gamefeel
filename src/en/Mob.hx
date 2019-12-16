@@ -22,8 +22,21 @@ class Mob extends Entity {
 		return super.isAlive() && life>0;
 	}
 
-	public function hit(dmg:Int) {
+	public function hit(dmg:Int, impactDir:Int) {
 		life-=dmg;
+
+		if( options.mobSquashAndStrech )
+			skew(0.8, 1.25);
+
+		if( options.physicalReactions )
+			if( !cd.hasSetS("firstImpact",0.4) )
+				bump(impactDir*rnd(0.06,0.07), -0.05);
+			else
+				bump(impactDir*rnd(0.01,0.02), 0);
+
+		if( options.blinkImpact )
+			blink(0xfff170);
+
 		if( life<=0 ) {
 			life = 0;
 			onDie();

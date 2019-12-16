@@ -9,6 +9,8 @@ class Options {
 	public var heroSquashAndStrech = false;
 	public var physicalReactions = false;
 	public var bulletImpactFx = false;
+	public var blinkImpact = false;
+	public var mobSquashAndStrech = true;
 
 	public var levelTextures = false;
 

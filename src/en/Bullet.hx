@@ -39,13 +39,14 @@ class Bullet extends Entity {
 
 		super.update();
 
+		dir = M.radDistance(ang,0)<=M.PIHALF ? 1 : -1;
+
 		// Mobs
 		for(e in Mob.ALL) {
 			if( e.isAlive() && footX>=e.footX-e.radius && footX<=e.footX+e.radius && footY>=e.footY-e.hei && footY<=e.footY ) {
-				e.hit(1);
+				e.hit(1, dir);
 				if( options.bulletImpactFx ) {
-					var normalDir = M.radDistance(ang,0)<=M.PIHALF ? -1 : 1;
-					fx.hitEntity( e.centerX+normalDir*4, footY, normalDir );
+					fx.hitEntity( e.centerX-dir*4, footY, -dir );
 				}
 				destroy();
 			}
