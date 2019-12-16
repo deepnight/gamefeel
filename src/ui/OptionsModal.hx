@@ -4,28 +4,47 @@ class OptionsModal extends ui.Modal {
 	var options(get,never) : Options; inline function get_options() return Main.ME.options;
 	var elements : Array<{ f:h2d.Flow, toggle:Void->Void, getter:Void->Bool, setter:Bool->Void }> = [];
 	var cursor : h2d.Bitmap;
+	var list : h2d.Flow;
 
 	var curIdx = 0;
 
 	public function new() {
 		super();
 
-		cursor = new h2d.Bitmap(h2d.Tile.fromColor(0x0,1,1, 0.25), win);
-		win.getProperties(cursor).isAbsolute = true;
+		win.layout = Horizontal;
+		win.verticalAlign = Top;
+
+		list = new h2d.Flow(win);
+		list.layout = Vertical;
+
+		cursor = new h2d.Bitmap(h2d.Tile.fromColor(0x0,1,1, 0.25), list);
+		list.getProperties(cursor).isAbsolute = true;
 
 		for(k in Type.getInstanceFields(Options))
 			if( Type.typeof(Reflect.field(options, k)) == TBool )
-				addOptionButton(k, Reflect.field(options, k), function(v) Reflect.setField(options,k,v));
+				addOptionButton(list, k, Reflect.field(options, k), function(v) Reflect.setField(options,k,v));
+
+		win.addSpacing(16);
+
+		var help = new h2d.Flow(win);
+		help.horizontalAlign = Right;
+		help.layout = Vertical;
+		help.paddingLeft = 32;
+		for(h in ["A - Toggle", "Y - Toggle all before", "LB - Disable all", "RB - Enable all"]) {
+			var t = new h2d.Text(Assets.fontSmall, help);
+			t.text = h;
+			t.textColor = 0x7f7f7f;
+		}
 
 		dn.Process.resizeAll();
 	}
 
-	function addOptionButton(label:String, curValue:Bool, cb:Bool->Void) {
-		var line = new h2d.Flow(win);
+	function addOptionButton(p:h2d.Flow, label:String, curValue:Bool, cb:Bool->Void) {
+		var line = new h2d.Flow(p);
 		line.layout = Horizontal;
 		line.horizontalSpacing = 6;
 		line.verticalAlign = Middle;
-		line.padding = 3;
+		line.padding = 2;
 
 		var icon = new h2d.Graphics(line);
 
@@ -59,7 +78,7 @@ class OptionsModal extends ui.Modal {
 
 		var current = elements[curIdx];
 		cursor.y = current.f.y;
-		cursor.scaleX = win.outerWidth;
+		cursor.scaleX = list.outerWidth;
 		cursor.scaleY = current.f.outerHeight;
 
 		// Move cursor
