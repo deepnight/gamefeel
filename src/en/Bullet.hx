@@ -5,15 +5,19 @@ class Bullet extends Entity {
 	public var speed = 1.0;
 	public var ang : Float;
 
-	public function new(e:Entity) {
+	public function new(e:Entity, offY=0.) {
 		super(0,0);
-		setPosPixel(e.centerX, e.centerY+1);
+		setPosPixel(e.centerX, e.centerY+offY);
 		ALL.push(this);
 
 		hasCollisions = false;
 		ang = e.dirToAng();
 		frict = 1;
 		gravity = 0;
+
+		var g = new h2d.Graphics(spr);
+		g.beginFill(0xffcc00);
+		g.drawRect(-3, -1, 6, 2);
 	}
 
 	override function dispose() {
@@ -26,8 +30,8 @@ class Bullet extends Entity {
 	}
 
 	override function update() {
-		dx = Math.cos(ang)*0.42*speed;
-		dy = Math.sin(ang)*0.42*speed;
+		dx = Math.cos(ang)*0.55*speed;
+		dy = Math.sin(ang)*0.55*speed;
 
 		super.update();
 
