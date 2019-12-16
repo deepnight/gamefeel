@@ -241,9 +241,10 @@ class Entity {
 		}
     }
 
-	function onLand() {}
+	function onLand(cHei:Float) {}
 
 
+	var fallStartY : Float = Const.INFINITE;
     public function update() {
 		// X
 		var steps = M.ceil( M.fabs(dxTotal*tmod) );
@@ -271,6 +272,8 @@ class Entity {
 		// Y
 		if( !onGround )
 			dy+=gravity*tmod;
+		if( onGround || dy<0 )
+			fallStartY = footY;
 		var steps = M.ceil( M.fabs(dyTotal*tmod) );
 		var step = dyTotal*tmod / steps;
 		while( steps>0 ) {
@@ -279,7 +282,7 @@ class Entity {
 			if( hasCollisions && yr>1 && level.hasCollision(cx,cy+1) ) {
 				dy = 0;
 				yr = 1;
-				onLand();
+				onLand( (footY-fallStartY)/Const.GRID );
 			}
 
 			if( hasCollisions && yr<0.5 && level.hasCollision(cx,cy-1) )

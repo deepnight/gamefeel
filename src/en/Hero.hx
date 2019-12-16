@@ -27,11 +27,19 @@ class Hero extends Entity {
 		ca = null;
 	}
 
-	override function onLand() {
-		super.onLand();
+	override function onLand(cHei) {
+		super.onLand(cHei);
+
+		var pow = M.fclamp((cHei-1)/4, 0, 1);
+
 		if( options.camShakes ) {
-			game.camera.bump(0,3);
-			game.camera.shakeS(0.5, 0.2);
+			game.camera.bump(0,3*pow);
+			game.camera.shakeS(0.5, 0.2*pow);
+		}
+
+		if( options.controlLocks ) {
+			dx*=0.5;
+			lockS( 0.4*pow );
 		}
 	}
 
