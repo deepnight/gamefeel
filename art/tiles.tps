@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>4.5.0</string>
         <key>fileName</key>
-        <string>C:/Projects/deepnight/gameBase/art/tiles.tps</string>
+        <string>C:/Projects/deepnight/gamefeel/art/tiles.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -213,19 +213,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">export_tiles/fxCircle.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>4,4,8,8</rect>
-                <key>scale9Paddings</key>
-                <rect>4,4,8,8</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
+            <key type="filename">export_tiles/fxCartridge0.png</key>
             <key type="filename">export_tiles/fxDot.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -236,6 +224,19 @@
                 <rect>1,1,2,2</rect>
                 <key>scale9Paddings</key>
                 <rect>1,1,2,2</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">export_tiles/fxCircle.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>4,4,8,8</rect>
+                <key>scale9Paddings</key>
+                <rect>4,4,8,8</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -250,6 +251,19 @@
                 <rect>8,1,17,2</rect>
                 <key>scale9Paddings</key>
                 <rect>8,1,17,2</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">export_tiles/fxShoot0.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>6,2,13,4</rect>
+                <key>scale9Paddings</key>
+                <rect>6,2,13,4</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
