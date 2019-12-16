@@ -122,7 +122,7 @@ class Hero extends Entity {
 					burstCount = 3;
 				});
 			}
-			if( burstCount>0 && !cd.hasSetS("burstLock",0.07) ) {
+			if( burstCount>0 && !cd.hasSetS("burstLock",0.04) ) {
 				burstCount--;
 				shoot();
 			}
