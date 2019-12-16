@@ -1,10 +1,8 @@
 package ui;
 
 class OptionsModal extends ui.Modal {
-	static var SET_ALL = true;
-
 	var options(get,never) : Options; inline function get_options() return Main.ME.options;
-	var elements : Array<{ f:h2d.Flow, toggle:Void->Void, setter:Bool->Void }> = [];
+	var elements : Array<{ f:h2d.Flow, toggle:Void->Void, getter:Void->Bool, setter:Bool->Void }> = [];
 	var cursor : h2d.Bitmap;
 
 	var curIdx = 0;
@@ -53,7 +51,7 @@ class OptionsModal extends ui.Modal {
 		}
 		setter(curValue);
 
-		elements.push({ f:line, toggle:function() setter(!curValue), setter:setter });
+		elements.push({ f:line, toggle:function() setter(!curValue), setter:setter, getter:function() return curValue });
 	}
 
 	override function update() {
@@ -75,20 +73,40 @@ class OptionsModal extends ui.Modal {
 			cd.setS("autoFireLock", !cd.hasSetS("autoFireFirst",Const.INFINITE) ? 0.20 : 0.07);
 		}
 
-		// Enable/disable all
+		if( !ca.downDown() && !ca.upDown() )
+			cd.unset("autoFireFirst");
+
+		// Enable/disable all before
 		if( ca.yPressed() ) {
+			var curValue = current.getter();
 			for(e in elements)
-				e.setter(SET_ALL);
-			SET_ALL = !SET_ALL;
+				e.setter(false);
+			for(e in elements) {
+				e.setter(!curValue);
+				if( e==current )
+					break;
+			}
 			Main.ME.startGame();
 		}
 
+		// Disable all
+		if( ca.lbPressed() ) {
+			for(e in elements)
+				e.setter(false);
+			Main.ME.startGame();
+		}
+
+		// Enable all
+		if( ca.rbPressed() ) {
+			for(e in elements)
+				e.setter(true);
+			Main.ME.startGame();
+		}
+
+		// Toggle current
 		if( ca.xPressed() || ca.aPressed() ) {
 			current.toggle();
 			Main.ME.startGame();
 		}
-
-		if( !ca.downDown() && !ca.upDown() )
-			cd.unset("autoFireFirst");
 	}
 }
