@@ -2,28 +2,23 @@ package en;
 
 class Hero extends Entity {
 	var ca : dn.heaps.Controller.ControllerAccess;
+	var gun : h2d.Graphics;
 
 	public function new(x,y) {
 		super(x,y);
 		ca = Main.ME.controller.createAccess("hero");
 
 		// Debug render
+		var c = 0x00ff00;
 		var g = new h2d.Graphics(spr);
-		g.lineStyle(1,0x00ff00);
-		var ay = -hei-4;
-		g.moveTo(-5,ay);
-		g.lineTo(5,ay);
-
-		g.moveTo(2,ay-3);
-		g.lineTo(5,ay);
-
-		g.moveTo(2,ay+3);
-		g.lineTo(5,ay);
-
-		g.lineStyle(0);
-		g.beginFill(0x00ff00);
+		g.beginFill(Color.interpolateInt(c,0x0,0.4));
 		g.drawRect(-radius, -hei, radius*2, hei);
 		g.endFill();
+
+		gun = new h2d.Graphics(spr);
+		gun.beginFill(Color.interpolateInt(c,0x0,0.2)); gun.drawRect(3,1,4,4); // back hand
+		gun.beginFill(0xffffff); gun.drawRect(-3,-3,12,6); // gun
+		gun.beginFill(c); gun.drawRect(-2,2,4,4); // front hand
 	}
 
 	override function dispose() {
@@ -31,6 +26,12 @@ class Hero extends Entity {
 
 		ca.dispose();
 		ca = null;
+	}
+
+	override function postUpdate() {
+		super.postUpdate();
+		gun.x = 3;
+		gun.y = -hei*0.5;
 	}
 
 	override function update() {
@@ -62,8 +63,15 @@ class Hero extends Entity {
 				cd.setS("extraJumping", 0.1);
 			}
 
+			// Shoot
 			if( ca.xDown() && !cd.has("shootLock") ) {
 				chargeAction("shoot", 0., function() {
+					if( options.camShakes )
+						game.camera.bump(-dir*2, 0);
+
+					if( options.flashes )
+						fx.flashBangS(0xffcc00, 0.09, 0.1);
+
 					var b = new en.Bullet(this);
 					b.speed = 1;
 					lockS(0.15);

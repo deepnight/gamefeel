@@ -2,7 +2,7 @@ package ui;
 
 class OptionsModal extends ui.Modal {
 	var options(get,never) : Options; inline function get_options() return Main.ME.options;
-	var elements : Array<{ f:h2d.Flow, toggle:Void->Void }> = [];
+	var elements : Array<{ f:h2d.Flow, toggle:Void->Void, setter:Bool->Void }> = [];
 	var cursor : h2d.Bitmap;
 
 	var curIdx = 0;
@@ -13,9 +13,9 @@ class OptionsModal extends ui.Modal {
 		cursor = new h2d.Bitmap(h2d.Tile.fromColor(0x0,1,1, 0.25), win);
 		win.getProperties(cursor).isAbsolute = true;
 
-		addOptionButton("Level textures", options.levelTextures, function(v) options.levelTextures = v);
-		addOptionButton("Camera shakes", options.camShakes, function(v) options.camShakes = v);
-		addOptionButton("Flashes", options.flashes, function(v) options.flashes = v);
+		for(k in Type.getInstanceFields(Options))
+			if( Type.typeof(Reflect.field(options, k)) == TBool )
+				addOptionButton(k, Reflect.field(options, k), function(v) Reflect.setField(options,k,v));
 
 		dn.Process.resizeAll();
 	}
@@ -23,7 +23,7 @@ class OptionsModal extends ui.Modal {
 	function addOptionButton(label:String, curValue:Bool, cb:Bool->Void) {
 		var line = new h2d.Flow(win);
 		line.layout = Horizontal;
-		line.horizontalSpacing = 2;
+		line.horizontalSpacing = 6;
 		line.verticalAlign = Middle;
 		line.padding = 3;
 
@@ -32,13 +32,14 @@ class OptionsModal extends ui.Modal {
 		var tf = new h2d.Text(Assets.fontSmall, line);
 		tf.text = label;
 		tf.textColor = 0x0;
+		line.getProperties(tf).offsetY = -3;
 
 		var setter = function(v:Bool) {
 			curValue = v;
 			cb(v);
 
 			icon.clear();
-			icon.lineStyle(1,0x0);
+			icon.lineStyle(1,0x0, v ? 1 : 0.5);
 			icon.drawRect(0,0,10,10);
 			if( v ) {
 				icon.beginFill(0x0,1);
@@ -46,13 +47,14 @@ class OptionsModal extends ui.Modal {
 				icon.drawRect(2,2,6,6);
 				icon.endFill();
 			}
-			tf.alpha = v ? 1 : 0.25;
+			tf.alpha = v ? 1 : 0.5;
 		}
 		setter(curValue);
 
-		elements.push({ f:line, toggle:function() setter(!curValue) });
+		elements.push({ f:line, toggle:function() setter(!curValue), setter:setter });
 	}
 
+	var setAll = true;
 	override function update() {
 		super.update();
 
@@ -61,6 +63,7 @@ class OptionsModal extends ui.Modal {
 		cursor.scaleX = win.outerWidth;
 		cursor.scaleY = current.f.outerHeight;
 
+		// Move cursor
 		if( ca.downDown() && !cd.has("autoFireLock") ) {
 			curIdx = M.imin( curIdx+1, elements.length-1 );
 			cd.setS("autoFireLock", !cd.hasSetS("autoFireFirst",Const.INFINITE) ? 0.20 : 0.07);
@@ -71,7 +74,15 @@ class OptionsModal extends ui.Modal {
 			cd.setS("autoFireLock", !cd.hasSetS("autoFireFirst",Const.INFINITE) ? 0.20 : 0.07);
 		}
 
-		if( ca.xPressed() || ca.aPressed() || ca.yPressed() ) {
+		// Enable/disable all
+		if( ca.yPressed() ) {
+			for(e in elements)
+				e.setter(setAll);
+			setAll = !setAll;
+			Main.ME.startGame();
+		}
+
+		if( ca.xPressed() || ca.aPressed() ) {
 			current.toggle();
 			Main.ME.startGame();
 		}

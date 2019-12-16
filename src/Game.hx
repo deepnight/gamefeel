@@ -88,7 +88,7 @@ class Game extends Process {
 					hxd.System.exit();
 			#end
 
-			if( ca.yPressed() )
+			if( ca.startPressed() )
 				new ui.OptionsModal();
 
 			// Restart
