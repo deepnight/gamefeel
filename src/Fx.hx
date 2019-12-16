@@ -173,9 +173,9 @@ class Fx extends dn.Process {
 		p.setCenterRatio(0,0.5);
 		p.setFadeS(1, 0, 0.03);
 		p.colorAnimS( 0xffb600, 0xff4a00, 0.06 );
-		p.scaleX = dir*rnd(3,4);
+		p.scaleX = dir*rnd(1.5,2);
 		p.scaleY = rnd(1.2,1.4,true);
-		p.lifeS = 0.06;
+		p.lifeS = 0.12;
 
 		// Core
 		for(i in 0...6) {
