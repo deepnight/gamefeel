@@ -49,7 +49,7 @@ class Level extends dn.Process {
 	public function render() {
 		root.removeChildren();
 
-		var bg = new h2d.Bitmap(h2d.Tile.fromColor(0x151C23), root);
+		var bg = new h2d.Bitmap(h2d.Tile.fromColor(Const.BG_COLOR), root);
 		bg.scaleX = data.pxWid;
 		bg.scaleY = data.pxHei;
 

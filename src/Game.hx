@@ -22,7 +22,7 @@ class Game extends Process {
 		ca.setRightDeadZone(0.2);
 		createRootInLayers(Main.ME.root, Const.DP_BG);
 
-		bg = new h2d.Bitmap(h2d.Tile.fromColor(0x3B1D2D), root);
+		bg = new h2d.Bitmap(h2d.Tile.fromColor(Const.BG_COLOR), root);
 
 		scroller = new h2d.Layers();
 		root.add(scroller, Const.DP_BG);
