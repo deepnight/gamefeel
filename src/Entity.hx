@@ -37,6 +37,8 @@ class Entity {
 	public var sprScaleY = 1.0;
 	public var entityVisible = true;
 	public var hasCollisions = true;
+	var skewX = 1.;
+	var skewY = 1.;
 
     public var spr : HSprite;
 	public var colorAdd : h3d.Vector;
@@ -229,6 +231,11 @@ class Entity {
 		return isAlive() && !isLocked() && !isChargingAction();
 	}
 
+	public inline function skew(x:Float, y:Float) {
+		skewX = x;
+		skewY = y;
+	}
+
     public function preUpdate() {
 		cd.update(tmod);
 		updateActions();
@@ -241,6 +248,13 @@ class Entity {
         spr.scaleY = sprScaleY;
 		spr.visible = entityVisible;
 
+		// Squash & stretch
+		spr.scaleX *= skewX;
+		spr.scaleY *= skewY;
+		skewX += (1-skewX)*0.2;
+		skewY += (1-skewY)*0.2;
+
+		// Debug
 		if( debugLabel!=null ) {
 			debugLabel.x = Std.int(footX - debugLabel.textWidth*0.5);
 			debugLabel.y = Std.int(footY+1);

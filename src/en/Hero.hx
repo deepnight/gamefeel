@@ -3,8 +3,6 @@ package en;
 class Hero extends Entity {
 	var ca : dn.heaps.Controller.ControllerAccess;
 	var gun : h2d.Graphics;
-	var skewX = 1.;
-	var skewY = 1.;
 
 	public function new(x,y) {
 		super(x,y);
@@ -29,15 +27,10 @@ class Hero extends Entity {
 		ca = null;
 	}
 
-	public inline function skew(x:Float, y:Float) {
-		skewX = x;
-		skewY = y;
-	}
-
 	override function onLand(cHei) {
 		super.onLand(cHei);
 
-		var pow = M.fclamp((cHei-1)/4, 0, 1);
+		var pow = M.fclamp((cHei-2)/4, 0, 1);
 
 		if( options.camShakes ) {
 			game.camera.bump(0,3*pow);
@@ -57,11 +50,6 @@ class Hero extends Entity {
 
 	override function postUpdate() {
 		super.postUpdate();
-
-		spr.scaleX *= skewX;
-		spr.scaleY *= skewY;
-		skewX += (1-skewX)*0.2;
-		skewY += (1-skewY)*0.2;
 
 		gun.x = 3;
 		gun.y = -hei*0.4;
@@ -142,6 +130,8 @@ class Hero extends Entity {
 			if( burstCount<=0 && ca.xDown() && !cd.has("shootLock") )
 				chargeAction("shoot", options.gunAiming ? 0.35 : 0., function() {
 					burstCount = 4;
+					if( options.heroSquashAndStrech )
+						skew(1.2,0.9);
 				});
 
 			if( burstCount>0 ) {
