@@ -37,8 +37,11 @@ class Entity {
 	public var sprScaleY = 1.0;
 	public var entityVisible = true;
 	public var hasCollisions = true;
+
 	var skewX = 1.;
 	var skewY = 1.;
+	var animOffsetX = 0.;
+	var animOffsetY = 0.;
 
     public var spr : HSprite;
 	public var colorAdd : h3d.Vector;
@@ -253,6 +256,11 @@ class Entity {
 		spr.scaleY *= skewY;
 		skewX += (1-skewX)*0.2;
 		skewY += (1-skewY)*0.2;
+
+		spr.x+=animOffsetX;
+		spr.y+=animOffsetY;
+		animOffsetX *= Math.pow(0.8,tmod);
+		animOffsetY *= Math.pow(0.8,tmod);
 
 		// Debug
 		if( debugLabel!=null ) {

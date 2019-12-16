@@ -7,6 +7,7 @@ class Options {
 	public var cartridges = false;
 	public var gunShotFx = false;
 	public var heroSquashAndStrech = false;
+	public var physicalReactions = true;
 	public var levelTextures = false;
 
 	public function new() {}

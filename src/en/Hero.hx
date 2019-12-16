@@ -87,6 +87,11 @@ class Hero extends Entity {
 		if( options.heroSquashAndStrech )
 			skew(1.2,0.9);
 
+		if( options.physicalReactions ) {
+			dx += -dir*rnd(0,0.01);
+			animOffsetX+=-dir*rnd(1,3);
+		}
+
 		var b = new en.Bullet(this);
 		b.speed = 1;
 		cd.setS("gunRecoil", 0.1);
@@ -108,7 +113,7 @@ class Hero extends Entity {
 
 		if( canAct() ) {
 			// Walk
-			var spd = 0.015 * cd.getRatio("airControl");
+			var spd = 0.011 * cd.getRatio("airControl");
 			if( ca.rightDown() ) {
 				dx+=spd*tmod;
 				dir = 1;
@@ -122,10 +127,10 @@ class Hero extends Entity {
 
 			// Jump
 			if( !onGround && cd.has("extraJumping") && ca.aDown() )
-				dy+=-0.09*tmod;
+				dy+=-0.08*tmod;
 
 			if( onGround && ca.aPressed() ) {
-				dy = -0.20;
+				dy = -0.16;
 				cd.setS("extraJumping", 0.1);
 			}
 
