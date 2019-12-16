@@ -52,17 +52,17 @@ class Hero extends Entity {
 			var isWalking = onGround && M.fabs(dxTotal)>=0.1;
 			gun.x += ( isWalking ? -2 + Math.cos(ftime*0.2)*3 : 0 );
 			gun.y += isWalking ? M.fabs( Math.sin(0.2+ftime*0.3)*1 ) : 0;
+			gun.rotation = 0;
 
 			if( options.gunAiming ) {
 				if( cd.has("gunRecoil") ) {
-					gun.rotation = -0.3 * cd.getRatio("gunRecoil");
+					gun.rotation = -0.15 * cd.getRatio("gunRecoil");
 					gun.x -= 4 * cd.getRatio("gunRecoil");
-					// gun.y-=2;
+					gun.y-=2;
 				}
-				else if( isChargingAction("shoot") || cd.has("gunHolding") ) {
-					gun.x+=2;
-					// gun.y-=2;
-					gun.rotation = 0;
+				else if( isChargingAction("shoot") || cd.has("gunHolding") || burstCount>0 ) {
+					gun.x += 3 - 1*getChargeRatio("shoot");
+					gun.y += -1 -1*getChargeRatio("shoot");
 				}
 				else {
 					gun.y+=2;
@@ -117,12 +117,12 @@ class Hero extends Entity {
 			}
 
 			// Shoot
-			if( ca.xDown() && !cd.has("shootLock") ) {
-				chargeAction("shoot", options.gunAiming ? 0.2 : 0., function() {
+			if( burstCount<=0 && ca.xDown() && !cd.has("shootLock") ) {
+				chargeAction("shoot", options.gunAiming ? 0.35 : 0., function() {
 					burstCount = 3;
 				});
 			}
-			if( burstCount>0 && !cd.hasSetS("burstLock",0.04) ) {
+			if( burstCount>0 && !cd.hasSetS("burstLock",0.02) ) {
 				burstCount--;
 				shoot();
 			}
