@@ -10,6 +10,7 @@ class Game extends Process {
 	public var scroller : h2d.Layers;
 	public var level : Level;
 
+
 	public var hero : en.Hero;
 	var bg : h2d.Bitmap;
 
@@ -86,6 +87,9 @@ class Game extends Process {
 				else
 					hxd.System.exit();
 			#end
+
+			if( ca.yPressed() )
+				new ui.OptionsModal();
 
 			// Restart
 			if( ca.selectPressed() )

@@ -9,6 +9,7 @@ class Entity {
 	public var ftime(get,never) : Float; inline function get_ftime() return game.ftime;
 	public var tmod(get,never) : Float; inline function get_tmod() return Game.ME.tmod;
 	public var hero(get,never) : en.Hero; inline function get_hero() return Game.ME.hero;
+	public var options(get,never) : Options; inline function get_options() return Main.ME.options;
 
 	public var cd : dn.Cooldown;
 
@@ -149,7 +150,7 @@ class Entity {
 		}
 		if( v!=null ) {
 			if( debugLabel==null )
-				debugLabel = new h2d.Text(Assets.fontTiny, Game.ME.scroller);
+				debugLabel = new h2d.Text(Assets.fontSmall, Game.ME.scroller);
 			debugLabel.text = Std.string(v);
 		}
 		#end

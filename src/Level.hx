@@ -1,6 +1,7 @@
 class Level extends dn.Process {
 	public var game(get,never) : Game; inline function get_game() return Game.ME;
 	public var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;
+	public var options(get,never) : Options; inline function get_options() return Main.ME.options;
 
 	public var wid(get,never) : Int; inline function get_wid() return data.getLayerByName("collisions").cWid;
 	public var hei(get,never) : Int; inline function get_hei() return data.getLayerByName("collisions").cHei;
@@ -8,7 +9,6 @@ class Level extends dn.Process {
 	var invalidated = true;
 	var project : ogmo.Project;
 	var data : ogmo.Level;
-	var useSimpleRendering = true;
 
 	var collMap : Map<Int,Bool> = new Map();
 
@@ -53,7 +53,7 @@ class Level extends dn.Process {
 		bg.scaleX = data.pxWid;
 		bg.scaleY = data.pxHei;
 
-		if( useSimpleRendering ) {
+		if( !options.levelTextures ) {
 			// Simple rendering
 			for(l in data.layersReversed)
 				switch l.name {

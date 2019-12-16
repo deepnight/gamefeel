@@ -4,6 +4,7 @@ class Main extends dn.Process {
 	public static var ME : Main;
 	public var controller : dn.heaps.Controller;
 	public var ca : dn.heaps.Controller.ControllerAccess;
+	public var options : Options;
 
 	public function new(s:h2d.Scene) {
 		super();
@@ -30,7 +31,7 @@ class Main extends dn.Process {
 		Assets.init();
 
 		// Console
-		new ui.Console(Assets.fontTiny, s);
+		new ui.Console(Assets.fontSmall, s);
 
 		// Game controller
 		controller = new dn.heaps.Controller(s);
@@ -43,6 +44,7 @@ class Main extends dn.Process {
 		controller.bind(START, Key.N);
 
 		// Start
+		options = new Options();
 		startGame();
 	}
 
@@ -65,6 +67,7 @@ class Main extends dn.Process {
 			Const.SCALE = M.ceil( h()/Const.AUTO_SCALE_TARGET_WID );
 		else if( Const.AUTO_SCALE_TARGET_HEI>0 )
 			Const.SCALE = M.ceil( h()/Const.AUTO_SCALE_TARGET_HEI );
+		Const.UI_SCALE = M.fmax(1,Const.SCALE-1);
 		root.setScale(Const.SCALE);
 	}
 
