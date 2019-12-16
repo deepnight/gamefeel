@@ -1,6 +1,8 @@
 package ui;
 
 class OptionsModal extends ui.Modal {
+	static var SET_ALL = true;
+
 	var options(get,never) : Options; inline function get_options() return Main.ME.options;
 	var elements : Array<{ f:h2d.Flow, toggle:Void->Void, setter:Bool->Void }> = [];
 	var cursor : h2d.Bitmap;
@@ -54,7 +56,6 @@ class OptionsModal extends ui.Modal {
 		elements.push({ f:line, toggle:function() setter(!curValue), setter:setter });
 	}
 
-	var setAll = true;
 	override function update() {
 		super.update();
 
@@ -77,8 +78,8 @@ class OptionsModal extends ui.Modal {
 		// Enable/disable all
 		if( ca.yPressed() ) {
 			for(e in elements)
-				e.setter(setAll);
-			setAll = !setAll;
+				e.setter(SET_ALL);
+			SET_ALL = !SET_ALL;
 			Main.ME.startGame();
 		}
 
