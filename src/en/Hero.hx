@@ -139,7 +139,7 @@ class Hero extends Entity {
 			}
 
 			// Shoot
-			if( burstCount<=0 && ( ca.xDown() || ca.ltDown() ) && !cd.has("shootLock") )
+			if( burstCount<=0 && ( ca.xDown() || ca.rtDown() ) && !cd.has("shootLock") )
 				chargeAction("shoot", options.gunAiming ? 0.35 : 0., function() {
 					burstCount = 4;
 					// if( options.heroSquashAndStrech )
