@@ -4,10 +4,11 @@ class Camera extends dn.Process {
 	public var y : Float;
 	public var dx : Float;
 	public var dy : Float;
-	public var wid(get,never) : Int;
-	public var hei(get,never) : Int;
+	public var screenWid(get,never) : Int;
+	public var screenHei(get,never) : Int;
 	var bumpOffX = 0.;
 	var bumpOffY = 0.;
+	public var zoom = 1.;
 
 	public function new() {
 		super(Game.ME);
@@ -15,11 +16,11 @@ class Camera extends dn.Process {
 		dx = dy = 0;
 	}
 
-	function get_wid() {
+	function get_screenWid() {
 		return M.ceil( Game.ME.w() / Const.SCALE );
 	}
 
-	function get_hei() {
+	function get_screenHei() {
 		return M.ceil( Game.ME.h() / Const.SCALE );
 	}
 
@@ -45,32 +46,6 @@ class Camera extends dn.Process {
 		shakePower = pow;
 	}
 
-	override function update() {
-		super.update();
-
-		// Follow target entity
-		if( target!=null ) {
-			var s = 0.006;
-			var deadZone = 5;
-			var tx = target.footX;
-			var ty = target.footY;
-
-			var d = M.dist(x,y, tx, ty);
-			if( d>=deadZone ) {
-				var a = Math.atan2( ty-y, tx-x );
-				dx += Math.cos(a) * (d-deadZone) * s * tmod;
-				dy += Math.sin(a) * (d-deadZone) * s * tmod;
-			}
-		}
-
-		var frict = 0.89;
-		x += dx*tmod;
-		dx *= Math.pow(frict,tmod);
-
-		y += dy*tmod;
-		dy *= Math.pow(frict,tmod);
-	}
-
 	public inline function bumpAng(a, dist) {
 		bumpOffX+=Math.cos(a)*dist;
 		bumpOffY+=Math.sin(a)*dist;
@@ -90,25 +65,27 @@ class Camera extends dn.Process {
 			var scroller = Game.ME.scroller;
 
 			// Update scroller
-			if( wid<level.wid*Const.GRID)
-				scroller.x = -x + wid*0.5;
+			scroller.setScale(zoom);
+			if( screenWid<level.wid*Const.GRID*zoom )
+				scroller.x = -x*zoom + screenWid*0.5;
 			else
-				scroller.x = wid*0.5 - level.wid*0.5*Const.GRID;
-			if( hei<level.hei*Const.GRID)
-				scroller.y = -y + hei*0.5;
+				scroller.x = screenWid*0.5 - level.wid*0.5*Const.GRID*zoom;
+
+			if( screenHei<level.hei*Const.GRID*zoom)
+				scroller.y = -y*zoom + screenHei*0.5;
 			else
-				scroller.y = hei*0.5 - level.hei*0.5*Const.GRID;
+				scroller.y = screenHei*0.5 - level.hei*0.5*Const.GRID*zoom;
 
 			// Clamp
-			if( wid<level.wid*Const.GRID)
-				scroller.x = M.fclamp(scroller.x, wid-level.wid*Const.GRID, 0);
-			if( hei<level.hei*Const.GRID)
-				scroller.y = M.fclamp(scroller.y, hei-level.hei*Const.GRID, 0);
+			if( screenWid<level.wid*Const.GRID*zoom )
+				scroller.x = M.fclamp(scroller.x, screenWid-level.wid*Const.GRID*zoom, 0);
+			if( screenHei<level.hei*Const.GRID*zoom )
+				scroller.y = M.fclamp(scroller.y, screenHei-level.hei*Const.GRID*zoom, 0);
 
 			// Shakes
 			if( cd.has("shaking") ) {
-				scroller.x += Math.cos(ftime*1.10)*1*Const.SCALE*shakePower * cd.getRatio("shaking");
-				scroller.y += Math.sin(0.3+ftime*1.33)*1*Const.SCALE*shakePower * cd.getRatio("shaking");
+				scroller.x += Math.cos(ftime*1.10)*1*Const.SCALE*shakePower*zoom * cd.getRatio("shaking");
+				scroller.y += Math.sin(0.3+ftime*1.33)*1*Const.SCALE*shakePower*zoom * cd.getRatio("shaking");
 			}
 
 			// Bumps friction
@@ -116,8 +93,34 @@ class Camera extends dn.Process {
 			bumpOffY *= Math.pow(0.75, tmod);
 
 			// Rounding
-			scroller.x = Std.int(scroller.x + bumpOffX);
-			scroller.y = Std.int(scroller.y + bumpOffY);
+			scroller.x = Std.int(scroller.x + bumpOffX*zoom);
+			scroller.y = Std.int(scroller.y + bumpOffY*zoom);
 		}
+	}
+
+	override function update() {
+		super.update();
+
+		// Follow target entity
+		if( target!=null ) {
+			var s = 0.006;
+			var deadZone = 5;
+			var tx = target.footX;
+			var ty = target.footY - Const.GRID*3;
+
+			var d = M.dist(x,y, tx, ty);
+			if( d>=deadZone ) {
+				var a = Math.atan2( ty-y, tx-x );
+				dx += Math.cos(a) * (d-deadZone) * s * tmod;
+				dy += Math.sin(a) * (d-deadZone) * s * tmod;
+			}
+		}
+
+		var frict = 0.89;
+		x += dx*tmod;
+		dx *= Math.pow(frict,tmod);
+
+		y += dy*tmod;
+		dy *= Math.pow(frict,tmod);
 	}
 }
