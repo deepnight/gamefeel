@@ -33,12 +33,12 @@ class Hero extends Entity {
 		var pow = M.fclamp((cHei-2)/6, 0, 1);
 
 		if( options.camShakesXY ) {
-			game.camera.bump(0,3*pow);
+			game.camera.bump(0,6*pow);
 			game.camera.shakeY(0.6*pow, 0.8*pow);
 		}
 
-		// if( options.camShakesZoom )
-		// 	game.camera.shakeZoom(1, 0.5);
+		if( options.camShakesZoom )
+			game.camera.shakeZoom(0.25*pow, 0.5*pow);
 
 		if( options.controlLocks ) {
 			dx*=0.5;
@@ -47,8 +47,8 @@ class Hero extends Entity {
 		}
 
 		if( options.heroSquashAndStrech ) {
-			var pow = M.fclamp(cHei/3, 0, 1);
-			skew(1+0.2*pow, 1-0.6*pow);
+			var pow = M.fclamp(cHei/6, 0, 1);
+			skew(1+0.4*pow, 1-0.8*pow);
 		}
 	}
 
