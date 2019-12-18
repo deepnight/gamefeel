@@ -1,5 +1,6 @@
 @:keep
 class Options {
+	public var baseArt = false;
 	public var flashes = false;
 	public var camShakesXY = false;
 	public var camShakesZoom = false;
@@ -10,7 +11,6 @@ class Options {
 	public var randomizeBullets = false;
 	public var basicAnimations = false;
 	public var gunAiming = false;
-	public var physicalReactions = false;
 
 	@separator
 	public var cartridges = false;
@@ -18,6 +18,7 @@ class Options {
 	public var bulletImpactFx = false;
 
 	@separator
+	public var physicalReactions = false;
 	public var blinkImpact = false;
 	public var mobSquashAndStrech = false;
 

@@ -9,13 +9,14 @@ class Hero extends Entity {
 		super(x,y);
 		ca = Main.ME.controller.createAccess("hero");
 
-		var c = 0x00ff00;
+		var c = options.baseArt ? 0x00ff00 : 0xffffff;
 		var g = new h2d.Graphics(spr);
 		g.beginFill(Color.interpolateInt(c,0x0,0.4));
 		g.drawRect(-radius, -hei, radius*2, hei);
 		g.endFill();
 
 		gun = new h2d.Graphics(spr);
+		gun.visible = options.baseArt;
 		gun.beginFill(Color.interpolateInt(c,0x0,0.2)); gun.drawRect(3,-1,4,4); // back hand
 		gun.beginFill(0xffffff); gun.drawRect(-3,-5,12,6); // gun
 		gun.beginFill(c); gun.drawRect(-2,0,4,4); // front hand

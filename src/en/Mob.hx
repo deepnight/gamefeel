@@ -9,7 +9,7 @@ class Mob extends Entity {
 		ALL.push(this);
 
 		var g = new h2d.Graphics(spr);
-		g.beginFill(0xffcc00);
+		g.beginFill(options.baseArt ? 0xffcc00 : 0xffffff);
 		g.drawRect(-radius, -hei, radius*2, hei);
 	}
 

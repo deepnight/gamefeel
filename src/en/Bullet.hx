@@ -20,8 +20,10 @@ class Bullet extends Entity {
 
 		var g = new h2d.Graphics(spr);
 		spr.smooth = true;
-		g.beginFill(0xff0000,0.33);
-		g.drawRect(-16, -1, 13, 1);
+		if( options.baseArt ) {
+			g.beginFill(0xff0000,0.33);
+			g.drawRect(-16, -1, 13, 1);
+		}
 		if( options.randomizeBullets ) {
 			g.beginFill( Color.interpolateInt(0xffff00, 0xff9900, rnd(0,1)) );
 			g.drawRect(-3, -1, irnd(6,8), 2);
