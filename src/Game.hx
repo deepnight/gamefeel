@@ -79,6 +79,10 @@ class Game extends Process {
 	override function update() {
 		super.update();
 
+		// Sounds
+		#if debug
+		options.sounds = false;
+		#end
 		if( options.sounds && dn.heaps.Sfx.isMuted(0) ) {
 			for(gid in 0...10)
 				dn.heaps.Sfx.unmuteGroup(gid);
