@@ -33,6 +33,13 @@ class Hero extends Entity {
 
 		var pow = M.fclamp((cHei-2)/6, 0, 1);
 
+		if( cHei>=4 ) {
+			Assets.SBANK.stepHeavy0().playOnGroup(2,0.33);
+			Assets.SBANK.land0().playOnGroup(3,0.2);
+		}
+		else
+			Assets.SBANK.land0().playOnGroup(3,0.2);
+
 		if( options.camShakesXY ) {
 			game.camera.bump(0,6*pow);
 			game.camera.shakeY(0.6*pow, 0.8*pow);
@@ -144,6 +151,7 @@ class Hero extends Entity {
 				dy+=-0.08*tmod;
 
 			if( onGround && ca.aPressed() ) {
+				Assets.SBANK.dash1(0.2);
 				dy = -0.16;
 				cd.setS("extraJumping", 0.1);
 			}
@@ -153,6 +161,7 @@ class Hero extends Entity {
 				cd.unset("dashQueued");
 				dashDir = dir;
 				dx = dashDir*0.5;
+				Assets.SBANK.jetpack0().playOnGroup(3,0.3);
 
 				if( options.camShakesXY )
 					game.camera.bump(dashDir*6, 0);
@@ -165,10 +174,13 @@ class Hero extends Entity {
 			}
 
 			// Shoot
-			if( burstCount<=0 && ( ca.xDown() || ca.rtDown() ) && !cd.has("shootLock") )
-				chargeAction("shoot", options.gunAiming ? 0.35 : 0., function() {
+			if( burstCount<=0 && ( ca.xDown() || ca.rtDown() ) && !cd.has("shootLock") ) {
+				if( options.gunAiming )
+					Assets.SBANK.aim0(0.5);
+				chargeAction("shoot", options.gunAiming ? 0.39 : 0., function() {
 					burstCount = 4;
 				});
+			}
 		}
 
 		// Dash movement
@@ -180,6 +192,7 @@ class Hero extends Entity {
 		// Burst shooting
 		if( burstCount>0 && !cd.hasSetS("burstLock",0.06)) {
 			burstCount--;
+			Assets.SBANK.gun0().playOnGroup(1,0.8);
 			shoot();
 			lockS(0.05);
 			if( burstCount<=0 && !options.gunAiming )

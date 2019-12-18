@@ -5,6 +5,7 @@ class Assets {
 	public static var fontMedium : h2d.Font;
 	public static var fontLarge : h2d.Font;
 	public static var tiles : SpriteLib;
+	public static var SBANK = dn.heaps.assets.SfxDirectory.load("sfx");
 
 	static var initDone = false;
 	public static function init() {

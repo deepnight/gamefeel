@@ -9,6 +9,7 @@ class Game extends Process {
 	public var camera : Camera;
 	public var scroller : h2d.Layers;
 	public var level : Level;
+	public var options(get,never) : Options; inline function get_options() return Main.ME.options;
 
 
 	public var hero : en.Hero;
@@ -77,6 +78,15 @@ class Game extends Process {
 
 	override function update() {
 		super.update();
+
+		if( options.sounds && dn.heaps.Sfx.isMuted(0) ) {
+			for(gid in 0...10)
+				dn.heaps.Sfx.unmuteGroup(gid);
+		}
+		if( !options.sounds && !dn.heaps.Sfx.isMuted(0) ) {
+			for(gid in 0...10)
+				dn.heaps.Sfx.muteGroup(gid);
+		}
 
 		// Updates
 		for(e in Entity.ALL) if( !e.destroyed ) e.preUpdate();
