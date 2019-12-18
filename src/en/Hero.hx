@@ -36,6 +36,12 @@ class Hero extends Entity {
 		if( cHei>=4 ) {
 			Assets.SBANK.stepHeavy0().playOnGroup(2,0.33);
 			Assets.SBANK.land0().playOnGroup(3,0.2);
+
+			if( options.physicalReactions )
+				for(e in Mob.ALL) {
+					e.dx+=dirTo(e) * rnd(0.06,0.11);
+					e.dy = -rnd(0.1,0.2);
+				}
 		}
 		else
 			Assets.SBANK.land0().playOnGroup(3,0.2);
