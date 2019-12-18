@@ -29,6 +29,7 @@ class Game extends Process {
 
 		slowMoIndicator = new h2d.Graphics();
 		root.add(slowMoIndicator,Const.DP_FX_FRONT);
+		slowMoIndicator.visible = false;
 
 		scroller = new h2d.Layers();
 		root.add(scroller, Const.DP_BG);
