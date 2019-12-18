@@ -37,6 +37,11 @@ class Mob extends Entity {
 		if( options.blinkImpact )
 			blink(0xfff170);
 
+		if( options.blood ) {
+			fx.bloodBackHits(centerX, centerY, impactDir, 2);
+			fx.bloodFrontHits(centerX, centerY, -impactDir, 0.6);
+		}
+
 		if( life<=0 ) {
 			life = 0;
 			onDie();

@@ -141,6 +141,24 @@ class Fx extends dn.Process {
 		return game.level.hasCollision( Std.int((p.x+offX)/Const.GRID), Std.int((p.y+offY)/Const.GRID) );
 	}
 
+	function _bloodPhysics(p:HParticle) {
+		if( hasCollision(p) && Math.isNaN(p.data0) ) {
+			p.data0 = 1;
+			p.frict = 0.8;
+			p.dx*=0.4;
+			p.dy = p.gy = 0;
+			p.gy = rnd(0, 0.001);
+			p.frict = rnd(0.5,0.7);
+			p.dsY = rnd(0, 0.001);
+			p.rotation = 0;
+			p.dr = 0;
+			if( !hasCollision(p,-5,0) || !hasCollision(p,5,0) )
+				p.scaleY *= rnd(2,3);
+			if( !hasCollision(p,0,-5) || !hasCollision(p,0,5) )
+				p.scaleX *= rnd(2,3);
+		}
+	}
+
 	function _physics(p:HParticle) {
 		if( Math.isNaN(p.data0) )
 			p.data0 = irnd(1,2);
@@ -279,6 +297,52 @@ class Fx extends dn.Process {
 		p.dr = dir*rnd(0.1,0.2);
 		p.onUpdate = _physics;
 		p.lifeS = rnd(12,15);
+	}
+
+	public function bloodBackHits(x:Float, y:Float, dir:Int, qty=1.0) {
+		for( i in 0...M.ceil(qty*rnd(9,15)) ) {
+			var p = allocTopNormal(getTile("pixel"), x+rnd(0,3,true), y+rnd(0,6,true));
+			p.setFadeS(1, 0, rnd(5,7));
+			p.colorize( Color.interpolateInt(0xb70000, 0x0, rnd(0,0.2)) );
+			p.dx = dir*rnd(0.7,4.8);
+			p.dy = rnd(-2,0.5);
+			p.gy = rnd(0.2,0.25);
+			p.frict = rnd(0.96, 0.97);
+			p.onUpdate = _bloodPhysics;
+			p.lifeS = rnd(12,15);
+		}
+	}
+
+	public function bloodFrontHits(x:Float, y:Float, dir:Int, qty=1.0) {
+		// Lines
+		for( i in 0...M.ceil(qty*rnd(9,15)) ) {
+			var p = allocTopNormal(getTile("fxShoot"), x+dir*rnd(4,7), y+rnd(0,2,true));
+			p.setCenterRatio(0,0.5);
+			p.setFadeS(rnd(0.2,0.6), 0, 0.06);
+			p.colorize( Color.interpolateInt(0xb70000, 0x0, rnd(0,0.2)) );
+			p.scaleX = rnd(0.7,1.5);
+			p.scaleXMul = rnd(0.94,0.96);
+			p.dsX = rnd(0,0.1);
+			p.dsFrict = 0.9;
+			p.moveAwayFrom(x,y,rnd(1,2));
+			p.rotation = p.getMoveAng();
+			p.frict = rnd(0.91, 0.92);
+			p.onUpdate = _bloodPhysics;
+			p.lifeS = 0.06;
+		}
+
+		// Dots
+		for( i in 0...M.ceil(qty*rnd(9,15)) ) {
+			var p = allocTopNormal(getTile("pixel"), x+rnd(0,3,true), y+rnd(0,6,true));
+			p.setFadeS(1, 0, rnd(5,7));
+			p.colorize( Color.interpolateInt(0xb70000, 0x0, rnd(0,0.2)) );
+			p.dx = dir*rnd(1,2);
+			p.dy = rnd(-2,0.5);
+			p.gy = rnd(0.02,0.05);
+			p.frict = rnd(0.91, 0.92);
+			p.onUpdate = _bloodPhysics;
+			p.lifeS = rnd(12,15);
+		}
 	}
 
 	override function update() {
