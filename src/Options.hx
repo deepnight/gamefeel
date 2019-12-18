@@ -4,13 +4,19 @@ class Options {
 	public var camShakesXY = false;
 	public var camShakesZoom = false;
 	public var controlLocks = false;
+
+	@separator
 	public var heroSquashAndStrech = false;
 	public var randomizeBullets = false;
 	public var basicAnimations = false;
 	public var gunAiming = false;
+	public var physicalReactions = false;
+
+	@separator
 	public var cartridges = false;
 	public var gunShotFx = false;
-	public var physicalReactions = false;
+
+	@separator
 	public var bulletImpactFx = false;
 	public var blinkImpact = false;
 	public var mobSquashAndStrech = false;
