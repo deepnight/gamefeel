@@ -14,6 +14,7 @@ class Options {
 	public var blinkImpact = false;
 	public var mobSquashAndStrech = false;
 	public var blood = true;
+	public var cadavers = true;
 
 	public var sounds = false;
 	public var levelTextures = false;

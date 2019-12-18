@@ -30,9 +30,9 @@ class Mob extends Entity {
 
 		if( options.physicalReactions )
 			if( !cd.hasSetS("firstImpact",0.4) )
-				bump(impactDir * rnd(0.20, 0.25), -0.05);
+				bump(impactDir * rnd(0.040, 0.060), -0.05);
 			else
-				bump(impactDir*rnd(0.01,0.02), 0);
+				bump(impactDir*rnd(0.005,0.010), 0);
 
 		if( options.blinkImpact )
 			blink(0xfff170);
@@ -49,6 +49,14 @@ class Mob extends Entity {
 	}
 
 	function onDie() {
+		if( options.cadavers )
+			new en.Cadaver(this);
+
 		destroy();
+	}
+
+	override function update() {
+		super.update();
+		dir = dirTo(hero);
 	}
 }
