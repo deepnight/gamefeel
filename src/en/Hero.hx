@@ -206,7 +206,8 @@ class Hero extends Entity {
 		// Dash movement
 		if( cd.has("dashing") ) {
 			dx+=dashDir*0.06*tmod;
-			skew(1.3,0.7);
+			if( options.heroSquashAndStrech )
+				skew(1.3,0.7);
 		}
 
 		// Burst shooting
