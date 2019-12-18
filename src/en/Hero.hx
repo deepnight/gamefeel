@@ -47,12 +47,12 @@ class Hero extends Entity {
 			Assets.SBANK.land0().playOnGroup(3,0.2);
 
 		if( options.camShakesXY ) {
-			game.camera.bump(0,6*pow);
+			game.camera.bumpXY(0,6*pow);
 			game.camera.shakeY(0.6*pow, 0.8*pow);
 		}
 
 		if( options.camShakesZoom )
-			game.camera.shakeZoom(0.25*pow, 0.5*pow);
+			game.camera.bumpZoom(0.03*pow);
 
 		if( options.controlLocks ) {
 			dx*=0.5;
@@ -97,10 +97,7 @@ class Hero extends Entity {
 
 	function shoot() {
 		if( options.camShakesXY )
-			game.camera.bump(-dir*2, 0);
-
-		if( options.camShakesZoom )
-			game.camera.shakeZoom(1,0.1);
+			game.camera.bumpXY(-dir*3, 0);
 
 		if( options.flashes )
 			fx.flashBangS(0xffcc00, 0.04, 0.1);
@@ -187,10 +184,10 @@ class Hero extends Entity {
 				Assets.SBANK.jetpack0().playOnGroup(3,0.3);
 
 				if( options.camShakesXY )
-					game.camera.bump(dashDir*6, 0);
+					game.camera.bumpXY(dashDir*6, 0);
 
 				if( options.camShakesZoom )
-					game.camera.shakeZoom(0.2, 0.3);
+					game.camera.bumpZoom(0.03);
 
 				cd.setS("dashing", 0.08);
 				lockS( cd.getS("dashing")+0.1 );

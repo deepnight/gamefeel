@@ -36,7 +36,7 @@ class Cadaver extends Entity {
 		if( level.hasCollision(cx-1,cy) && xr<=0.6 && dx<0 || level.hasCollision(cx+1,cy) && xr>=0.4 && dx>0 ) {
 			dx*=-0.6;
 			if( options.camShakesXY )
-				game.camera.bump(dir*2,0);
+				game.camera.bumpXY(dir*2,0);
 		}
 
 		if( onGround || cd.has("landedOnce") ) {

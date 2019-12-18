@@ -8,6 +8,7 @@ class Camera extends dn.Process {
 	public var screenHei(get,never) : Int;
 	var bumpOffX = 0.;
 	var bumpOffY = 0.;
+	var bumpZ = 0.;
 	public var zoom = 1.;
 
 	public var clampOnBounds = true;
@@ -72,9 +73,13 @@ class Camera extends dn.Process {
 		bumpOffY+=Math.sin(a)*dist;
 	}
 
-	public inline function bump(x,y) {
+	public inline function bumpXY(x,y) {
 		bumpOffX+=x;
 		bumpOffY+=y;
+	}
+
+	public inline function bumpZoom(v) {
+		bumpZ+=v;
 	}
 
 
@@ -88,6 +93,8 @@ class Camera extends dn.Process {
 			// Apply zoom
 			scroller.setScale(zoom);
 			scroller.scale( 1 + Math.sin(0.3+ftime*1.33) * 0.02 * shakePowerZ * cd.getRatio("shakingZ") );
+			scroller.scale(1+bumpZ);
+			bumpZ*=Math.pow(0.84,tmod);
 
 			// Update scroller
 			if( screenWid<level.wid*Const.GRID*scroller.scaleX || !clampOnBounds )
