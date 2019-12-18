@@ -67,7 +67,7 @@ class Main extends dn.Process {
 			Const.SCALE = M.ceil( h()/Const.AUTO_SCALE_TARGET_WID );
 		else if( Const.AUTO_SCALE_TARGET_HEI>0 )
 			Const.SCALE = M.ceil( h()/Const.AUTO_SCALE_TARGET_HEI );
-		Const.UI_SCALE = M.fmax(1,Const.SCALE-1);
+		Const.UI_SCALE = M.fmax(1,Const.SCALE-2);
 		root.setScale(Const.SCALE);
 	}
 

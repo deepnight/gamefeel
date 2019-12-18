@@ -1,3 +1,4 @@
+@:keep
 class Options {
 	public var flashes = false;
 	public var camShakesXY = false;
@@ -13,9 +14,12 @@ class Options {
 	public var bulletImpactFx = false;
 	public var blinkImpact = false;
 	public var mobSquashAndStrech = false;
+
+	@separator
 	public var blood = true;
 	public var cadavers = true;
 
+	@separator
 	public var sounds = false;
 	public var levelTextures = false;
 

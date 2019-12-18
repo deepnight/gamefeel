@@ -21,8 +21,18 @@ class OptionsModal extends ui.Modal {
 		list.getProperties(cursor).isAbsolute = true;
 
 		for(k in Type.getInstanceFields(Options))
-			if( Type.typeof(Reflect.field(options, k)) == TBool )
+			if( Type.typeof(Reflect.field(options, k)) == TBool ) {
+				// Separator
+				var meta = haxe.rtti.Meta.getFields(Options);
+				for(m in Reflect.fields(meta)) {
+					if( m==k && Reflect.hasField( Reflect.field(meta,m), "separator" ) ) {
+						list.addSpacing(8);
+						break;
+					}
+				}
+				// Button
 				addOptionButton(list, k, Reflect.field(options, k), function(v) Reflect.setField(options,k,v));
+			}
 
 		win.addSpacing(16);
 
@@ -44,7 +54,7 @@ class OptionsModal extends ui.Modal {
 		line.layout = Horizontal;
 		line.horizontalSpacing = 6;
 		line.verticalAlign = Middle;
-		line.padding = 2;
+		line.padding = 0;
 
 		var icon = new h2d.Graphics(line);
 
