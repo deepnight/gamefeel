@@ -36,7 +36,7 @@
           "originY": 0,
           "values": {"life": 10}
         },
-        {"name": "hero", "id": 5, "_eid": "40333011", "x": 128, "y": 176, "originX": 0, "originY": 0}
+        {"name": "hero", "id": 6, "_eid": "40333011", "x": 256, "y": 224, "originX": 0, "originY": 0}
       ]
     },
     {
