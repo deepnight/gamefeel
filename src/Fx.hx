@@ -299,9 +299,39 @@ class Fx extends dn.Process {
 		p.lifeS = rnd(12,15);
 	}
 
+	function _trackEntity(p:HParticle) {
+		var e : Entity = p.userData;
+		if( e==null )
+			return;
+		p.setPosition(e.footX+p.data0, e.footY+p.data1);
+	}
+
+	inline function trackEntity(p:HParticle, e:Entity) {
+		p.userData = e;
+		p.onUpdate = _trackEntity;
+		p.data0 = p.x - e.footX;
+		p.data1 = p.y - e.footY;
+	}
+
 	public function bloodBackHits(x:Float, y:Float, dir:Int, qty=1.0) {
+		// Hit line
+		var ang = (dir==1?0:M.PI) + rnd(0,0.1,true);
+		var p = allocTopNormal(getTile("fxShoot"), x+dir*rnd(0,1,true), y+rnd(0,4,true));
+		p.setCenterRatio(0,0.5);
+		p.setFadeS(rnd(0.9,1), 0, 0.06);
+		p.colorize( Color.interpolateInt(0xb70000, 0x0, rnd(0,0.2)) );
+		p.scaleX = rnd(2,3);
+		p.scaleXMul = rnd(0.94,0.96);
+		p.dsX = rnd(0,0.1);
+		p.dsFrict = 0.9;
+		p.moveAng(ang,rnd(3,4));
+		p.rotation = ang;
+		p.frict = rnd(0.91, 0.92);
+		p.lifeS = rnd(0.06,0.10);
+
+		// Dots
 		for( i in 0...M.ceil(qty*rnd(9,15)) ) {
-			var p = allocTopNormal(getTile("pixel"), x+rnd(0,3,true), y+rnd(0,6,true));
+			var p = allocBgNormal(getTile("pixel"), x+rnd(0,3,true), y+rnd(0,6,true));
 			p.setFadeS(1, 0, rnd(5,7));
 			p.colorize( Color.interpolateInt(0xb70000, 0x0, rnd(0,0.2)) );
 			p.dx = dir*rnd(0.7,4.8);
@@ -314,9 +344,10 @@ class Fx extends dn.Process {
 	}
 
 	public function bloodFrontHits(x:Float, y:Float, dir:Int, qty=1.0) {
-		// Lines
-		for( i in 0...M.ceil(qty*rnd(9,15)) ) {
-			var p = allocTopNormal(getTile("fxShoot"), x+dir*rnd(4,7), y+rnd(0,2,true));
+		// Core lines
+		for( i in 0...M.ceil(qty*rnd(3,5)) ) {
+			var ang = (dir==1?0:M.PI) + rnd(0,0.2,true);
+			var p = allocTopNormal(getTile("fxShoot"), x+dir*rnd(0,1,true), y+rnd(0,5,true));
 			p.setCenterRatio(0,0.5);
 			p.setFadeS(rnd(0.2,0.6), 0, 0.06);
 			p.colorize( Color.interpolateInt(0xb70000, 0x0, rnd(0,0.2)) );
@@ -324,19 +355,18 @@ class Fx extends dn.Process {
 			p.scaleXMul = rnd(0.94,0.96);
 			p.dsX = rnd(0,0.1);
 			p.dsFrict = 0.9;
-			p.moveAwayFrom(x,y,rnd(1,2));
-			p.rotation = p.getMoveAng();
+			p.moveAng(ang,rnd(1,2));
+			p.rotation = ang;
 			p.frict = rnd(0.91, 0.92);
-			p.onUpdate = _bloodPhysics;
-			p.lifeS = 0.06;
+			p.lifeS = rnd(0.06,0.12);
 		}
 
 		// Dots
 		for( i in 0...M.ceil(qty*rnd(9,15)) ) {
-			var p = allocTopNormal(getTile("pixel"), x+rnd(0,3,true), y+rnd(0,6,true));
+			var p = allocBgNormal(getTile("pixel"), x+rnd(0,3,true), y+rnd(0,6,true));
 			p.setFadeS(1, 0, rnd(5,7));
 			p.colorize( Color.interpolateInt(0xb70000, 0x0, rnd(0,0.2)) );
-			p.dx = dir*rnd(1,2);
+			p.dx = dir*rnd(-2,3.5);
 			p.dy = rnd(-2,0.5);
 			p.gy = rnd(0.02,0.05);
 			p.frict = rnd(0.91, 0.92);
