@@ -26,7 +26,6 @@
           "values": {"life": 7}
         },
         {"name": "cam", "id": 2, "_eid": "50340576", "x": 240, "y": 176, "originX": 0, "originY": 0},
-        {"name": "hero", "id": 3, "_eid": "40333011", "x": 144, "y": 176, "originX": 0, "originY": 0},
         {
           "name": "mob",
           "id": 4,
@@ -36,7 +35,8 @@
           "originX": 0,
           "originY": 0,
           "values": {"life": 7}
-        }
+        },
+        {"name": "hero", "id": 5, "_eid": "40333011", "x": 128, "y": 176, "originX": 0, "originY": 0}
       ]
     },
     {
