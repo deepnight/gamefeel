@@ -90,12 +90,12 @@ class Camera extends dn.Process {
 			scroller.scale( 1 + Math.sin(0.3+ftime*1.33) * 0.02 * shakePowerZ * cd.getRatio("shakingZ") );
 
 			// Update scroller
-			if( screenWid<level.wid*Const.GRID*scroller.scaleX )
+			if( screenWid<level.wid*Const.GRID*scroller.scaleX || !clampOnBounds )
 				scroller.x = -x*scroller.scaleX + screenWid*0.5;
 			else
 				scroller.x = screenWid*0.5 - level.wid*0.5*Const.GRID*scroller.scaleX;
 
-			if( screenHei<level.hei*Const.GRID*scroller.scaleY)
+			if( screenHei<level.hei*Const.GRID*scroller.scaleY || !clampOnBounds )
 				scroller.y = -y*scroller.scaleY + screenHei*0.5;
 			else
 				scroller.y = screenHei*0.5 - level.hei*0.5*Const.GRID*scroller.scaleY;
