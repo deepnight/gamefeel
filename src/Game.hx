@@ -10,7 +10,7 @@ class Game extends Process {
 	public var scroller : h2d.Layers;
 	public var level : Level;
 	public var options(get,never) : Options; inline function get_options() return Main.ME.options;
-
+	var camFocuses : Map<String,CPoint> = new Map();
 
 	public var hero : en.Hero;
 	var bg : h2d.Bitmap;
@@ -29,16 +29,15 @@ class Game extends Process {
 		root.add(scroller, Const.DP_BG);
 
 		camera = new Camera();
+		camera.clampOnBounds = false;
 		level = new Level();
 		fx = new Fx();
 
 		var oe = level.getEntities("hero")[0];
 		hero = new en.Hero(oe.cx, oe.cy);
-		var camLock = level.getEntities("cam")[0];
-		if( camLock==null )
-			camera.target = hero;
-		else
-			camera.setPosition(camLock.x, camLock.y);
+		for(oe in level.getEntities("camFocus"))
+			camFocuses.set(oe.getStr("id"), new CPoint(oe.cx,oe.cy));
+		setCameraFocus("main");
 
 		for(oe in level.getEntities("mob")) {
 			var e = new en.Mob(oe.cx, oe.cy);
@@ -46,6 +45,20 @@ class Game extends Process {
 		}
 
 		Process.resizeAll();
+	}
+
+	function setCameraFocus(id:String) {
+		var pt = camFocuses.get(id);
+		if( pt==null ) {
+			if( id=="main" )
+				camera.target = hero;
+			else
+				setCameraFocus("main");
+		}
+		else {
+			camera.setPosition(pt.footX, pt.footY);
+		}
+
 	}
 
 	public function onCdbReload() {
@@ -110,6 +123,20 @@ class Game extends Process {
 
 			if( ca.startPressed() )
 				new ui.OptionsModal();
+
+			// Swithc cam focus
+			if( ca.dpadLeftPressed() ) {
+				if( camera.target==null ) {
+					tw.createS(camera.zoom, 2, 0.2);
+					camera.target = hero;
+					camera.recenter();
+				}
+				else {
+					tw.terminateWithoutCallbacks(camera.zoom);
+					camera.zoom = 1;
+					setCameraFocus("main");
+				}
+			}
 
 			#if hl
 			if( ca.isPressed(RSTICK) )

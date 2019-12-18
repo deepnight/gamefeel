@@ -127,7 +127,7 @@
     },
     {
       "exportID": "50340576",
-      "name": "cam",
+      "name": "camFocus",
       "limit": -1,
       "size": {"x": 16, "y": 16},
       "origin": {"x": 0, "y": 0},
@@ -159,7 +159,9 @@
       "nodeDisplay": 0,
       "nodeGhost": true,
       "tags": [],
-      "values": []
+      "values": [
+        {"name": "id", "definition": "String", "defaults": "", "maxLength": 0, "trimWhitespace": true}
+      ]
     }
   ],
   "tilesets": [
