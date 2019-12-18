@@ -11,7 +11,7 @@ class Bullet extends Entity {
 		ALL.push(this);
 
 		hasCollisions = false;
-		ang = e.dirToAng() + rnd(0,0.03,true);
+		ang = e.dirToAng();
 		frict = 1;
 		gravity = 0;
 		radius = 2;

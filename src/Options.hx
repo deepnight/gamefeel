@@ -4,6 +4,7 @@ class Options {
 	public var camShakesZoom = false;
 	public var controlLocks = false;
 	public var heroSquashAndStrech = false;
+	public var randomizeBullets = false;
 	public var basicAnimations = false;
 	public var gunAiming = false;
 	public var cartridges = false;

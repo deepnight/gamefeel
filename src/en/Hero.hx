@@ -108,6 +108,8 @@ class Hero extends Entity {
 		}
 
 		var b = new en.Bullet(this, rnd(0,1,true));
+		if( options.randomizeBullets )
+			b.ang += 0.04 - rnd(0,0.05);
 		b.speed = 1;
 		cd.setS("gunRecoil", 0.1);
 		cd.setS("gunHolding", getLockS());
