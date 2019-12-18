@@ -173,7 +173,7 @@ class Entity {
 			cb();
 		else {
 			if( Boot.ME.isSlowMo() )
-				sec*=0.5;
+				sec*=0.33;
 			actions.push({ id:id, cb:cb, startT:sec, curT:sec});
 		}
 	}
