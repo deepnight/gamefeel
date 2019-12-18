@@ -22,12 +22,15 @@ class Options {
 	public var mobSquashAndStrech = false;
 
 	@separator
-	public var blood = true;
-	public var cadavers = true;
+	public var blood = false;
+	public var cadavers = false;
 
 	@separator
 	public var sounds = false;
 	public var levelTextures = false;
 
-	public function new() {}
+	public function new() {
+		#if debug
+		#end
+	}
 }
