@@ -121,7 +121,9 @@
       "nodeDisplay": 0,
       "nodeGhost": true,
       "tags": [],
-      "values": []
+      "values": [
+        {"name": "life", "definition": "Integer", "defaults": 7, "bounded": false, "min": 1, "max": 100}
+      ]
     },
     {
       "exportID": "50340576",

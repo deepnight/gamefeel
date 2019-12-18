@@ -2,7 +2,7 @@ package en;
 
 class Mob extends Entity {
 	public static var ALL : Array<Mob> = [];
-	var life = 7;
+	public var life = 1;
 
 	public function new(x,y) {
 		super(x,y);

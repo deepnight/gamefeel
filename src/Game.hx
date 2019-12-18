@@ -39,8 +39,10 @@ class Game extends Process {
 		else
 			camera.setPosition(camLock.x, camLock.y);
 
-		for(oe in level.getEntities("mob"))
-			new en.Mob(oe.cx, oe.cy);
+		for(oe in level.getEntities("mob")) {
+			var e = new en.Mob(oe.cx, oe.cy);
+			e.life = oe.getInt("life",1);
+		}
 
 		Process.resizeAll();
 	}
