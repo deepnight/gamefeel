@@ -10,6 +10,8 @@ class Camera extends dn.Process {
 	var bumpOffY = 0.;
 	public var zoom = 1.;
 
+	public var clampOnBounds = true;
+
 	var shakePowerX = 0.;
 	var shakePowerY = 0.;
 	var shakePowerZ = 0.;
@@ -99,10 +101,12 @@ class Camera extends dn.Process {
 				scroller.y = screenHei*0.5 - level.hei*0.5*Const.GRID*scroller.scaleY;
 
 			// Clamp
-			if( screenWid<level.wid*Const.GRID*scroller.scaleX )
-				scroller.x = M.fclamp(scroller.x, screenWid-level.wid*Const.GRID*scroller.scaleX, 0);
-			if( screenHei<level.hei*Const.GRID*scroller.scaleY )
-				scroller.y = M.fclamp(scroller.y, screenHei-level.hei*Const.GRID*scroller.scaleY, 0);
+			if( clampOnBounds ) {
+				if( screenWid<level.wid*Const.GRID*scroller.scaleX )
+					scroller.x = M.fclamp(scroller.x, screenWid-level.wid*Const.GRID*scroller.scaleX, 0);
+				if( screenHei<level.hei*Const.GRID*scroller.scaleY )
+					scroller.y = M.fclamp(scroller.y, screenHei-level.hei*Const.GRID*scroller.scaleY, 0);
+			}
 
 			// Shakes
 			if( cd.has("shakingX") )
@@ -129,7 +133,7 @@ class Camera extends dn.Process {
 			var s = 0.006;
 			var deadZone = 5;
 			var tx = target.footX;
-			var ty = target.footY - Const.GRID*3;
+			var ty = target.footY - Const.GRID*3/zoom;
 
 			var d = M.dist(x,y, tx, ty);
 			if( d>=deadZone ) {
