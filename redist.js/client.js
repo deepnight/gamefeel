@@ -9606,6 +9606,7 @@ var en_Bullet = function(e,offY) {
 	Entity.call(this,0,0);
 	this.setPosPixel((e.cx + e.xr) * Const.GRID,(e.cy + e.yr) * Const.GRID - e.hei * 0.5 + offY);
 	en_Bullet.ALL.push(this);
+	Game.ME.scroller.addChildAt(this.spr,Const.DP_BG);
 	this.hasCollisions = false;
 	this.ang = e.dir == 1 ? 0. : 3.141592653589793;
 	this.frict = 1;
@@ -9613,8 +9614,31 @@ var en_Bullet = function(e,offY) {
 	this.radius = 2;
 	this.hei = 0;
 	var g = new h2d_Graphics(this.spr);
-	g.beginFill(16763904);
-	g.drawRect(-3,-1,6,2);
+	this.spr.smooth = true;
+	g.beginFill(16711680,0.33);
+	g.drawRect(-16,-1,13,1);
+	if(Main.ME.options.randomizeBullets) {
+		var sign = null;
+		if(sign == null) {
+			sign = false;
+		}
+		var ratio = sign ? Math.random() * (Std.random(2) * 2 - 1) : Math.random();
+		var a = _$UInt_UInt_$Impl_$.toFloat(16776960 >>> 16);
+		var x = a + (_$UInt_UInt_$Impl_$.toFloat(16750848 >>> 16) - a) * ratio;
+		var a1 = _$UInt_UInt_$Impl_$.toFloat(16776960 >>> 8 & 255);
+		var x1 = a1 + (_$UInt_UInt_$Impl_$.toFloat(16750848 >>> 8 & 255) - a1) * ratio;
+		var a2 = _$UInt_UInt_$Impl_$.toFloat(16776960 & 255);
+		var x2 = a2 + (_$UInt_UInt_$Impl_$.toFloat(16750848 & 255) - a2) * ratio;
+		g.beginFill(((x > 0 ? x + .5 : x < 0 ? x - .5 : 0) | 0) << 16 | ((x1 > 0 ? x1 + .5 : x1 < 0 ? x1 - .5 : 0) | 0) << 8 | ((x2 > 0 ? x2 + .5 : x2 < 0 ? x2 - .5 : 0) | 0));
+		var sign1 = null;
+		if(sign1 == null) {
+			sign1 = false;
+		}
+		g.drawRect(-3,-1,sign1 ? (6 + Std.random(3)) * (Std.random(2) * 2 - 1) : 6 + Std.random(3),2);
+	} else {
+		g.beginFill(16763904);
+		g.drawRect(-3,-0.5,6,2);
+	}
 };
 $hxClasses["en.Bullet"] = en_Bullet;
 en_Bullet.__name__ = "en.Bullet";
@@ -9649,6 +9673,16 @@ en_Bullet.prototype = $extend(Entity.prototype,{
 			this.destroyed = true;
 			Entity.GC.push(this);
 		}
+	}
+	,postUpdate: function() {
+		Entity.prototype.postUpdate.call(this);
+		var _this = this.spr;
+		var x = this.spr.scaleX;
+		_this.posChanged = true;
+		_this.scaleX = x < 0 ? -x : x;
+		var _this1 = this.spr;
+		_this1.posChanged = true;
+		_this1.rotation = this.ang;
 	}
 	,update: function() {
 		this.dx = Math.cos(this.ang) * 0.55 * this.speed;
@@ -10431,19 +10465,35 @@ en_Hero.prototype = $extend(Entity.prototype,{
 			}
 			this.animOffsetX += -this.dir * (sign1 ? (1 + Math.random() * 2) * (Std.random(2) * 2 - 1) : 1 + Math.random() * 2);
 		}
-		var sign2 = true;
-		if(sign2 == null) {
-			sign2 = false;
+		var b;
+		if(Main.ME.options.randomizeBullets) {
+			var sign2 = true;
+			if(sign2 == null) {
+				sign2 = false;
+			}
+			b = sign2 ? Math.random() * 2.5 * (Std.random(2) * 2 - 1) : Math.random() * 2.5;
+		} else {
+			b = 0;
 		}
-		var b = new en_Bullet(this,sign2 ? Math.random() * (Std.random(2) * 2 - 1) : Math.random());
+		var b1 = new en_Bullet(this,b);
 		if(Main.ME.options.randomizeBullets) {
 			var sign3 = null;
 			if(sign3 == null) {
 				sign3 = false;
 			}
-			b.ang += 0.04 - (sign3 ? Math.random() * 0.05 * (Std.random(2) * 2 - 1) : Math.random() * 0.05);
+			b1.ang += 0.04 - (sign3 ? Math.random() * 0.065 * (Std.random(2) * 2 - 1) : Math.random() * 0.065);
 		}
-		b.speed = 1;
+		var tmp;
+		if(Main.ME.options.randomizeBullets) {
+			var sign4 = null;
+			if(sign4 == null) {
+				sign4 = false;
+			}
+			tmp = sign4 ? (0.95 + Math.random() * 0.10000000000000009) * (Std.random(2) * 2 - 1) : 0.95 + Math.random() * 0.10000000000000009;
+		} else {
+			tmp = 1;
+		}
+		b1.speed = tmp;
 		var _this1 = this.cd;
 		var frames = 0.1 * this.cd.baseFps;
 		var allowLower = true;
@@ -11397,6 +11447,7 @@ en_Hero.prototype = $extend(Entity.prototype,{
 				}
 				this.dashDir = this.dir;
 				this.dx = this.dashDir * 0.5;
+				this.burstCount = 0;
 				Assets.SBANK.jetpack0().playOnGroup(3,null,0.3);
 				if(Main.ME.options.camShakesXY) {
 					var _this57 = Game.ME.camera;
@@ -11521,13 +11572,26 @@ en_Hero.prototype = $extend(Entity.prototype,{
 		}
 		if(this.cd.fastCheck.h.hasOwnProperty(75497472)) {
 			this.dx += this.dashDir * 0.06 * Game.ME.tmod;
-			this.skewX = 1.3;
-			this.skewY = 0.7;
+			if(Main.ME.options.heroSquashAndStrech) {
+				this.skewX = 1.3;
+				this.skewY = 0.7;
+			}
 		}
 		var tmp52;
 		if(this.burstCount > 0) {
 			var _this63 = this.cd;
-			var frames9 = 0.06 * this.cd.baseFps;
+			var _this64 = this.cd;
+			var s;
+			if(Main.ME.options.randomizeBullets) {
+				var sign = null;
+				if(sign == null) {
+					sign = false;
+				}
+				s = sign ? (0.04 + Math.random() * 0.030000000000000006) * (Std.random(2) * 2 - 1) : 0.04 + Math.random() * 0.030000000000000006;
+			} else {
+				s = 0.06;
+			}
+			var frames9 = s * _this64.baseFps;
 			var tmp53;
 			if(_this63.fastCheck.h.hasOwnProperty(83886080)) {
 				tmp53 = true;
@@ -11579,26 +11643,26 @@ en_Hero.prototype = $extend(Entity.prototype,{
 				this.lockS(0.35);
 			}
 		}
-		var _this64 = this.ca;
+		var _this65 = this.ca;
 		var k40 = 1;
 		var tmp54;
-		if(!(_this64.manualLock || _this64.parent.isLocked() || _this64.parent.exclusiveId != null && _this64.parent.exclusiveId != _this64.id || Date.now() / 1000 < _this64.parent.suspendTimer)) {
+		if(!(_this65.manualLock || _this65.parent.isLocked() || _this65.parent.exclusiveId != null && _this65.parent.exclusiveId != _this65.id || Date.now() / 1000 < _this65.parent.suspendTimer)) {
 			var tmp55;
 			var tmp56;
-			var k41 = _this64.parent.primary.h[k40];
-			if(!(k41 != null && !(_this64.manualLock || _this64.parent.isLocked() || _this64.parent.exclusiveId != null && _this64.parent.exclusiveId != _this64.id || Date.now() / 1000 < _this64.parent.suspendTimer) && hxd_Key.isPressed(k41))) {
-				var k42 = _this64.parent.secondary.h[k40];
-				tmp56 = k42 != null && !(_this64.manualLock || _this64.parent.isLocked() || _this64.parent.exclusiveId != null && _this64.parent.exclusiveId != _this64.id || Date.now() / 1000 < _this64.parent.suspendTimer) && hxd_Key.isPressed(k42);
+			var k41 = _this65.parent.primary.h[k40];
+			if(!(k41 != null && !(_this65.manualLock || _this65.parent.isLocked() || _this65.parent.exclusiveId != null && _this65.parent.exclusiveId != _this65.id || Date.now() / 1000 < _this65.parent.suspendTimer) && hxd_Key.isPressed(k41))) {
+				var k42 = _this65.parent.secondary.h[k40];
+				tmp56 = k42 != null && !(_this65.manualLock || _this65.parent.isLocked() || _this65.parent.exclusiveId != null && _this65.parent.exclusiveId != _this65.id || Date.now() / 1000 < _this65.parent.suspendTimer) && hxd_Key.isPressed(k42);
 			} else {
 				tmp56 = true;
 			}
 			if(!tmp56) {
-				var k43 = _this64.parent.third.h[k40];
-				tmp55 = k43 != null && !(_this64.manualLock || _this64.parent.isLocked() || _this64.parent.exclusiveId != null && _this64.parent.exclusiveId != _this64.id || Date.now() / 1000 < _this64.parent.suspendTimer) && hxd_Key.isPressed(k43);
+				var k43 = _this65.parent.third.h[k40];
+				tmp55 = k43 != null && !(_this65.manualLock || _this65.parent.isLocked() || _this65.parent.exclusiveId != null && _this65.parent.exclusiveId != _this65.id || Date.now() / 1000 < _this65.parent.suspendTimer) && hxd_Key.isPressed(k43);
 			} else {
 				tmp55 = true;
 			}
-			tmp54 = tmp55 || _this64.parent.gc.isPressed(k40);
+			tmp54 = tmp55 || _this65.parent.gc.isPressed(k40);
 		} else {
 			tmp54 = false;
 		}
@@ -11606,7 +11670,7 @@ en_Hero.prototype = $extend(Entity.prototype,{
 			if(this.isChargingAction()) {
 				this.cancelAction();
 			}
-			var _this65 = this.cd;
+			var _this66 = this.cd;
 			var frames11 = 0.25 * this.cd.baseFps;
 			var allowLower7 = true;
 			var onComplete9 = null;
@@ -11614,28 +11678,28 @@ en_Hero.prototype = $extend(Entity.prototype,{
 				allowLower7 = true;
 			}
 			frames11 = Math.floor(frames11 * 1000) / 1000;
-			var cur9 = _this65._getCdObject(67108864);
+			var cur9 = _this66._getCdObject(67108864);
 			if(!(cur9 != null && frames11 < cur9.frames && !allowLower7)) {
 				if(frames11 <= 0) {
 					if(cur9 != null) {
-						HxOverrides.remove(_this65.cdList,cur9);
+						HxOverrides.remove(_this66.cdList,cur9);
 						cur9.frames = 0;
 						cur9.cb = null;
-						_this65.fastCheck.remove(cur9.k);
+						_this66.fastCheck.remove(cur9.k);
 					}
 				} else {
-					_this65.fastCheck.h[67108864] = true;
+					_this66.fastCheck.h[67108864] = true;
 					if(cur9 != null) {
 						cur9.frames = frames11;
 					} else {
-						_this65.cdList.push(new dn__$Cooldown_CdInst(67108864,frames11));
+						_this66.cdList.push(new dn__$Cooldown_CdInst(67108864,frames11));
 					}
 				}
 				if(onComplete9 != null) {
 					if(frames11 <= 0) {
 						onComplete9();
 					} else {
-						var cd12 = _this65._getCdObject(67108864);
+						var cd12 = _this66._getCdObject(67108864);
 						if(cd12 == null) {
 							throw new js__$Boot_HaxeError("cannot bind onComplete(" + 67108864 + "): cooldown " + 67108864 + " isn't running");
 						}
