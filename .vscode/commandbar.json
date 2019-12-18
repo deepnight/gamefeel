@@ -40,7 +40,7 @@
 		{
 			"text": "📦 Redist",
 			"color": "lightgreen",
-			"command": "haxelib run redistHelper hl.dx.hxml js.hxml -o redist.$ -P Gamefeel",
+			"command": "haxelib run redistHelper hl.dx.hxml js.hxml -o redist.$ remotePresenterRemap.ahk -P Gamefeel",
 			"alignment": "right",
 			"skipTerminateQuickPick": false,
 			"priority": -50
