@@ -84,12 +84,12 @@ class OptionsModal extends ui.Modal {
 		// Move cursor
 		if( ca.downDown() && !cd.has("autoFireLock") ) {
 			curIdx = M.imin( curIdx+1, elements.length-1 );
-			cd.setS("autoFireLock", !cd.hasSetS("autoFireFirst",Const.INFINITE) ? 0.20 : 0.07);
+			cd.setS("autoFireLock", !cd.hasSetS("autoFireFirst",Const.INFINITE) ? 0.16 : 0.04);
 		}
 
 		if( ca.upDown() && !cd.has("autoFireLock") ) {
 			curIdx = M.imax( curIdx-1, 0 );
-			cd.setS("autoFireLock", !cd.hasSetS("autoFireFirst",Const.INFINITE) ? 0.20 : 0.07);
+			cd.setS("autoFireLock", !cd.hasSetS("autoFireFirst",Const.INFINITE) ? 0.16 : 0.04);
 		}
 
 		if( !ca.downDown() && !ca.upDown() )
