@@ -137,10 +137,10 @@ class Camera extends dn.Process {
 
 		// Follow target entity
 		if( target!=null ) {
-			var s = 0.009;
+			var s = 0.006;
 			var deadZone = 5;
 			var tx = target.footX + target.dir*Const.GRID*2/zoom;
-			var ty = target.footY - Const.GRID*3/zoom;
+			var ty = target.footY - Const.GRID*1.5/zoom;
 
 			var d = M.dist(x,y, tx, ty);
 			if( d>=deadZone ) {
