@@ -1,6 +1,7 @@
 class Options {
 	public var flashes = false;
-	public var camShakes = false;
+	public var camShakesXY = false;
+	public var camShakesZoom = false;
 	public var controlLocks = false;
 	public var basicAnimations = false;
 	public var gunAiming = false;

@@ -32,14 +32,18 @@ class Hero extends Entity {
 
 		var pow = M.fclamp((cHei-2)/6, 0, 1);
 
-		if( options.camShakes ) {
+		if( options.camShakesXY ) {
 			game.camera.bump(0,3*pow);
 			game.camera.shakeY(0.6*pow, 0.8*pow);
 		}
 
+		// if( options.camShakesZoom )
+		// 	game.camera.shakeZoom(1, 0.5);
+
 		if( options.controlLocks ) {
 			dx*=0.5;
-			lockS( 0.4*pow );
+			lockS( 0.2*pow );
+			cd.setS("walkLock",0.55*pow);
 		}
 
 		if( options.heroSquashAndStrech ) {
@@ -78,8 +82,11 @@ class Hero extends Entity {
 	}
 
 	function shoot() {
-		if( options.camShakes )
+		if( options.camShakesXY )
 			game.camera.bump(-dir*2, 0);
+
+		if( options.camShakesZoom )
+			game.camera.shakeZoom(1,0.1);
 
 		if( options.flashes )
 			fx.flashBangS(0xffcc00, 0.04, 0.1);
@@ -119,15 +126,17 @@ class Hero extends Entity {
 
 		if( canAct() ) {
 			// Walk
-			var spd = 0.011 * cd.getRatio("airControl");
-			if( ca.rightDown() ) {
-				dx+=spd*tmod;
+			if( !cd.has("walkLock") ) {
+				var spd = 0.011 * cd.getRatio("airControl");
+				if( ca.rightDown() ) {
+					dx+=spd*tmod;
+				}
+				else if( ca.leftDown() ) {
+					dx-=spd*tmod;
+				}
+				else
+					dx*=Math.pow(frict,tmod);
 			}
-			else if( ca.leftDown() ) {
-				dx-=spd*tmod;
-			}
-			else
-				dx*=Math.pow(frict,tmod);
 
 			// Jump
 			if( !onGround && cd.has("extraJumping") && ca.aDown() )

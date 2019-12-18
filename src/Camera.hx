@@ -10,6 +10,10 @@ class Camera extends dn.Process {
 	var bumpOffY = 0.;
 	public var zoom = 1.;
 
+	var shakePowerX = 0.;
+	var shakePowerY = 0.;
+	var shakePowerZ = 0.;
+
 	public function new() {
 		super(Game.ME);
 		x = y = 0;
@@ -40,8 +44,6 @@ class Camera extends dn.Process {
 	public inline function scrollerToGlobalX(v:Float) return v*Const.SCALE + Game.ME.scroller.x;
 	public inline function scrollerToGlobalY(v:Float) return v*Const.SCALE + Game.ME.scroller.y;
 
-	var shakePowerX = 0.;
-	var shakePowerY = 0.;
 	public function shakeBoth(pow:Float, t:Float) {
 		cd.setS("shakingX", t, false);
 		cd.setS("shakingY", t, false);
@@ -56,6 +58,11 @@ class Camera extends dn.Process {
 	public function shakeY(pow:Float, t:Float) {
 		cd.setS("shakingY", t, false);
 		shakePowerY = pow;
+	}
+
+	public function shakeZoom(pow:Float, t:Float) {
+		cd.setS("shakingZ", t, false);
+		shakePowerZ = pow;
 	}
 
 	public inline function bumpAng(a, dist) {
@@ -76,38 +83,41 @@ class Camera extends dn.Process {
 			var level = Game.ME.level;
 			var scroller = Game.ME.scroller;
 
-			// Update scroller
+			// Apply zoom
 			scroller.setScale(zoom);
-			if( screenWid<level.wid*Const.GRID*zoom )
-				scroller.x = -x*zoom + screenWid*0.5;
-			else
-				scroller.x = screenWid*0.5 - level.wid*0.5*Const.GRID*zoom;
+			scroller.scale( 1 + Math.sin(0.3+ftime*1.33) * 0.02 * shakePowerZ * cd.getRatio("shakingZ") );
 
-			if( screenHei<level.hei*Const.GRID*zoom)
-				scroller.y = -y*zoom + screenHei*0.5;
+			// Update scroller
+			if( screenWid<level.wid*Const.GRID*scroller.scaleX )
+				scroller.x = -x*scroller.scaleX + screenWid*0.5;
 			else
-				scroller.y = screenHei*0.5 - level.hei*0.5*Const.GRID*zoom;
+				scroller.x = screenWid*0.5 - level.wid*0.5*Const.GRID*scroller.scaleX;
+
+			if( screenHei<level.hei*Const.GRID*scroller.scaleY)
+				scroller.y = -y*scroller.scaleY + screenHei*0.5;
+			else
+				scroller.y = screenHei*0.5 - level.hei*0.5*Const.GRID*scroller.scaleY;
 
 			// Clamp
-			if( screenWid<level.wid*Const.GRID*zoom )
-				scroller.x = M.fclamp(scroller.x, screenWid-level.wid*Const.GRID*zoom, 0);
-			if( screenHei<level.hei*Const.GRID*zoom )
-				scroller.y = M.fclamp(scroller.y, screenHei-level.hei*Const.GRID*zoom, 0);
+			if( screenWid<level.wid*Const.GRID*scroller.scaleX )
+				scroller.x = M.fclamp(scroller.x, screenWid-level.wid*Const.GRID*scroller.scaleX, 0);
+			if( screenHei<level.hei*Const.GRID*scroller.scaleY )
+				scroller.y = M.fclamp(scroller.y, screenHei-level.hei*Const.GRID*scroller.scaleY, 0);
 
 			// Shakes
 			if( cd.has("shakingX") )
-				scroller.x += Math.cos(ftime*1.10)*1*Const.SCALE*shakePowerX*zoom * cd.getRatio("shakingX");
+				scroller.x += Math.cos(ftime*1.10)*1*Const.SCALE*shakePowerX*scroller.scaleX * cd.getRatio("shakingX");
 
 			if( cd.has("shakingY") )
-				scroller.y += Math.sin(0.3+ftime*1.33)*1*Const.SCALE*shakePowerY*zoom * cd.getRatio("shakingY");
+				scroller.y += Math.sin(0.3+ftime*1.33)*1*Const.SCALE*shakePowerY*scroller.scaleY * cd.getRatio("shakingY");
 
 			// Bumps friction
 			bumpOffX *= Math.pow(0.75, tmod);
 			bumpOffY *= Math.pow(0.75, tmod);
 
 			// Rounding
-			scroller.x = Std.int(scroller.x + bumpOffX*zoom);
-			scroller.y = Std.int(scroller.y + bumpOffY*zoom);
+			scroller.x = Std.int(scroller.x + bumpOffX*scroller.scaleX);
+			scroller.y = Std.int(scroller.y + bumpOffY*scroller.scaleY);
 		}
 	}
 
