@@ -23,7 +23,7 @@ class Boot extends hxd.App {
 	override function update(deltaTime:Float) {
 		super.update(deltaTime);
 
-		var tmod = hxd.Timer.tmod * speed;
+		var tmod = hxd.Timer.tmod * ( ui.Modal.hasAny() ? 1 : speed );
 		dn.heaps.Controller.beforeUpdate();
 		dn.Process.updateAll(tmod);
 	}
