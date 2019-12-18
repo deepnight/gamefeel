@@ -52,6 +52,7 @@ class Main extends dn.Process {
 		if( Game.ME!=null ) {
 			Game.ME.destroy();
 			delayer.addF(function() {
+				Boot.ME.speed = 1;
 				new Game();
 			}, 1);
 		}
