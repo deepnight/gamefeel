@@ -15,9 +15,9 @@ class Options {
 	@separator
 	public var cartridges = false;
 	public var gunShotFx = false;
+	public var bulletImpactFx = false;
 
 	@separator
-	public var bulletImpactFx = false;
 	public var blinkImpact = false;
 	public var mobSquashAndStrech = false;
 
