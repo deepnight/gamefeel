@@ -23,7 +23,7 @@
           "y": 224,
           "originX": 0,
           "originY": 0,
-          "values": {"life": 7}
+          "values": {"life": 3}
         },
         {
           "name": "camFocus",
