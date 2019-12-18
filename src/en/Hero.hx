@@ -58,7 +58,7 @@ class Hero extends Entity {
 		gun.x = 3;
 		gun.y = -hei*0.4;
 		if( options.basicAnimations ) {
-			var isWalking = onGround && M.fabs(dxTotal)>=0.1;
+			var isWalking = onGround && M.fabs(dxTotal)>=0.03;
 			gun.x += ( isWalking ? -2 + Math.cos(ftime*0.2)*3 : 0 );
 			gun.y += isWalking ? M.fabs( Math.sin(0.2+ftime*0.3)*1 ) : 0;
 			gun.rotation = 0;
