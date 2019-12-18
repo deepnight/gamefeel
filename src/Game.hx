@@ -29,7 +29,7 @@ class Game extends Process {
 
 		slowMoIndicator = new h2d.Graphics();
 		root.add(slowMoIndicator,Const.DP_FX_FRONT);
-		slowMoIndicator.visible = false;
+		slowMoIndicator.visible = Boot.ME.isSlowMo();
 
 		scroller = new h2d.Layers();
 		root.add(scroller, Const.DP_BG);
@@ -141,9 +141,12 @@ class Game extends Process {
 			// Switch cam focus
 			if( ca.dpadLeftPressed() ) {
 				if( camera.target==null ) {
-					tw.createS(camera.zoom, 2, 0.2);
+					tw.createS(camera.zoom, 1.5, 0.2);
 					camera.target = hero;
 					camera.recenter();
+				}
+				else if( camera.target==hero && camera.zoom<=1.5 ) {
+					tw.createS(camera.zoom, 2, 0.2);
 				}
 				else {
 					tw.terminateWithoutCallbacks(camera.zoom);
@@ -153,7 +156,7 @@ class Game extends Process {
 			}
 
 			// Slowmo
-			if( ca.dpadDownPressed() ) {
+			if( ca.dpadRightPressed() ) {
 				Boot.ME.speed = Boot.ME.speed==1 ? 0.2 : 1;
 				slowMoIndicator.visible = Boot.ME.isSlowMo();
 			}
