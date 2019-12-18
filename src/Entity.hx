@@ -27,7 +27,7 @@ class Entity {
 	public var dyTotal(get,never) : Float; inline function get_dyTotal() return dy+bdy;
 	public var frict = 0.89;
 	public var bumpFrict = 0.93;
-	public var gravity = 0.025;
+	var gravity = 0.025;
 	public var hei : Float = Const.GRID;
 	public var radius = Const.GRID*0.5;
 	public var onGround(get,never) : Bool; inline function get_onGround() return level.hasCollision(cx,cy+1) && yr==1 && dy>=0;
@@ -241,6 +241,8 @@ class Entity {
 		return isAlive() && !isLocked() && !isChargingAction();
 	}
 
+	public function getGravity() return gravity;
+
 	public inline function skew(x:Float, y:Float) {
 		skewX = x;
 		skewY = y;
@@ -355,7 +357,7 @@ class Entity {
 
 		// Y
 		if( !onGround )
-			dy+=gravity*tmod;
+			dy+=getGravity()*tmod;
 		if( onGround || dy<0 )
 			fallStartY = footY;
 		var steps = M.ceil( M.fabs(dyTotal*tmod) );

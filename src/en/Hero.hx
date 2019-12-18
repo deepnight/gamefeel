@@ -127,6 +127,10 @@ class Hero extends Entity {
 			fx.gunShot(centerX+dir*8, centerY-1, dir);
 	}
 
+	override function getGravity():Float {
+		return super.getGravity() * ( 0.3 + 0.7*(1-cd.getRatio("reduceGravity")) );
+	}
+
 	var burstCount = 0;
 	override function update() {
 		super.update();
@@ -143,7 +147,7 @@ class Hero extends Entity {
 		if( canAct() ) {
 			// Walk
 			if( !cd.has("walkLock") ) {
-				var spd = 0.011 * cd.getRatio("airControl");
+				var spd = (onGround ? 0.011 : 0.015 ) * cd.getRatio("airControl");
 				if( ca.rightDown() ) {
 					dx+=spd*tmod;
 				}
@@ -158,10 +162,21 @@ class Hero extends Entity {
 			if( !onGround && cd.has("extraJumping") && ca.aDown() )
 				dy+=-0.08*tmod;
 
+			if( !onGround && ca.aPressed() && cd.has("allowAirJump") ) {
+				// Double jump
+				dy = -0.1;
+				cd.unset("allowAirJump");
+				cd.setS("extraJumping",0.1);
+				cd.setS("reduceGravity",0.3);
+			}
+
 			if( onGround && ca.aPressed() ) {
+				// Normal jump
 				Assets.SBANK.dash1(0.2);
 				dy = -0.16;
+				cd.setS("reduceGravity",0.1);
 				cd.setS("extraJumping", 0.1);
+				cd.setS("allowAirJump",Const.INFINITE);
 			}
 
 			// Dash
