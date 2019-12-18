@@ -110,10 +110,10 @@ class Hero extends Entity {
 			animOffsetX+=-dir*rnd(1,3);
 		}
 
-		var b = new en.Bullet(this, rnd(0,1,true));
+		var b = new en.Bullet(this, options.randomizeBullets ? rnd(0, 2.5, true) : 0);
 		if( options.randomizeBullets )
-			b.ang += 0.04 - rnd(0,0.05);
-		b.speed = 1;
+			b.ang += 0.04 - rnd(0,0.065);
+		b.speed = options.randomizeBullets ? rnd(0.95,1.05) : 1;
 		cd.setS("gunRecoil", 0.1);
 		cd.setS("gunHolding", getLockS());
 
@@ -181,6 +181,7 @@ class Hero extends Entity {
 				cd.unset("dashQueued");
 				dashDir = dir;
 				dx = dashDir*0.5;
+				burstCount = 0;
 				Assets.SBANK.jetpack0().playOnGroup(3,0.3);
 
 				if( options.camShakesXY )
@@ -211,7 +212,7 @@ class Hero extends Entity {
 		}
 
 		// Burst shooting
-		if( burstCount>0 && !cd.hasSetS("burstLock",0.06)) {
+		if( burstCount>0 && !cd.hasSetS("burstLock", options.randomizeBullets ? rnd(0.04,0.07) : 0.06)) {
 			burstCount--;
 			Assets.SBANK.gun0().playOnGroup(1,0.8);
 			shoot();

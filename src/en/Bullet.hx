@@ -9,6 +9,7 @@ class Bullet extends Entity {
 		super(0,0);
 		setPosPixel(e.centerX, e.centerY+offY);
 		ALL.push(this);
+		Game.ME.scroller.add(spr, Const.DP_BG);
 
 		hasCollisions = false;
 		ang = e.dirToAng();
@@ -18,8 +19,17 @@ class Bullet extends Entity {
 		hei = 0;
 
 		var g = new h2d.Graphics(spr);
-		g.beginFill(0xffcc00);
-		g.drawRect(-3, -1, 6, 2);
+		spr.smooth = true;
+		g.beginFill(0xff0000,0.33);
+		g.drawRect(-16, -1, 13, 1);
+		if( options.randomizeBullets ) {
+			g.beginFill( Color.interpolateInt(0xffff00, 0xff9900, rnd(0,1)) );
+			g.drawRect(-3, -1, irnd(6,8), 2);
+		}
+		else {
+			g.beginFill(0xffcc00);
+			g.drawRect(-3, -0.5, 6, 2);
+		}
 	}
 
 	override function dispose() {
@@ -31,6 +41,12 @@ class Bullet extends Entity {
 		if( options.bulletImpactFx )
 			fx.hitWall( hitX, hitY, M.radDistance(ang,0)<=M.PIHALF ? -1 : 1 );
 		destroy();
+	}
+
+	override function postUpdate() {
+		super.postUpdate();
+		spr.scaleX = M.fabs(spr.scaleX); // ignore dir
+		spr.rotation = ang;
 	}
 
 	override function update() {
