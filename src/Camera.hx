@@ -40,10 +40,22 @@ class Camera extends dn.Process {
 	public inline function scrollerToGlobalX(v:Float) return v*Const.SCALE + Game.ME.scroller.x;
 	public inline function scrollerToGlobalY(v:Float) return v*Const.SCALE + Game.ME.scroller.y;
 
-	var shakePower = 1.0;
-	public function shakeS(t:Float, ?pow=1.0) {
-		cd.setS("shaking", t, false);
-		shakePower = pow;
+	var shakePowerX = 0.;
+	var shakePowerY = 0.;
+	public function shakeBoth(pow:Float, t:Float) {
+		cd.setS("shakingX", t, false);
+		cd.setS("shakingY", t, false);
+		shakePowerX = shakePowerY = pow;
+	}
+
+	public function shakeX(pow:Float, t:Float) {
+		cd.setS("shakingX", t, false);
+		shakePowerX = pow;
+	}
+
+	public function shakeY(pow:Float, t:Float) {
+		cd.setS("shakingY", t, false);
+		shakePowerY = pow;
 	}
 
 	public inline function bumpAng(a, dist) {
@@ -83,10 +95,11 @@ class Camera extends dn.Process {
 				scroller.y = M.fclamp(scroller.y, screenHei-level.hei*Const.GRID*zoom, 0);
 
 			// Shakes
-			if( cd.has("shaking") ) {
-				scroller.x += Math.cos(ftime*1.10)*1*Const.SCALE*shakePower*zoom * cd.getRatio("shaking");
-				scroller.y += Math.sin(0.3+ftime*1.33)*1*Const.SCALE*shakePower*zoom * cd.getRatio("shaking");
-			}
+			if( cd.has("shakingX") )
+				scroller.x += Math.cos(ftime*1.10)*1*Const.SCALE*shakePowerX*zoom * cd.getRatio("shakingX");
+
+			if( cd.has("shakingY") )
+				scroller.y += Math.sin(0.3+ftime*1.33)*1*Const.SCALE*shakePowerY*zoom * cd.getRatio("shakingY");
 
 			// Bumps friction
 			bumpOffX *= Math.pow(0.75, tmod);
