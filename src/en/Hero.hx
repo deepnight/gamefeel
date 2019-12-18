@@ -3,6 +3,7 @@ package en;
 class Hero extends Entity {
 	var ca : dn.heaps.Controller.ControllerAccess;
 	var gun : h2d.Graphics;
+	var dashDir : Int;
 
 	public function new(x,y) {
 		super(x,y);
@@ -43,7 +44,7 @@ class Hero extends Entity {
 		if( options.controlLocks ) {
 			dx*=0.5;
 			lockS( 0.2*pow );
-			cd.setS("walkLock",0.55*pow);
+			cd.setS("walkLock",0.75*pow);
 		}
 
 		if( options.heroSquashAndStrech ) {
@@ -145,6 +146,25 @@ class Hero extends Entity {
 			if( onGround && ca.aPressed() ) {
 				dy = -0.16;
 				cd.setS("extraJumping", 0.1);
+			}
+
+			// Dash
+			if( ca.bPressed() && !cd.hasSetS("dashLock",0.3) ) {
+				dashDir = dir;
+				dx = dashDir*0.5;
+
+				if( options.camShakesXY )
+					game.camera.bump(dashDir*6, 0);
+
+				if( options.camShakesZoom )
+					game.camera.shakeZoom(0.2, 0.3);
+
+				cd.setS("dashing", 0.33);
+				lockS( cd.getS("dashing")+0.1 );
+			}
+			if( cd.has("dashing") ) {
+				dx+=dashDir*0.16*tmod;
+				skew(1.3,0.7);
 			}
 
 			// Shoot
