@@ -26,11 +26,11 @@ class Mob extends Entity {
 		life-=dmg;
 
 		if( options.mobSquashAndStrech )
-			skew(0.8, 1.25);
+			skew(0.6, 1.35);
 
 		if( options.physicalReactions )
 			if( !cd.hasSetS("firstImpact",0.4) )
-				bump(impactDir*rnd(0.06,0.07), -0.05);
+				bump(impactDir * rnd(0.20, 0.25), -0.05);
 			else
 				bump(impactDir*rnd(0.01,0.02), 0);
 
