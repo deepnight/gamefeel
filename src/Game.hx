@@ -95,6 +95,11 @@ class Game extends Process {
 			if( ca.startPressed() )
 				new ui.OptionsModal();
 
+			#if hl
+			if( ca.isPressed(RSTICK) )
+				Boot.ME.engine.fullScreen = !Boot.ME.engine.fullScreen;
+			#end
+
 			// Restart
 			if( ca.selectPressed() )
 				Main.ME.startGame();
