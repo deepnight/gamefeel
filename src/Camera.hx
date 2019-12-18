@@ -130,20 +130,20 @@ class Camera extends dn.Process {
 
 		// Follow target entity
 		if( target!=null ) {
-			var s = 0.006;
+			var s = 0.009;
 			var deadZone = 5;
-			var tx = target.footX;
+			var tx = target.footX + target.dir*Const.GRID*2/zoom;
 			var ty = target.footY - Const.GRID*3/zoom;
 
 			var d = M.dist(x,y, tx, ty);
 			if( d>=deadZone ) {
 				var a = Math.atan2( ty-y, tx-x );
-				dx += Math.cos(a) * (d-deadZone) * s * tmod;
-				dy += Math.sin(a) * (d-deadZone) * s * tmod;
+				dx += Math.cos(a) * (d-deadZone) * s * tmod * zoom;
+				dy += Math.sin(a) * (d-deadZone) * s * tmod * zoom;
 			}
 		}
 
-		var frict = 0.89;
+		var frict = 0.86;
 		x += dx*tmod;
 		dx *= Math.pow(frict,tmod);
 
