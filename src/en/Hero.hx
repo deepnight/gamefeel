@@ -149,7 +149,8 @@ class Hero extends Entity {
 			}
 
 			// Dash
-			if( ca.bPressed() && !cd.hasSetS("dashLock",0.3) ) {
+			if( ( ca.bPressed() || cd.has("dashQueued") ) && !cd.hasSetS("dashLock",0.3) ) {
+				cd.unset("dashQueued");
 				dashDir = dir;
 				dx = dashDir*0.5;
 
@@ -159,29 +160,37 @@ class Hero extends Entity {
 				if( options.camShakesZoom )
 					game.camera.shakeZoom(0.2, 0.3);
 
-				cd.setS("dashing", 0.33);
+				cd.setS("dashing", 0.08);
 				lockS( cd.getS("dashing")+0.1 );
-			}
-			if( cd.has("dashing") ) {
-				dx+=dashDir*0.16*tmod;
-				skew(1.3,0.7);
 			}
 
 			// Shoot
 			if( burstCount<=0 && ( ca.xDown() || ca.rtDown() ) && !cd.has("shootLock") )
 				chargeAction("shoot", options.gunAiming ? 0.35 : 0., function() {
 					burstCount = 4;
-					// if( options.heroSquashAndStrech )
-						// skew(1.2,0.9);
 				});
+		}
 
-			if( burstCount>0 ) {
-				burstCount--;
-				shoot();
-				lockS(0.05);
-				if( burstCount<=0 && !options.gunAiming )
-					lockS(0.35); // to compensate for the missing aiming phase
-			}
+		// Dash movement
+		if( cd.has("dashing") ) {
+			dx+=dashDir*0.06*tmod;
+			skew(1.3,0.7);
+		}
+
+		// Burst shooting
+		if( burstCount>0 && !cd.hasSetS("burstLock",0.06)) {
+			burstCount--;
+			shoot();
+			lockS(0.05);
+			if( burstCount<=0 && !options.gunAiming )
+				lockS(0.35); // to compensate for the missing aiming phase
+		}
+
+		// Queue dash action
+		if( ca.bPressed() && !canAct() && !cd.has("dashing") ) {
+			if( isChargingAction() )
+				cancelAction();
+			cd.setS("dashQueued", 0.25);
 		}
 	}
 }
