@@ -14,6 +14,7 @@ class Game extends Process {
 
 	public var hero : en.Hero;
 	var bg : h2d.Bitmap;
+	var slowMoIndicator : h2d.Graphics;
 
 	public function new() {
 		super(Main.ME);
@@ -23,7 +24,11 @@ class Game extends Process {
 		ca.setRightDeadZone(0.2);
 		createRootInLayers(Main.ME.root, Const.DP_BG);
 
-		bg = new h2d.Bitmap(h2d.Tile.fromColor(Const.BG_COLOR), root);
+		bg = new h2d.Bitmap(h2d.Tile.fromColor(Const.BG_COLOR));
+		root.add(bg,Const.DP_BG);
+
+		slowMoIndicator = new h2d.Graphics();
+		root.add(slowMoIndicator,Const.DP_FX_FRONT);
 
 		scroller = new h2d.Layers();
 		root.add(scroller, Const.DP_BG);
@@ -85,8 +90,16 @@ class Game extends Process {
 
 	override function onResize() {
 		super.onResize();
-		bg.scaleX = w()/Const.SCALE;
-		bg.scaleY = h()/Const.SCALE;
+		var wid = w()/Const.SCALE;
+		var hei = h()/Const.SCALE;
+		bg.scaleX = wid/Const.SCALE;
+		bg.scaleY = hei/Const.SCALE;
+
+		slowMoIndicator.clear();
+		var pad = 20;
+		slowMoIndicator.beginFill(0x0,1);
+		slowMoIndicator.drawRect(0,0,wid,pad);
+		slowMoIndicator.drawRect(0,hei-pad,wid,pad);
 	}
 
 	override function update() {
@@ -124,7 +137,7 @@ class Game extends Process {
 			if( ca.startPressed() )
 				new ui.OptionsModal();
 
-			// Swithc cam focus
+			// Switch cam focus
 			if( ca.dpadLeftPressed() ) {
 				if( camera.target==null ) {
 					tw.createS(camera.zoom, 2, 0.2);
@@ -136,6 +149,12 @@ class Game extends Process {
 					camera.zoom = 1;
 					setCameraFocus("main");
 				}
+			}
+
+			// Slowmo
+			if( ca.dpadDownPressed() ) {
+				Boot.ME.speed = Boot.ME.speed==1 ? 0.2 : 1;
+				slowMoIndicator.visible = Boot.ME.isSlowMo();
 			}
 
 			#if hl

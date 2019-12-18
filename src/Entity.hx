@@ -171,8 +171,11 @@ class Entity {
 			cancelAction(id);
 		if( sec<=0 )
 			cb();
-		else
+		else {
+			if( Boot.ME.isSlowMo() )
+				sec*=0.5;
 			actions.push({ id:id, cb:cb, startT:sec, curT:sec});
+		}
 	}
 
 	public function getChargeRatio(id:String) {
