@@ -2737,174 +2737,178 @@ Fx.prototype = $extend(dn_Process.prototype,{
 		p.scaleXMul = 0.94;
 		p.scaleYMul = 0.91;
 		p.set_lifeS(0.12);
-		var _g2 = 0;
-		while(_g2 < 5) {
-			var i = _g2++;
-			var t1 = Assets.tiles.getTileRandom("pixel");
-			var sign4 = true;
-			if(sign4 == null) {
-				sign4 = false;
-			}
-			var y2 = y + (sign4 ? Math.random() * 2 * (Std.random(2) * 2 - 1) : Math.random() * 2);
-			var _this2 = this.pool;
-			var sb1 = this.topAddSb;
-			var p3;
-			if(_this2.nalloc < _this2.all.length) {
-				var p4 = _this2.all[_this2.nalloc];
-				p4.reset(sb1,t1,x,y2);
-				p4.poolIdx = _this2.nalloc;
-				_this2.nalloc++;
-				p3 = p4;
-			} else {
-				var best1 = null;
-				var _g3 = 0;
-				var _g11 = _this2.all;
-				while(_g3 < _g11.length) {
-					var p5 = _g11[_g3];
-					++_g3;
-					if(best1 == null || p5.stamp <= best1.stamp) {
-						best1 = p5;
+		if(Main.ME.options.burningFx) {
+			var _g2 = 0;
+			while(_g2 < 5) {
+				var i = _g2++;
+				var t1 = Assets.tiles.getTileRandom("pixel");
+				var sign4 = true;
+				if(sign4 == null) {
+					sign4 = false;
+				}
+				var y2 = y + (sign4 ? Math.random() * 2 * (Std.random(2) * 2 - 1) : Math.random() * 2);
+				var _this2 = this.pool;
+				var sb1 = this.topAddSb;
+				var p3;
+				if(_this2.nalloc < _this2.all.length) {
+					var p4 = _this2.all[_this2.nalloc];
+					p4.reset(sb1,t1,x,y2);
+					p4.poolIdx = _this2.nalloc;
+					_this2.nalloc++;
+					p3 = p4;
+				} else {
+					var best1 = null;
+					var _g3 = 0;
+					var _g11 = _this2.all;
+					while(_g3 < _g11.length) {
+						var p5 = _g11[_g3];
+						++_g3;
+						if(best1 == null || p5.stamp <= best1.stamp) {
+							best1 = p5;
+						}
 					}
+					if(best1.onKill != null) {
+						best1.onKill();
+					}
+					best1.reset(sb1,t1,x,y2);
+					p3 = best1;
 				}
-				if(best1.onKill != null) {
-					best1.onKill();
+				var sign5 = null;
+				if(sign5 == null) {
+					sign5 = false;
 				}
-				best1.reset(sb1,t1,x,y2);
-				p3 = best1;
+				var tmp = sign5 ? (0.5 + Math.random() * 0.4) * (Std.random(2) * 2 - 1) : 0.5 + Math.random() * 0.4;
+				var sign6 = null;
+				if(sign6 == null) {
+					sign6 = false;
+				}
+				p3.setFadeS(tmp,0,sign6 ? (0.2 + Math.random() * 0.3) * (Std.random(2) * 2 - 1) : 0.2 + Math.random() * 0.3);
+				p3.alphaFlicker = 0.4;
+				var sign7 = null;
+				if(sign7 == null) {
+					sign7 = false;
+				}
+				var ratio = sign7 ? Math.random() * (Std.random(2) * 2 - 1) : Math.random();
+				var a = _$UInt_UInt_$Impl_$.toFloat(16766244 >>> 16);
+				var x2 = a + (_$UInt_UInt_$Impl_$.toFloat(16737798 >>> 16) - a) * ratio;
+				var a1 = _$UInt_UInt_$Impl_$.toFloat(16766244 >>> 8 & 255);
+				var x3 = a1 + (_$UInt_UInt_$Impl_$.toFloat(16737798 >>> 8 & 255) - a1) * ratio;
+				var a2 = _$UInt_UInt_$Impl_$.toFloat(16766244 & 255);
+				var x4 = a2 + (_$UInt_UInt_$Impl_$.toFloat(16737798 & 255) - a2) * ratio;
+				var sign8 = null;
+				if(sign8 == null) {
+					sign8 = false;
+				}
+				var tmp1 = sign8 ? (0.3 + Math.random() * 1.7) * (Std.random(2) * 2 - 1) : 0.3 + Math.random() * 1.7;
+				p3.colorAnimS(((x2 > 0 ? x2 + .5 : x2 < 0 ? x2 - .5 : 0) | 0) << 16 | ((x3 > 0 ? x3 + .5 : x3 < 0 ? x3 - .5 : 0) | 0) << 8 | ((x4 > 0 ? x4 + .5 : x4 < 0 ? x4 - .5 : 0) | 0),10027008,tmp1);
+				var sign9 = null;
+				if(sign9 == null) {
+					sign9 = false;
+				}
+				p3.dx = normalDir * (sign9 ? (0.3 + Math.random() * 1.7) * (Std.random(2) * 2 - 1) : 0.3 + Math.random() * 1.7);
+				var sign10 = null;
+				if(sign10 == null) {
+					sign10 = false;
+				}
+				p3.dy = sign10 ? (-1 + Math.random() * 1.5) * (Std.random(2) * 2 - 1) : -1 + Math.random() * 1.5;
+				var sign11 = null;
+				if(sign11 == null) {
+					sign11 = false;
+				}
+				p3.gy = sign11 ? (0.1 + Math.random() * 0.1) * (Std.random(2) * 2 - 1) : 0.1 + Math.random() * 0.1;
+				var sign12 = null;
+				if(sign12 == null) {
+					sign12 = false;
+				}
+				p3.frictX = p3.frictY = sign12 ? (0.92 + Math.random() * 0.029999999999999916) * (Std.random(2) * 2 - 1) : 0.92 + Math.random() * 0.029999999999999916;
+				var sign13 = null;
+				if(sign13 == null) {
+					sign13 = false;
+				}
+				p3.set_lifeS(sign13 ? (0.4 + Math.random() * 1.6) * (Std.random(2) * 2 - 1) : 0.4 + Math.random() * 1.6);
+				p3.onUpdate = $bind(this,this._physics);
 			}
-			var sign5 = null;
-			if(sign5 == null) {
-				sign5 = false;
-			}
-			var tmp = sign5 ? (0.5 + Math.random() * 0.4) * (Std.random(2) * 2 - 1) : 0.5 + Math.random() * 0.4;
-			var sign6 = null;
-			if(sign6 == null) {
-				sign6 = false;
-			}
-			p3.setFadeS(tmp,0,sign6 ? (0.2 + Math.random() * 0.3) * (Std.random(2) * 2 - 1) : 0.2 + Math.random() * 0.3);
-			p3.alphaFlicker = 0.4;
-			var sign7 = null;
-			if(sign7 == null) {
-				sign7 = false;
-			}
-			var ratio = sign7 ? Math.random() * (Std.random(2) * 2 - 1) : Math.random();
-			var a = _$UInt_UInt_$Impl_$.toFloat(16766244 >>> 16);
-			var x2 = a + (_$UInt_UInt_$Impl_$.toFloat(16737798 >>> 16) - a) * ratio;
-			var a1 = _$UInt_UInt_$Impl_$.toFloat(16766244 >>> 8 & 255);
-			var x3 = a1 + (_$UInt_UInt_$Impl_$.toFloat(16737798 >>> 8 & 255) - a1) * ratio;
-			var a2 = _$UInt_UInt_$Impl_$.toFloat(16766244 & 255);
-			var x4 = a2 + (_$UInt_UInt_$Impl_$.toFloat(16737798 & 255) - a2) * ratio;
-			var sign8 = null;
-			if(sign8 == null) {
-				sign8 = false;
-			}
-			var tmp1 = sign8 ? (0.3 + Math.random() * 1.7) * (Std.random(2) * 2 - 1) : 0.3 + Math.random() * 1.7;
-			p3.colorAnimS(((x2 > 0 ? x2 + .5 : x2 < 0 ? x2 - .5 : 0) | 0) << 16 | ((x3 > 0 ? x3 + .5 : x3 < 0 ? x3 - .5 : 0) | 0) << 8 | ((x4 > 0 ? x4 + .5 : x4 < 0 ? x4 - .5 : 0) | 0),10027008,tmp1);
-			var sign9 = null;
-			if(sign9 == null) {
-				sign9 = false;
-			}
-			p3.dx = normalDir * (sign9 ? (0.3 + Math.random() * 1.7) * (Std.random(2) * 2 - 1) : 0.3 + Math.random() * 1.7);
-			var sign10 = null;
-			if(sign10 == null) {
-				sign10 = false;
-			}
-			p3.dy = sign10 ? (-1 + Math.random() * 1.5) * (Std.random(2) * 2 - 1) : -1 + Math.random() * 1.5;
-			var sign11 = null;
-			if(sign11 == null) {
-				sign11 = false;
-			}
-			p3.gy = sign11 ? (0.1 + Math.random() * 0.1) * (Std.random(2) * 2 - 1) : 0.1 + Math.random() * 0.1;
-			var sign12 = null;
-			if(sign12 == null) {
-				sign12 = false;
-			}
-			p3.frictX = p3.frictY = sign12 ? (0.92 + Math.random() * 0.029999999999999916) * (Std.random(2) * 2 - 1) : 0.92 + Math.random() * 0.029999999999999916;
-			var sign13 = null;
-			if(sign13 == null) {
-				sign13 = false;
-			}
-			p3.set_lifeS(sign13 ? (0.4 + Math.random() * 1.6) * (Std.random(2) * 2 - 1) : 0.4 + Math.random() * 1.6);
-			p3.onUpdate = $bind(this,this._physics);
 		}
-		var _g12 = 0;
-		while(_g12 < 7) {
-			var i1 = _g12++;
-			var t2 = Assets.tiles.getTileRandom("pixel");
-			var sign14 = true;
-			if(sign14 == null) {
-				sign14 = false;
-			}
-			var x5 = x + (sign14 ? Math.random() * (Std.random(2) * 2 - 1) : Math.random()) * -normalDir;
-			var sign15 = true;
-			if(sign15 == null) {
-				sign15 = false;
-			}
-			var y3 = y + (sign15 ? Math.random() * 6 * (Std.random(2) * 2 - 1) : Math.random() * 6);
-			var _this3 = this.pool;
-			var sb2 = this.topAddSb;
-			var p6;
-			if(_this3.nalloc < _this3.all.length) {
-				var p7 = _this3.all[_this3.nalloc];
-				p7.reset(sb2,t2,x5,y3);
-				p7.poolIdx = _this3.nalloc;
-				_this3.nalloc++;
-				p6 = p7;
-			} else {
-				var best2 = null;
-				var _g4 = 0;
-				var _g13 = _this3.all;
-				while(_g4 < _g13.length) {
-					var p8 = _g13[_g4];
-					++_g4;
-					if(best2 == null || p8.stamp <= best2.stamp) {
-						best2 = p8;
+		if(Main.ME.options.burningFx) {
+			var _g4 = 0;
+			while(_g4 < 7) {
+				var i1 = _g4++;
+				var t2 = Assets.tiles.getTileRandom("pixel");
+				var sign14 = true;
+				if(sign14 == null) {
+					sign14 = false;
+				}
+				var x5 = x + (sign14 ? Math.random() * (Std.random(2) * 2 - 1) : Math.random()) * -normalDir;
+				var sign15 = true;
+				if(sign15 == null) {
+					sign15 = false;
+				}
+				var y3 = y + (sign15 ? Math.random() * 6 * (Std.random(2) * 2 - 1) : Math.random() * 6);
+				var _this3 = this.pool;
+				var sb2 = this.topAddSb;
+				var p6;
+				if(_this3.nalloc < _this3.all.length) {
+					var p7 = _this3.all[_this3.nalloc];
+					p7.reset(sb2,t2,x5,y3);
+					p7.poolIdx = _this3.nalloc;
+					_this3.nalloc++;
+					p6 = p7;
+				} else {
+					var best2 = null;
+					var _g5 = 0;
+					var _g12 = _this3.all;
+					while(_g5 < _g12.length) {
+						var p8 = _g12[_g5];
+						++_g5;
+						if(best2 == null || p8.stamp <= best2.stamp) {
+							best2 = p8;
+						}
 					}
+					if(best2.onKill != null) {
+						best2.onKill();
+					}
+					best2.reset(sb2,t2,x5,y3);
+					p6 = best2;
 				}
-				if(best2.onKill != null) {
-					best2.onKill();
+				var sign16 = null;
+				if(sign16 == null) {
+					sign16 = false;
 				}
-				best2.reset(sb2,t2,x5,y3);
-				p6 = best2;
+				var ratio1 = sign16 ? Math.random() * (Std.random(2) * 2 - 1) : Math.random();
+				var a3 = _$UInt_UInt_$Impl_$.toFloat(16766244 >>> 16);
+				var x6 = a3 + (_$UInt_UInt_$Impl_$.toFloat(16737798 >>> 16) - a3) * ratio1;
+				var a4 = _$UInt_UInt_$Impl_$.toFloat(16766244 >>> 8 & 255);
+				var x7 = a4 + (_$UInt_UInt_$Impl_$.toFloat(16737798 >>> 8 & 255) - a4) * ratio1;
+				var a5 = _$UInt_UInt_$Impl_$.toFloat(16766244 & 255);
+				var x8 = a5 + (_$UInt_UInt_$Impl_$.toFloat(16737798 & 255) - a5) * ratio1;
+				var sign17 = null;
+				if(sign17 == null) {
+					sign17 = false;
+				}
+				var tmp2 = sign17 ? (0.3 + Math.random() * 1.7) * (Std.random(2) * 2 - 1) : 0.3 + Math.random() * 1.7;
+				p6.colorAnimS(((x6 > 0 ? x6 + .5 : x6 < 0 ? x6 - .5 : 0) | 0) << 16 | ((x7 > 0 ? x7 + .5 : x7 < 0 ? x7 - .5 : 0) | 0) << 8 | ((x8 > 0 ? x8 + .5 : x8 < 0 ? x8 - .5 : 0) | 0),10027008,tmp2);
+				var sign18 = null;
+				if(sign18 == null) {
+					sign18 = false;
+				}
+				var tmp3 = sign18 ? (0.5 + Math.random() * 0.4) * (Std.random(2) * 2 - 1) : 0.5 + Math.random() * 0.4;
+				var sign19 = null;
+				if(sign19 == null) {
+					sign19 = false;
+				}
+				var tmp4 = sign19 ? (0.2 + Math.random() * 0.2) * (Std.random(2) * 2 - 1) : 0.2 + Math.random() * 0.2;
+				var sign20 = null;
+				if(sign20 == null) {
+					sign20 = false;
+				}
+				p6.setFadeS(tmp3,tmp4,sign20 ? (1 + Math.random()) * (Std.random(2) * 2 - 1) : 1 + Math.random());
+				p6.alphaFlicker = 0.4;
+				var sign21 = null;
+				if(sign21 == null) {
+					sign21 = false;
+				}
+				p6.set_lifeS(sign21 ? (2 + Math.random()) * (Std.random(2) * 2 - 1) : 2 + Math.random());
 			}
-			var sign16 = null;
-			if(sign16 == null) {
-				sign16 = false;
-			}
-			var ratio1 = sign16 ? Math.random() * (Std.random(2) * 2 - 1) : Math.random();
-			var a3 = _$UInt_UInt_$Impl_$.toFloat(16766244 >>> 16);
-			var x6 = a3 + (_$UInt_UInt_$Impl_$.toFloat(16737798 >>> 16) - a3) * ratio1;
-			var a4 = _$UInt_UInt_$Impl_$.toFloat(16766244 >>> 8 & 255);
-			var x7 = a4 + (_$UInt_UInt_$Impl_$.toFloat(16737798 >>> 8 & 255) - a4) * ratio1;
-			var a5 = _$UInt_UInt_$Impl_$.toFloat(16766244 & 255);
-			var x8 = a5 + (_$UInt_UInt_$Impl_$.toFloat(16737798 & 255) - a5) * ratio1;
-			var sign17 = null;
-			if(sign17 == null) {
-				sign17 = false;
-			}
-			var tmp2 = sign17 ? (0.3 + Math.random() * 1.7) * (Std.random(2) * 2 - 1) : 0.3 + Math.random() * 1.7;
-			p6.colorAnimS(((x6 > 0 ? x6 + .5 : x6 < 0 ? x6 - .5 : 0) | 0) << 16 | ((x7 > 0 ? x7 + .5 : x7 < 0 ? x7 - .5 : 0) | 0) << 8 | ((x8 > 0 ? x8 + .5 : x8 < 0 ? x8 - .5 : 0) | 0),10027008,tmp2);
-			var sign18 = null;
-			if(sign18 == null) {
-				sign18 = false;
-			}
-			var tmp3 = sign18 ? (0.5 + Math.random() * 0.4) * (Std.random(2) * 2 - 1) : 0.5 + Math.random() * 0.4;
-			var sign19 = null;
-			if(sign19 == null) {
-				sign19 = false;
-			}
-			var tmp4 = sign19 ? (0.2 + Math.random() * 0.2) * (Std.random(2) * 2 - 1) : 0.2 + Math.random() * 0.2;
-			var sign20 = null;
-			if(sign20 == null) {
-				sign20 = false;
-			}
-			p6.setFadeS(tmp3,tmp4,sign20 ? (1 + Math.random()) * (Std.random(2) * 2 - 1) : 1 + Math.random());
-			p6.alphaFlicker = 0.4;
-			var sign21 = null;
-			if(sign21 == null) {
-				sign21 = false;
-			}
-			p6.set_lifeS(sign21 ? (2 + Math.random()) * (Std.random(2) * 2 - 1) : 2 + Math.random());
 		}
 	}
 	,hitEntity: function(x,y,normalDir) {
@@ -2973,95 +2977,97 @@ Fx.prototype = $extend(dn_Process.prototype,{
 		p.scaleXMul = 0.94;
 		p.scaleYMul = 0.91;
 		p.set_lifeS(0.12);
-		var _g2 = 0;
-		while(_g2 < 5) {
-			var i = _g2++;
-			var t1 = Assets.tiles.getTileRandom("pixel");
-			var sign4 = true;
-			if(sign4 == null) {
-				sign4 = false;
-			}
-			var y2 = y + (sign4 ? Math.random() * 2 * (Std.random(2) * 2 - 1) : Math.random() * 2);
-			var _this2 = this.pool;
-			var sb1 = this.topAddSb;
-			var p3;
-			if(_this2.nalloc < _this2.all.length) {
-				var p4 = _this2.all[_this2.nalloc];
-				p4.reset(sb1,t1,x,y2);
-				p4.poolIdx = _this2.nalloc;
-				_this2.nalloc++;
-				p3 = p4;
-			} else {
-				var best1 = null;
-				var _g3 = 0;
-				var _g11 = _this2.all;
-				while(_g3 < _g11.length) {
-					var p5 = _g11[_g3];
-					++_g3;
-					if(best1 == null || p5.stamp <= best1.stamp) {
-						best1 = p5;
+		if(Main.ME.options.burningFx) {
+			var _g2 = 0;
+			while(_g2 < 5) {
+				var i = _g2++;
+				var t1 = Assets.tiles.getTileRandom("pixel");
+				var sign4 = true;
+				if(sign4 == null) {
+					sign4 = false;
+				}
+				var y2 = y + (sign4 ? Math.random() * 2 * (Std.random(2) * 2 - 1) : Math.random() * 2);
+				var _this2 = this.pool;
+				var sb1 = this.topAddSb;
+				var p3;
+				if(_this2.nalloc < _this2.all.length) {
+					var p4 = _this2.all[_this2.nalloc];
+					p4.reset(sb1,t1,x,y2);
+					p4.poolIdx = _this2.nalloc;
+					_this2.nalloc++;
+					p3 = p4;
+				} else {
+					var best1 = null;
+					var _g3 = 0;
+					var _g11 = _this2.all;
+					while(_g3 < _g11.length) {
+						var p5 = _g11[_g3];
+						++_g3;
+						if(best1 == null || p5.stamp <= best1.stamp) {
+							best1 = p5;
+						}
 					}
+					if(best1.onKill != null) {
+						best1.onKill();
+					}
+					best1.reset(sb1,t1,x,y2);
+					p3 = best1;
 				}
-				if(best1.onKill != null) {
-					best1.onKill();
+				var sign5 = null;
+				if(sign5 == null) {
+					sign5 = false;
 				}
-				best1.reset(sb1,t1,x,y2);
-				p3 = best1;
+				var tmp = sign5 ? (0.5 + Math.random() * 0.4) * (Std.random(2) * 2 - 1) : 0.5 + Math.random() * 0.4;
+				var sign6 = null;
+				if(sign6 == null) {
+					sign6 = false;
+				}
+				p3.setFadeS(tmp,0,sign6 ? (0.2 + Math.random() * 0.3) * (Std.random(2) * 2 - 1) : 0.2 + Math.random() * 0.3);
+				p3.alphaFlicker = 0.4;
+				var sign7 = null;
+				if(sign7 == null) {
+					sign7 = false;
+				}
+				var ratio = sign7 ? Math.random() * (Std.random(2) * 2 - 1) : Math.random();
+				var a = _$UInt_UInt_$Impl_$.toFloat(16766244 >>> 16);
+				var x2 = a + (_$UInt_UInt_$Impl_$.toFloat(16737798 >>> 16) - a) * ratio;
+				var a1 = _$UInt_UInt_$Impl_$.toFloat(16766244 >>> 8 & 255);
+				var x3 = a1 + (_$UInt_UInt_$Impl_$.toFloat(16737798 >>> 8 & 255) - a1) * ratio;
+				var a2 = _$UInt_UInt_$Impl_$.toFloat(16766244 & 255);
+				var x4 = a2 + (_$UInt_UInt_$Impl_$.toFloat(16737798 & 255) - a2) * ratio;
+				var sign8 = null;
+				if(sign8 == null) {
+					sign8 = false;
+				}
+				var tmp1 = sign8 ? (0.3 + Math.random() * 1.7) * (Std.random(2) * 2 - 1) : 0.3 + Math.random() * 1.7;
+				p3.colorAnimS(((x2 > 0 ? x2 + .5 : x2 < 0 ? x2 - .5 : 0) | 0) << 16 | ((x3 > 0 ? x3 + .5 : x3 < 0 ? x3 - .5 : 0) | 0) << 8 | ((x4 > 0 ? x4 + .5 : x4 < 0 ? x4 - .5 : 0) | 0),10027008,tmp1);
+				var sign9 = null;
+				if(sign9 == null) {
+					sign9 = false;
+				}
+				p3.dx = normalDir * (sign9 ? (0.3 + Math.random() * 1.7) * (Std.random(2) * 2 - 1) : 0.3 + Math.random() * 1.7);
+				var sign10 = null;
+				if(sign10 == null) {
+					sign10 = false;
+				}
+				p3.dy = sign10 ? (-1 + Math.random() * 1.5) * (Std.random(2) * 2 - 1) : -1 + Math.random() * 1.5;
+				var sign11 = null;
+				if(sign11 == null) {
+					sign11 = false;
+				}
+				p3.gy = sign11 ? (0.1 + Math.random() * 0.1) * (Std.random(2) * 2 - 1) : 0.1 + Math.random() * 0.1;
+				var sign12 = null;
+				if(sign12 == null) {
+					sign12 = false;
+				}
+				p3.frictX = p3.frictY = sign12 ? (0.92 + Math.random() * 0.029999999999999916) * (Std.random(2) * 2 - 1) : 0.92 + Math.random() * 0.029999999999999916;
+				var sign13 = null;
+				if(sign13 == null) {
+					sign13 = false;
+				}
+				p3.set_lifeS(sign13 ? (0.4 + Math.random() * 1.6) * (Std.random(2) * 2 - 1) : 0.4 + Math.random() * 1.6);
+				p3.onUpdate = $bind(this,this._physics);
 			}
-			var sign5 = null;
-			if(sign5 == null) {
-				sign5 = false;
-			}
-			var tmp = sign5 ? (0.5 + Math.random() * 0.4) * (Std.random(2) * 2 - 1) : 0.5 + Math.random() * 0.4;
-			var sign6 = null;
-			if(sign6 == null) {
-				sign6 = false;
-			}
-			p3.setFadeS(tmp,0,sign6 ? (0.2 + Math.random() * 0.3) * (Std.random(2) * 2 - 1) : 0.2 + Math.random() * 0.3);
-			p3.alphaFlicker = 0.4;
-			var sign7 = null;
-			if(sign7 == null) {
-				sign7 = false;
-			}
-			var ratio = sign7 ? Math.random() * (Std.random(2) * 2 - 1) : Math.random();
-			var a = _$UInt_UInt_$Impl_$.toFloat(16766244 >>> 16);
-			var x2 = a + (_$UInt_UInt_$Impl_$.toFloat(16737798 >>> 16) - a) * ratio;
-			var a1 = _$UInt_UInt_$Impl_$.toFloat(16766244 >>> 8 & 255);
-			var x3 = a1 + (_$UInt_UInt_$Impl_$.toFloat(16737798 >>> 8 & 255) - a1) * ratio;
-			var a2 = _$UInt_UInt_$Impl_$.toFloat(16766244 & 255);
-			var x4 = a2 + (_$UInt_UInt_$Impl_$.toFloat(16737798 & 255) - a2) * ratio;
-			var sign8 = null;
-			if(sign8 == null) {
-				sign8 = false;
-			}
-			var tmp1 = sign8 ? (0.3 + Math.random() * 1.7) * (Std.random(2) * 2 - 1) : 0.3 + Math.random() * 1.7;
-			p3.colorAnimS(((x2 > 0 ? x2 + .5 : x2 < 0 ? x2 - .5 : 0) | 0) << 16 | ((x3 > 0 ? x3 + .5 : x3 < 0 ? x3 - .5 : 0) | 0) << 8 | ((x4 > 0 ? x4 + .5 : x4 < 0 ? x4 - .5 : 0) | 0),10027008,tmp1);
-			var sign9 = null;
-			if(sign9 == null) {
-				sign9 = false;
-			}
-			p3.dx = normalDir * (sign9 ? (0.3 + Math.random() * 1.7) * (Std.random(2) * 2 - 1) : 0.3 + Math.random() * 1.7);
-			var sign10 = null;
-			if(sign10 == null) {
-				sign10 = false;
-			}
-			p3.dy = sign10 ? (-1 + Math.random() * 1.5) * (Std.random(2) * 2 - 1) : -1 + Math.random() * 1.5;
-			var sign11 = null;
-			if(sign11 == null) {
-				sign11 = false;
-			}
-			p3.gy = sign11 ? (0.1 + Math.random() * 0.1) * (Std.random(2) * 2 - 1) : 0.1 + Math.random() * 0.1;
-			var sign12 = null;
-			if(sign12 == null) {
-				sign12 = false;
-			}
-			p3.frictX = p3.frictY = sign12 ? (0.92 + Math.random() * 0.029999999999999916) * (Std.random(2) * 2 - 1) : 0.92 + Math.random() * 0.029999999999999916;
-			var sign13 = null;
-			if(sign13 == null) {
-				sign13 = false;
-			}
-			p3.set_lifeS(sign13 ? (0.4 + Math.random() * 1.6) * (Std.random(2) * 2 - 1) : 0.4 + Math.random() * 1.6);
-			p3.onUpdate = $bind(this,this._physics);
 		}
 	}
 	,gunShot: function(x,y,dir) {
@@ -4848,6 +4854,7 @@ var Options = function() {
 	this.mobSquashAndStrech = false;
 	this.blinkImpact = false;
 	this.physicalReactions = false;
+	this.burningFx = false;
 	this.bulletImpactFx = false;
 	this.gunShotFx = false;
 	this.cartridges = false;
@@ -4876,6 +4883,7 @@ Options.prototype = {
 	,cartridges: null
 	,gunShotFx: null
 	,bulletImpactFx: null
+	,burningFx: null
 	,physicalReactions: null
 	,blinkImpact: null
 	,mobSquashAndStrech: null
