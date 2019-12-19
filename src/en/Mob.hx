@@ -35,7 +35,7 @@ class Mob extends Entity {
 				bump(impactDir*rnd(0.005,0.010), 0);
 
 		if( options.blinkImpact )
-			blink(0xfff170);
+			blink(0xffffff);
 
 		if( options.blood ) {
 			fx.bloodBackHits(centerX, centerY, impactDir, 2);
