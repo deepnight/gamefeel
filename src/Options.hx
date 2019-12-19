@@ -1,40 +1,38 @@
 @:keep
 class Options {
-	public var baseArt = false;
-	public var flashes = false;
-	public var camShakesXY = false;
-	public var camShakesZoom = false;
-	public var controlLocks = false;
+	public var baseArt = true;
+	public var flashes = true;
+	public var camShakesXY = true;
+	public var camShakesZoom = true;
+	public var controlLocks = true;
 
 	@separator
-	public var heroSquashAndStrech = false;
-	public var randomizeBullets = false;
-	public var basicAnimations = false;
-	public var gunAiming = false;
+	public var heroSquashAndStrech = true;
+	public var randomizeBullets = true;
+	public var basicAnimations = true;
+	public var gunAiming = true;
 
 	@separator
-	public var cartridges = false;
-	public var gunShotFx = false;
-	public var bulletImpactFx = false;
-	public var burningFx = false;
+	public var cartridges = true;
+	public var gunShotFx = true;
+	public var bulletImpactFx = true;
+	public var burningFx = true;
 
 	@separator
-	public var physicalReactions = false;
-	public var blinkImpact = false;
-	public var mobSquashAndStrech = false;
+	public var physicalReactions = true;
+	public var blinkImpact = true;
+	public var mobSquashAndStrech = true;
 
 	@separator
-	public var blood = false;
-	public var cadavers = false;
+	public var blood = true;
+	public var cadavers = true;
 
 	@separator
-	public var sounds = false;
-	public var levelTextures = false;
-	public var lighting = false;
-	public var heroSprite = false;
+	public var sounds = true;
+	public var levelTextures = true;
+	public var lighting = true;
+	public var heroSprite = true;
 
 	public function new() {
-		#if debug
-		#end
 	}
 }
