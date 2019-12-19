@@ -29,6 +29,7 @@ class Options {
 	@separator
 	public var sounds = false;
 	public var levelTextures = false;
+	public var lighting = true;
 	public var heroSprite = true;
 
 	public function new() {

@@ -151,7 +151,7 @@ class Hero extends Entity {
 		if( options.gunShotFx )
 			fx.gunShot(centerX+dir*8, centerY-1, dir);
 
-		if( options.heroSprite && options.gunShotFx ) {
+		if( options.lighting ) {
 			fx.lightSpot(
 				centerX+dir*10 + rnd(0,3,true), centerY-1+rnd(0,3,true),
 				Color.interpolateInt(0xff0000,0xffcc00,rnd(0,1)),
