@@ -4119,6 +4119,7 @@ var Game = function() {
 		var out = Std.parseInt(Reflect.field(oe3.values,"life"));
 		e.life = Object.prototype.hasOwnProperty.call(oe3.values,"life") && out != null ? out : def;
 	}
+	new ui_Intro();
 	dn_Process.resizeAll();
 };
 $hxClasses["Game"] = Game;
@@ -55921,6 +55922,108 @@ ui_Modal.prototype = $extend(ui_Window.prototype,{
 	}
 	,__class__: ui_Modal
 });
+var ui_Intro = function() {
+	ui_Modal.call(this);
+	this.win.set_padding(8);
+	var t = new h2d_Text(Assets.fontMedium,this.win);
+	t.set_textColor(0);
+	t.set_text("Game-feel demonstration");
+	this.win.addSpacing(12);
+	var t1 = new h2d_Text(Assets.fontSmall,this.win);
+	t1.set_textColor(0);
+	t1.set_maxWidth(250);
+	t1.set_text("This prototype is not exactly an actual game. It was developed to " + "serve as a demonstration for a \"Game feel\" talk.\n\n" + "It shows the impact of small details on the overall quality of a game.\n\n" + "You will need a GAMEPAD to test it. You can enable or disable game " + "features in this demo by pressing the START button.\n\n" + "Press any key to continue.");
+	dn_Process.resizeAll();
+};
+$hxClasses["ui.Intro"] = ui_Intro;
+ui_Intro.__name__ = "ui.Intro";
+ui_Intro.__super__ = ui_Modal;
+ui_Intro.prototype = $extend(ui_Modal.prototype,{
+	update: function() {
+		ui_Modal.prototype.update.call(this);
+		var tmp;
+		var tmp1;
+		var _this = this.ca;
+		var k = 5;
+		var tmp2;
+		if(!(_this.manualLock || _this.parent.isLocked() || _this.parent.exclusiveId != null && _this.parent.exclusiveId != _this.id || Date.now() / 1000 < _this.parent.suspendTimer)) {
+			var tmp3;
+			var tmp4;
+			var k1 = _this.parent.primary.h[k];
+			if(!(k1 != null && !(_this.manualLock || _this.parent.isLocked() || _this.parent.exclusiveId != null && _this.parent.exclusiveId != _this.id || Date.now() / 1000 < _this.parent.suspendTimer) && hxd_Key.isPressed(k1))) {
+				var k2 = _this.parent.secondary.h[k];
+				tmp4 = k2 != null && !(_this.manualLock || _this.parent.isLocked() || _this.parent.exclusiveId != null && _this.parent.exclusiveId != _this.id || Date.now() / 1000 < _this.parent.suspendTimer) && hxd_Key.isPressed(k2);
+			} else {
+				tmp4 = true;
+			}
+			if(!tmp4) {
+				var k3 = _this.parent.third.h[k];
+				tmp3 = k3 != null && !(_this.manualLock || _this.parent.isLocked() || _this.parent.exclusiveId != null && _this.parent.exclusiveId != _this.id || Date.now() / 1000 < _this.parent.suspendTimer) && hxd_Key.isPressed(k3);
+			} else {
+				tmp3 = true;
+			}
+			tmp2 = tmp3 || _this.parent.gc.isPressed(k);
+		} else {
+			tmp2 = false;
+		}
+		if(!tmp2) {
+			var _this1 = this.ca;
+			var k4 = 0;
+			if(!(_this1.manualLock || _this1.parent.isLocked() || _this1.parent.exclusiveId != null && _this1.parent.exclusiveId != _this1.id || Date.now() / 1000 < _this1.parent.suspendTimer)) {
+				var tmp5;
+				var tmp6;
+				var k5 = _this1.parent.primary.h[k4];
+				if(!(k5 != null && !(_this1.manualLock || _this1.parent.isLocked() || _this1.parent.exclusiveId != null && _this1.parent.exclusiveId != _this1.id || Date.now() / 1000 < _this1.parent.suspendTimer) && hxd_Key.isPressed(k5))) {
+					var k6 = _this1.parent.secondary.h[k4];
+					tmp6 = k6 != null && !(_this1.manualLock || _this1.parent.isLocked() || _this1.parent.exclusiveId != null && _this1.parent.exclusiveId != _this1.id || Date.now() / 1000 < _this1.parent.suspendTimer) && hxd_Key.isPressed(k6);
+				} else {
+					tmp6 = true;
+				}
+				if(!tmp6) {
+					var k7 = _this1.parent.third.h[k4];
+					tmp5 = k7 != null && !(_this1.manualLock || _this1.parent.isLocked() || _this1.parent.exclusiveId != null && _this1.parent.exclusiveId != _this1.id || Date.now() / 1000 < _this1.parent.suspendTimer) && hxd_Key.isPressed(k7);
+				} else {
+					tmp5 = true;
+				}
+				tmp1 = tmp5 || _this1.parent.gc.isPressed(k4);
+			} else {
+				tmp1 = false;
+			}
+		} else {
+			tmp1 = true;
+		}
+		if(!tmp1) {
+			var _this2 = this.ca;
+			var k8 = 2;
+			if(!(_this2.manualLock || _this2.parent.isLocked() || _this2.parent.exclusiveId != null && _this2.parent.exclusiveId != _this2.id || Date.now() / 1000 < _this2.parent.suspendTimer)) {
+				var tmp7;
+				var tmp8;
+				var k9 = _this2.parent.primary.h[k8];
+				if(!(k9 != null && !(_this2.manualLock || _this2.parent.isLocked() || _this2.parent.exclusiveId != null && _this2.parent.exclusiveId != _this2.id || Date.now() / 1000 < _this2.parent.suspendTimer) && hxd_Key.isPressed(k9))) {
+					var k10 = _this2.parent.secondary.h[k8];
+					tmp8 = k10 != null && !(_this2.manualLock || _this2.parent.isLocked() || _this2.parent.exclusiveId != null && _this2.parent.exclusiveId != _this2.id || Date.now() / 1000 < _this2.parent.suspendTimer) && hxd_Key.isPressed(k10);
+				} else {
+					tmp8 = true;
+				}
+				if(!tmp8) {
+					var k11 = _this2.parent.third.h[k8];
+					tmp7 = k11 != null && !(_this2.manualLock || _this2.parent.isLocked() || _this2.parent.exclusiveId != null && _this2.parent.exclusiveId != _this2.id || Date.now() / 1000 < _this2.parent.suspendTimer) && hxd_Key.isPressed(k11);
+				} else {
+					tmp7 = true;
+				}
+				tmp = tmp7 || _this2.parent.gc.isPressed(k8);
+			} else {
+				tmp = false;
+			}
+		} else {
+			tmp = true;
+		}
+		if(tmp) {
+			this.close();
+		}
+	}
+	,__class__: ui_Intro
+});
 var ui_OptionsModal = function() {
 	this.curIdx = 0;
 	this.elements = [];
@@ -56495,6 +56598,32 @@ ui_OptionsModal.prototype = $extend(ui_Modal.prototype,{
 		if(tmp22) {
 			current.toggle();
 			Main.ME.startGame();
+		}
+		var _this23 = this.ca;
+		var k36 = 5;
+		var tmp28;
+		if(!(_this23.manualLock || _this23.parent.isLocked() || _this23.parent.exclusiveId != null && _this23.parent.exclusiveId != _this23.id || Date.now() / 1000 < _this23.parent.suspendTimer)) {
+			var tmp29;
+			var tmp30;
+			var k37 = _this23.parent.primary.h[k36];
+			if(!(k37 != null && !(_this23.manualLock || _this23.parent.isLocked() || _this23.parent.exclusiveId != null && _this23.parent.exclusiveId != _this23.id || Date.now() / 1000 < _this23.parent.suspendTimer) && hxd_Key.isPressed(k37))) {
+				var k38 = _this23.parent.secondary.h[k36];
+				tmp30 = k38 != null && !(_this23.manualLock || _this23.parent.isLocked() || _this23.parent.exclusiveId != null && _this23.parent.exclusiveId != _this23.id || Date.now() / 1000 < _this23.parent.suspendTimer) && hxd_Key.isPressed(k38);
+			} else {
+				tmp30 = true;
+			}
+			if(!tmp30) {
+				var k39 = _this23.parent.third.h[k36];
+				tmp29 = k39 != null && !(_this23.manualLock || _this23.parent.isLocked() || _this23.parent.exclusiveId != null && _this23.parent.exclusiveId != _this23.id || Date.now() / 1000 < _this23.parent.suspendTimer) && hxd_Key.isPressed(k39);
+			} else {
+				tmp29 = true;
+			}
+			tmp28 = tmp29 || _this23.parent.gc.isPressed(k36);
+		} else {
+			tmp28 = false;
+		}
+		if(tmp28) {
+			this.close();
 		}
 	}
 	,__class__: ui_OptionsModal
