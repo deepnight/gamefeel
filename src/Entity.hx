@@ -268,8 +268,8 @@ class Entity {
 		// Squash & stretch
 		spr.scaleX *= skewX;
 		spr.scaleY *= skewY;
-		skewX += (1-skewX)*0.2;
-		skewY += (1-skewY)*0.2;
+		skewX += (1-skewX)*0.2 * M.fmin(tmod,1);
+		skewY += (1-skewY)*0.2 * M.fmin(tmod,1);
 
 		// Temp offseting
 		spr.x+=animOffsetX;
