@@ -137,7 +137,10 @@ class Hero extends Entity {
 			animOffsetX+=-dir*rnd(1,3);
 		}
 
-		var b = new en.Bullet(this, options.randomizeBullets ? rnd(0, 2.5, true) : 0);
+		var off = options.randomizeBullets ? rnd(0, 2.5, true) : 0;
+		if( options.heroSprite )
+			off-=3;
+		var b = new en.Bullet(this, off);
 		if( options.randomizeBullets )
 			b.ang += 0.04 - rnd(0,0.065);
 		b.speed = options.randomizeBullets ? rnd(0.95,1.05) : 1;
@@ -146,10 +149,10 @@ class Hero extends Entity {
 		cd.setS("gunHolding", getLockS());
 
 		if( options.cartridges )
-			fx.cartridge(centerX, centerY, -dir);
+			fx.cartridge(b.footX, b.footY, -dir);
 
 		if( options.gunShotFx )
-			fx.gunShot(centerX+dir*8, centerY-1, dir);
+			fx.gunShot(b.footX+dir*8, b.footY-1, dir);
 
 		if( options.lighting ) {
 			fx.lightSpot(
