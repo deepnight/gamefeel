@@ -50,6 +50,10 @@ class Game extends Process {
 			e.life = oe.getInt("life",1);
 		}
 
+		#if !debug
+		new ui.Intro();
+		#end
+
 		Process.resizeAll();
 	}
 
