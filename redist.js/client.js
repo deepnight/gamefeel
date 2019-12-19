@@ -4119,7 +4119,10 @@ var Game = function() {
 		var out = Std.parseInt(Reflect.field(oe3.values,"life"));
 		e.life = Object.prototype.hasOwnProperty.call(oe3.values,"life") && out != null ? out : def;
 	}
-	new ui_Intro();
+	if(!Game.INTRO_DONE) {
+		Game.INTRO_DONE = true;
+		new ui_Intro();
+	}
 	dn_Process.resizeAll();
 };
 $hxClasses["Game"] = Game;
@@ -56861,6 +56864,7 @@ Const.DP_FX_FRONT = Const._inc++;
 Const.DP_UI = Const._inc++;
 Entity.ALL = [];
 Entity.GC = [];
+Game.INTRO_DONE = false;
 Options.__meta__ = { fields : { heroSquashAndStrech : { separator : null}, cartridges : { separator : null}, physicalReactions : { separator : null}, blood : { separator : null}, sounds : { separator : null}}};
 Xml.Element = 0;
 Xml.PCData = 1;
