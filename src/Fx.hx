@@ -12,6 +12,7 @@ class Fx extends dn.Process {
 	public var topNormalSb    : h2d.SpriteBatch;
 
 	var game(get,never) : Game; inline function get_game() return Game.ME;
+	var options(get,never) : Options; inline function get_options() return Main.ME.options;
 
 	public function new() {
 		super(Game.ME);
@@ -197,27 +198,29 @@ class Fx extends dn.Process {
 		p.lifeS = 0.12;
 
 		// Falling dots
-		for(i in 0...5) {
-			var p = allocTopAdd(getTile("pixel"), x, y+rnd(0,2,true));
-			p.setFadeS(rnd(0.5,0.9), 0, rnd(0.2, 0.5));
-			p.alphaFlicker = 0.4;
-			p.colorAnimS( Color.interpolateInt( 0xffd524, 0xff6606, rnd(0,1) ), 0x990000, rnd(0.3,2) );
-			p.dx = normalDir*rnd(0.3,2);
-			p.dy = rnd(-1,0.5);
-			p.gy = rnd(0.1, 0.2);
-			p.frict = rnd(0.92,0.95);
-			p.lifeS = rnd(0.4,2);
-			p.onUpdate = _physics;
-		}
+		if( options.burningFx )
+			for(i in 0...5) {
+				var p = allocTopAdd(getTile("pixel"), x, y+rnd(0,2,true));
+				p.setFadeS(rnd(0.5,0.9), 0, rnd(0.2, 0.5));
+				p.alphaFlicker = 0.4;
+				p.colorAnimS( Color.interpolateInt( 0xffd524, 0xff6606, rnd(0,1) ), 0x990000, rnd(0.3,2) );
+				p.dx = normalDir*rnd(0.3,2);
+				p.dy = rnd(-1,0.5);
+				p.gy = rnd(0.1, 0.2);
+				p.frict = rnd(0.92,0.95);
+				p.lifeS = rnd(0.4,2);
+				p.onUpdate = _physics;
+			}
 
 		// Stuck dots
-		for(i in 0...7) {
-			var p = allocTopAdd(getTile("pixel"), x+rnd(0,1,true)*-normalDir, y+rnd(0,6,true));
-			p.colorAnimS( Color.interpolateInt( 0xffd524, 0xff6606, rnd(0,1) ), 0x990000, rnd(0.3,2) );
-			p.setFadeS(rnd(0.5,0.9), rnd(0.2,0.4), rnd(1, 2));
-			p.alphaFlicker = 0.4;
-			p.lifeS = rnd(2,3);
-		}
+		if( options.burningFx )
+			for(i in 0...7) {
+				var p = allocTopAdd(getTile("pixel"), x+rnd(0,1,true)*-normalDir, y+rnd(0,6,true));
+				p.colorAnimS( Color.interpolateInt( 0xffd524, 0xff6606, rnd(0,1) ), 0x990000, rnd(0.3,2) );
+				p.setFadeS(rnd(0.5,0.9), rnd(0.2,0.4), rnd(1, 2));
+				p.alphaFlicker = 0.4;
+				p.lifeS = rnd(2,3);
+			}
 	}
 
 	public function hitEntity(x:Float, y:Float, normalDir:Int) {
@@ -233,18 +236,19 @@ class Fx extends dn.Process {
 		p.lifeS = 0.12;
 
 		// Falling dots
-		for(i in 0...5) {
-			var p = allocTopAdd(getTile("pixel"), x, y+rnd(0,2,true));
-			p.setFadeS(rnd(0.5,0.9), 0, rnd(0.2, 0.5));
-			p.alphaFlicker = 0.4;
-			p.colorAnimS( Color.interpolateInt( 0xffd524, 0xff6606, rnd(0,1) ), 0x990000, rnd(0.3,2) );
-			p.dx = normalDir*rnd(0.3,2);
-			p.dy = rnd(-1,0.5);
-			p.gy = rnd(0.1, 0.2);
-			p.frict = rnd(0.92,0.95);
-			p.lifeS = rnd(0.4,2);
-			p.onUpdate = _physics;
-		}
+		if( options.burningFx )
+			for(i in 0...5) {
+				var p = allocTopAdd(getTile("pixel"), x, y+rnd(0,2,true));
+				p.setFadeS(rnd(0.5,0.9), 0, rnd(0.2, 0.5));
+				p.alphaFlicker = 0.4;
+				p.colorAnimS( Color.interpolateInt( 0xffd524, 0xff6606, rnd(0,1) ), 0x990000, rnd(0.3,2) );
+				p.dx = normalDir*rnd(0.3,2);
+				p.dy = rnd(-1,0.5);
+				p.gy = rnd(0.1, 0.2);
+				p.frict = rnd(0.92,0.95);
+				p.lifeS = rnd(0.4,2);
+				p.onUpdate = _physics;
+			}
 	}
 
 	public function gunShot(x:Float, y:Float, dir:Int) {

@@ -16,6 +16,7 @@ class Options {
 	public var cartridges = false;
 	public var gunShotFx = false;
 	public var bulletImpactFx = false;
+	public var burningFx = false;
 
 	@separator
 	public var physicalReactions = false;
