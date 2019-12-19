@@ -212,6 +212,8 @@ class Hero extends Entity {
 				cd.unset("allowAirJump");
 				cd.setS("extraJumping",0.1);
 				cd.setS("reduceGravity",0.3);
+				if( options.heroSquashAndStrech )
+					skew(0.85,1.2);
 			}
 
 			if( onGround && ca.aPressed() ) {
@@ -221,6 +223,8 @@ class Hero extends Entity {
 				cd.setS("reduceGravity",0.1);
 				cd.setS("extraJumping", 0.1);
 				cd.setS("allowAirJump",Const.INFINITE);
+				if( options.heroSquashAndStrech )
+					skew(0.55,1.6);
 			}
 
 			// Dash
