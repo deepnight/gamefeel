@@ -137,5 +137,8 @@ class OptionsModal extends ui.Modal {
 			current.toggle();
 			Main.ME.startGame();
 		}
+
+		if( ca.startPressed() )
+			close();
 	}
 }
