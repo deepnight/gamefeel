@@ -4,9 +4,7 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.5.0</string>
-        <key>fileName</key>
-        <string>C:/Projects/deepnight/gamefeel/art/tiles.tps</string>
+        <string>4.12.1</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -129,22 +127,6 @@
                 <uint>1</uint>
             </struct>
         </struct>
-        <key>andEngine</key>
-        <struct type="AndEngine">
-            <key>minFilter</key>
-            <enum type="AndEngine::MinFilter">Linear</enum>
-            <key>packageName</key>
-            <string>Texture</string>
-            <key>wrap</key>
-            <struct type="AndEngineWrap">
-                <key>s</key>
-                <enum type="AndEngineWrap::Wrap">Clamp</enum>
-                <key>t</key>
-                <enum type="AndEngineWrap::Wrap">Clamp</enum>
-            </struct>
-            <key>magFilter</key>
-            <enum type="AndEngine::MagFilter">MagLinear</enum>
-        </struct>
         <key>dataFileNames</key>
         <map type="GFileNameMap">
             <key>data</key>
@@ -199,6 +181,70 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">export_mech/fxHalo0.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>16,16,32,32</rect>
+                <key>scale9Paddings</key>
+                <rect>16,16,32,32</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">export_mech/mechIdle0.png</key>
+            <key type="filename">export_mech/mechIdle1.png</key>
+            <key type="filename">export_mech/mechIdle2.png</key>
+            <key type="filename">export_mech/mechIdle3.png</key>
+            <key type="filename">export_mech/mechIdleWeapon0.png</key>
+            <key type="filename">export_mech/mechJumpDown0.png</key>
+            <key type="filename">export_mech/mechJumpUp0.png</key>
+            <key type="filename">export_mech/mechLand0.png</key>
+            <key type="filename">export_mech/mechLand1.png</key>
+            <key type="filename">export_mech/mechLand2.png</key>
+            <key type="filename">export_mech/mechRun0.png</key>
+            <key type="filename">export_mech/mechRun1.png</key>
+            <key type="filename">export_mech/mechRun2.png</key>
+            <key type="filename">export_mech/mechRunWeapon0.png</key>
+            <key type="filename">export_mech/mechRunWeapon1.png</key>
+            <key type="filename">export_mech/mechRunWeapon2.png</key>
+            <key type="filename">export_mech/mechShoot0.png</key>
+            <key type="filename">export_mech/mechShoot1.png</key>
+            <key type="filename">export_mech/mechShoot2.png</key>
+            <key type="filename">export_mech/mechShootLoad0.png</key>
+            <key type="filename">export_mech/mechShootLoad2.png</key>
+            <key type="filename">export_mech/mechShootLoad3.png</key>
+            <key type="filename">export_mech/mechShootLoad4.png</key>
+            <key type="filename">export_mech/mechShootLoad5.png</key>
+            <key type="filename">export_mech/mechShootLoad6.png</key>
+            <key type="filename">export_mech/mechShootLoad7.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>6,6,12,12</rect>
+                <key>scale9Paddings</key>
+                <rect>6,6,12,12</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">export_mech/mechShootLoad1.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>8,6,15,12</rect>
+                <key>scale9Paddings</key>
+                <rect>8,6,15,12</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">export_tiles/empty.png</key>
             <key type="filename">export_tiles/pixel.png</key>
             <struct type="IndividualSpriteSettings">
@@ -297,6 +343,7 @@
         <key>fileList</key>
         <array>
             <filename>export_tiles</filename>
+            <filename>export_mech</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -8,15 +8,36 @@ class Hero extends Entity {
 	public function new(x,y) {
 		super(x,y);
 		ca = Main.ME.controller.createAccess("hero");
-
 		var c = options.baseArt ? 0x00ff00 : 0xffffff;
-		var g = new h2d.Graphics(spr);
-		g.beginFill(Color.interpolateInt(c,0x0,0.4));
-		g.drawRect(-radius, -hei, radius*2, hei);
-		g.endFill();
 
+		if( options.heroSprite ) {
+			// Real animations
+			spr.anim.registerStateAnim("mechJumpUp",4, function() return !onGround && dy<0);
+			spr.anim.registerStateAnim("mechJumpDown",4, function() return !onGround && dy>=0);
+			spr.anim.registerStateAnim("mechLand",3, function() return onGround && cd.has("landed"));
+			spr.anim.registerStateAnim("mechShootLoad",2, 0.7, function() return isChargingAction("shoot") || cd.has("gunHolding"));
+
+			// spr.anim.registerStateAnim("mechWalkWeapon",2, 1.0 /* Speed is set in update */, function() return isCarryingAnything() && getCurrentVelocity()>=0.0001 );
+
+			spr.anim.registerStateAnim("mechRun",1, 0.45, function() return M.fabs(dxTotal)>=0.010 );
+			// spr.anim.registerStateAnim("mechWalkWeapon",1, 1.0 /* Speed is set in update */, function() return weaponReady && !cd.has("running") && getCurrentVelocity()>=0.0001 );
+
+			// spr.anim.registerStateAnim("mechRun",1, 0.35 /* Speed is set in update */, function() return !weaponReady && cd.has("running") && getCurrentVelocity()>=0.010 );
+			// spr.anim.registerStateAnim("mechWalk",1, 1.0 /* Speed is set in update */, function() return !weaponReady && !cd.has("running") && getCurrentVelocity()>=0.0001 );
+
+			spr.anim.registerStateAnim("mechIdle",0, 0.25);
+		}
+		else {
+			// Hero placeholder
+			var g = new h2d.Graphics(spr);
+			g.beginFill(Color.interpolateInt(c,0x0,0.4));
+			g.drawRect(-radius, -hei, radius*2, hei);
+			g.endFill();
+		}
+
+		// Gun placeholder
 		gun = new h2d.Graphics(spr);
-		gun.visible = options.baseArt;
+		gun.visible = options.baseArt && !options.heroSprite;
 		gun.beginFill(Color.interpolateInt(c,0x0,0.2)); gun.drawRect(3,-1,4,4); // back hand
 		gun.beginFill(0xffffff); gun.drawRect(-3,-5,12,6); // gun
 		gun.beginFill(c); gun.drawRect(-2,0,4,4); // front hand
@@ -33,6 +54,7 @@ class Hero extends Entity {
 		super.onLand(cHei);
 
 		var pow = M.fclamp((cHei-2)/6, 0, 1);
+			cd.setS("landed", 0.5*pow);
 
 		if( cHei>=4 ) {
 			Assets.SBANK.stepHeavy0().playOnGroup(2,0.33);
@@ -55,8 +77,9 @@ class Hero extends Entity {
 		if( options.camShakesZoom )
 			game.camera.bumpZoom(0.03*pow);
 
-		if( options.controlLocks ) {
-			dx*=0.5;
+		if( options.controlLocks && cHei>2 ) {
+			var pow = M.fclamp((cHei-2)/6, 0, 1);
+			dx*=(1-0.5)*pow;
 			lockS( 0.2*pow );
 			cd.setS("walkLock",0.75*pow);
 		}
@@ -65,6 +88,9 @@ class Hero extends Entity {
 			var pow = M.fclamp(cHei/6, 0, 1);
 			skew(1+0.4*pow, 1-0.8*pow);
 		}
+
+		if( options.heroSprite && cHei>=3 )
+			fx.landSmoke(footX, footY);
 	}
 
 	override function postUpdate() {
@@ -115,6 +141,7 @@ class Hero extends Entity {
 		if( options.randomizeBullets )
 			b.ang += 0.04 - rnd(0,0.065);
 		b.speed = options.randomizeBullets ? rnd(0.95,1.05) : 1;
+		lockS(0.1);
 		cd.setS("gunRecoil", 0.1);
 		cd.setS("gunHolding", getLockS());
 
@@ -123,6 +150,14 @@ class Hero extends Entity {
 
 		if( options.gunShotFx )
 			fx.gunShot(centerX+dir*8, centerY-1, dir);
+
+		if( options.heroSprite && options.gunShotFx ) {
+			fx.lightSpot(
+				centerX+dir*10 + rnd(0,3,true), centerY-1+rnd(0,3,true),
+				Color.interpolateInt(0xff0000,0xffcc00,rnd(0,1)),
+				0.2
+			);
+		}
 	}
 
 	override function getGravity():Float {
@@ -141,6 +176,17 @@ class Hero extends Entity {
 			dir = 1;
 		else if( ca.leftDown() )
 			dir = -1;
+
+		// Run step frames
+		if( options.heroSprite && ( spr.groupName=="mechRun" || spr.groupName=="mechRunWeapon" ) && spr.frame==1 && !cd.hasSetS("runCycleBreak"+spr.frame, 0.25) ) {
+			// Run
+			dx *= 0.4;
+			dy *= 0.4;
+			if( options.camShakesXY ) {
+				game.camera.bumpXY(0,0.5);
+				game.camera.shakeY(0.3,0.2);
+			}
+		}
 
 		if( canAct() ) {
 			// Walk
@@ -193,6 +239,9 @@ class Hero extends Entity {
 
 				cd.setS("dashing", 0.08);
 				lockS( cd.getS("dashing")+0.1 );
+
+				if( options.heroSprite )
+					dy-=0.1;
 			}
 
 			// Shoot
@@ -217,7 +266,6 @@ class Hero extends Entity {
 			burstCount--;
 			Assets.SBANK.gun0().playOnGroup(1,0.8);
 			shoot();
-			lockS(0.05);
 			if( burstCount<=0 && !options.gunAiming )
 				lockS(0.35); // to compensate for the missing aiming phase
 		}

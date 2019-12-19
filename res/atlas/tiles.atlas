@@ -1,75 +1,271 @@
 
 tiles.png
-size: 64,64
+size: 128,256
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 empty
   rotate: false
-  xy: 18, 61
+  xy: 118, 22
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 fxCartridge0
   rotate: false
-  xy: 59, 1
+  xy: 118, 18
   size: 4, 3
   orig: 4, 3
   offset: 0, 0
   index: -1
 fxCircle
   rotate: false
-  xy: 1, 46
+  xy: 111, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 fxDot
   rotate: false
-  xy: 59, 5
+  xy: 123, 18
   size: 3, 3
   orig: 3, 3
   offset: 0, 0
   index: -1
+fxHalo0
+  rotate: false
+  xy: 1, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 fxLine
   rotate: false
-  xy: 25, 54
+  xy: 66, 46
   size: 33, 3
   orig: 33, 3
   offset: 0, 0
   index: -1
 fxLineDir0
   rotate: false
-  xy: 25, 58
+  xy: 66, 50
   size: 33, 3
   orig: 33, 3
   offset: 0, 0
   index: -1
 fxShoot0
   rotate: false
-  xy: 18, 46
+  xy: 100, 46
   size: 25, 7
   orig: 25, 7
   offset: 0, 0
   index: -1
 fxSmallCircle
   rotate: false
-  xy: 18, 54
+  xy: 111, 18
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
   index: -1
 fxSmoke0
   rotate: false
-  xy: 1, 1
+  xy: 66, 1
   size: 44, 44
   orig: 44, 44
   offset: 0, 0
   index: -1
+mechIdle0
+  rotate: false
+  xy: 97, 54
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechIdle1
+  rotate: false
+  xy: 1, 66
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechIdle2
+  rotate: false
+  xy: 26, 66
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechIdle3
+  rotate: false
+  xy: 51, 79
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechIdleWeapon0
+  rotate: false
+  xy: 1, 91
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechJumpDown0
+  rotate: false
+  xy: 26, 91
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechJumpUp0
+  rotate: false
+  xy: 76, 79
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechLand0
+  rotate: false
+  xy: 101, 79
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechLand1
+  rotate: false
+  xy: 51, 104
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechLand2
+  rotate: false
+  xy: 1, 116
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechRun0
+  rotate: false
+  xy: 26, 116
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechRun1
+  rotate: false
+  xy: 76, 104
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechRun2
+  rotate: false
+  xy: 101, 104
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechRunWeapon0
+  rotate: false
+  xy: 51, 129
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechRunWeapon1
+  rotate: false
+  xy: 1, 141
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechRunWeapon2
+  rotate: false
+  xy: 26, 141
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechShoot0
+  rotate: false
+  xy: 76, 129
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechShoot1
+  rotate: false
+  xy: 101, 129
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechShoot2
+  rotate: false
+  xy: 1, 91
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechShootLoad0
+  rotate: false
+  xy: 51, 154
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechShootLoad1
+  rotate: false
+  xy: 66, 54
+  size: 30, 24
+  orig: 30, 24
+  offset: 0, 0
+  index: -1
+mechShootLoad2
+  rotate: false
+  xy: 1, 166
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechShootLoad3
+  rotate: false
+  xy: 26, 166
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechShootLoad4
+  rotate: false
+  xy: 76, 154
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechShootLoad5
+  rotate: false
+  xy: 101, 154
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechShootLoad6
+  rotate: false
+  xy: 1, 191
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mechShootLoad7
+  rotate: false
+  xy: 1, 91
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
 pixel
   rotate: false
-  xy: 20, 61
+  xy: 120, 22
   size: 1, 1
   orig: 1, 1
   offset: 0, 0

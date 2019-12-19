@@ -313,6 +313,38 @@ class Fx extends dn.Process {
 		p.data1 = p.y - e.footY;
 	}
 
+	public function lightSpot(x:Float, y:Float, c:UInt, a=1.0) {
+		var p = allocTopAdd(getTile("fxHalo"), x,y);
+		p.setScale(rnd(2,3));
+		p.setFadeS(a, 0, 0.3);
+		p.colorize(c);
+		p.ds = 0.1;
+		p.dsFrict = 0.9;
+		p.scaleMul = 0.92;
+		p.lifeS = 0.1;
+	}
+
+	public function landSmoke(x:Float, y:Float) {
+		var c = 0xb78662;
+		for(i in 0...20) {
+			var dir = i%2==0 ? 1 : -1;
+			var p = allocTopNormal(getTile("fxSmoke"), x+rnd(0,6)*dir, y+rnd(0,2,true));
+			p.colorize(c);
+			p.setFadeS(rnd(0.1,0.2), 0.1, rnd(0.3,1.5));
+
+			p.setScale(rnd(0.3,0.5,true));
+			p.scaleMul = rnd(1,1.002);
+
+			p.dx = rnd(0.1,1) * dir;
+			p.dy = -rnd(0.1,0.4);
+			p.frict = rnd(0.92,0.94);
+
+			p.rotation = rnd(0,6.28);
+			p.dr = rnd(0,0.002,true);
+			p.lifeS = rnd(0.3,0.9);
+		}
+	}
+
 	public function bloodBackHits(x:Float, y:Float, dir:Int, qty=1.0) {
 		// Hit line
 		var ang = (dir==1?0:M.PI) + rnd(0,0.1,true);
