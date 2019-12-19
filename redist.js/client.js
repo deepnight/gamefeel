@@ -10984,23 +10984,26 @@ en_Hero.prototype = $extend(Entity.prototype,{
 			}
 			this.animOffsetX += -this.dir * (sign1 ? (1 + Math.random() * 2) * (Std.random(2) * 2 - 1) : 1 + Math.random() * 2);
 		}
-		var b;
+		var off;
 		if(Main.ME.options.randomizeBullets) {
 			var sign2 = true;
 			if(sign2 == null) {
 				sign2 = false;
 			}
-			b = sign2 ? Math.random() * 2.5 * (Std.random(2) * 2 - 1) : Math.random() * 2.5;
+			off = sign2 ? Math.random() * 2.5 * (Std.random(2) * 2 - 1) : Math.random() * 2.5;
 		} else {
-			b = 0;
+			off = 0;
 		}
-		var b1 = new en_Bullet(this,b);
+		if(Main.ME.options.heroSprite) {
+			off -= 3;
+		}
+		var b = new en_Bullet(this,off);
 		if(Main.ME.options.randomizeBullets) {
 			var sign3 = null;
 			if(sign3 == null) {
 				sign3 = false;
 			}
-			b1.ang += 0.04 - (sign3 ? Math.random() * 0.065 * (Std.random(2) * 2 - 1) : Math.random() * 0.065);
+			b.ang += 0.04 - (sign3 ? Math.random() * 0.065 * (Std.random(2) * 2 - 1) : Math.random() * 0.065);
 		}
 		var tmp;
 		if(Main.ME.options.randomizeBullets) {
@@ -11012,7 +11015,7 @@ en_Hero.prototype = $extend(Entity.prototype,{
 		} else {
 			tmp = 1;
 		}
-		b1.speed = tmp;
+		b.speed = tmp;
 		this.lockS(0.1);
 		var _this1 = this.cd;
 		var frames = 0.1 * this.cd.baseFps;
@@ -11097,10 +11100,10 @@ en_Hero.prototype = $extend(Entity.prototype,{
 			}
 		}
 		if(Main.ME.options.cartridges) {
-			Game.ME.fx.cartridge((this.cx + this.xr) * Const.GRID,(this.cy + this.yr) * Const.GRID - this.hei * 0.5,-this.dir);
+			Game.ME.fx.cartridge((b.cx + b.xr) * Const.GRID,(b.cy + b.yr) * Const.GRID,-this.dir);
 		}
 		if(Main.ME.options.gunShotFx) {
-			Game.ME.fx.gunShot((this.cx + this.xr) * Const.GRID + this.dir * 8,(this.cy + this.yr) * Const.GRID - this.hei * 0.5 - 1,this.dir);
+			Game.ME.fx.gunShot((b.cx + b.xr) * Const.GRID + this.dir * 8,(b.cy + b.yr) * Const.GRID - 1,this.dir);
 		}
 		if(Main.ME.options.lighting) {
 			var tmp1 = Game.ME.fx;
