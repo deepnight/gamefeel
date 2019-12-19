@@ -2,6 +2,7 @@ import dn.Process;
 import hxd.Key;
 
 class Game extends Process {
+	static var INTRO_DONE = false;
 	public static var ME : Game;
 
 	public var ca : dn.heaps.Controller.ControllerAccess;
@@ -51,7 +52,10 @@ class Game extends Process {
 		}
 
 		#if !debug
-		new ui.Intro();
+		if( !INTRO_DONE ) {
+			INTRO_DONE = true;
+			new ui.Intro();
+		}
 		#end
 
 		Process.resizeAll();
