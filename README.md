@@ -10,6 +10,29 @@ You will need a GAMEPAD to test it. You can enable or disable game features in t
 
 You should read the instructions on my GameBase project (https://github.com/deepnight/gameBase).
 
+# Running
+
+Your goal is to produce the bin/client.js file
+
+Run
+
+haxe js.hxml
+
+# TroubleShooting
+
+Lame Exception
+
+You may need to install lame if you get an exception (https://www.rarewares.org/mp3-lame-bundle.php).
+
+Add lame to your haxe toolkit and path also as well as the tools described in the install instructions.
+
+Castle Issues
+
+Alternatively install this from git:
+
+haxelib git castle https://github.com/ncannasse/castle
+
+
 # Credits
 
 Tileset: https://kronbits.itch.io/inca-game-assets
