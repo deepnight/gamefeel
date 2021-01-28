@@ -15,8 +15,8 @@ class Intro extends ui.Modal {
 		t.textColor = 0x0;
 		t.maxWidth = 250;
 		t.text = "This prototype is not exactly an actual game.\n\n"+
-			"It shows the impact of small details on the overall final quality and 'game feel'.\n\n"+
-			"To toggle game features: press gamepad START, or keyboard ENTER.\n\n"+
+			"It shows the impact and importance of small details on the global 'feeling' of a game. If you wonder why Dead Cells feels right, this demo explains just that.\n\n"+
+			"To toggle features: press gamepad START, or keyboard ENTER.\n\n"+
 			"Press any key to continue.";
 
 		dn.Process.resizeAll();
