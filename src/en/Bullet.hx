@@ -40,8 +40,7 @@ class Bullet extends Entity {
 	}
 
 	function onBulletHitWall(hitX:Float,hitY:Float) {
-		if( options.bulletImpactFx )
-			fx.hitWall( hitX, hitY, M.radDistance(ang,0)<=M.PIHALF ? -1 : 1 );
+		fx.hitWall( hitX, hitY, M.radDistance(ang,0)<=M.PIHALF ? -1 : 1 );
 		destroy();
 	}
 
