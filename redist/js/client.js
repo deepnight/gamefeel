@@ -4162,6 +4162,9 @@ var Game = function() {
 	this.slowMoIndicator.set_visible(Boot.ME.speed < 1);
 	this.scroller = new h2d_Layers();
 	this.root.addChildAt(this.scroller,Const.DP_BG);
+	var tf = new h2d_Text(Assets.fontSmall);
+	this.root.addChildAt(tf,Const.DP_UI);
+	tf.set_text("Press ENTER (keyboard) or START (gamepad) to toggle options");
 	this.camera = new Camera();
 	this.camera.clampOnBounds = false;
 	this.level = new Level();
@@ -4865,7 +4868,9 @@ var Main = function(s) {
 	this.controller.bind(4,82);
 	this.controller.bind(5,13);
 	this.options = new Options();
-	this.startGame();
+	hxd_snd_Manager.get();
+	this.delayer.addF(null,$bind(this,this.startGame),1);
+	hxd_Timer.skip();
 };
 $hxClasses["Main"] = Main;
 Main.__name__ = "Main";
@@ -58506,7 +58511,7 @@ var ui_Intro = function() {
 	var t = new h2d_Text(Assets.fontSmall,this.win);
 	t.set_textColor(0);
 	t.set_maxWidth(250);
-	t.set_text("This prototype is not exactly an actual game. It was developed to " + "serve as a demonstration for a \"Game feel\" talk.\n\n" + "It shows the impact of small details on the overall quality of a game.\n\n" + "You will need a GAMEPAD to test it. You can enable or disable game " + "features in this demo by pressing the START button.\n\n" + "Press any key to continue.");
+	t.set_text("This prototype is not exactly an actual game.\n\n" + "It shows the impact and importance of small details on the global 'feeling' of a game. If you wonder why Dead Cells feels right, this demo explains just that.\n\n" + "To toggle features: press gamepad START, or keyboard ENTER.\n\n" + "Press any key to continue.");
 	dn_Process.resizeAll();
 };
 $hxClasses["ui.Intro"] = ui_Intro;
