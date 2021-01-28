@@ -45,7 +45,9 @@ class Main extends dn.Process {
 
 		// Start
 		options = new Options();
-		startGame();
+		hxd.snd.Manager.get(); // force sound init
+		delayer.addF(startGame, 1);
+		hxd.Timer.skip();
 	}
 
 	public function startGame() {
