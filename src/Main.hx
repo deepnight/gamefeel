@@ -38,10 +38,10 @@ class Main extends dn.Process {
 		ca = controller.createAccess("main");
 		controller.bind(AXIS_LEFT_X_NEG, Key.LEFT, Key.Q, Key.A);
 		controller.bind(AXIS_LEFT_X_POS, Key.RIGHT, Key.D);
-		controller.bind(X, Key.X, Key.CTRL, Key.SHIFT);
-		controller.bind(A, Key.SPACE);
+		controller.bind(X, Key.X, Key.CTRL, Key.SHIFT, Key.SPACE);
+		controller.bind(A, Key.UP);
 		controller.bind(SELECT, Key.R);
-		controller.bind(START, Key.N);
+		controller.bind(START, Key.ENTER);
 
 		// Start
 		options = new Options();
