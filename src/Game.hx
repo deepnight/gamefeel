@@ -35,6 +35,10 @@ class Game extends Process {
 		scroller = new h2d.Layers();
 		root.add(scroller, Const.DP_BG);
 
+		var tf = new h2d.Text(Assets.fontSmall);
+		root.add(tf, Const.DP_UI);
+		tf.text = "Press ENTER (keyboard) or START (gamepad) to toggle options";
+
 		camera = new Camera();
 		camera.clampOnBounds = false;
 		level = new Level();
