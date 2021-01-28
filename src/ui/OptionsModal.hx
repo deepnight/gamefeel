@@ -1,5 +1,7 @@
 package ui;
 
+import hxd.Key as K;
+
 class OptionsModal extends ui.Modal {
 	var options(get,never) : Options; inline function get_options() return Main.ME.options;
 	var elements : Array<{ f:h2d.Flow, toggle:Void->Void, getter:Void->Bool, setter:Bool->Void }> = [];
@@ -13,6 +15,7 @@ class OptionsModal extends ui.Modal {
 
 		win.layout = Horizontal;
 		win.verticalAlign = Top;
+		win.padding = 16;
 
 		list = new h2d.Flow(win);
 		list.layout = Vertical;
@@ -40,7 +43,14 @@ class OptionsModal extends ui.Modal {
 		help.horizontalAlign = Right;
 		help.layout = Vertical;
 		help.paddingLeft = 32;
-		for(h in ["A - Toggle", "Y - Toggle all before", "LB - Disable all", "RB - Enable all"]) {
+		var helpLines = [
+			"GAMEPAD:",
+			"A - Toggle", "Y - Toggle all before", "LB - Disable all", "RB - Enable all",
+			" ", "KEYBOARD:",
+			"ENTER - Toggle", "PAGE UP - Toggle all before", "DEL - Disable all", "A - Enable ALL"
+		];
+
+		for(h in helpLines) {
 			var t = new h2d.Text(Assets.fontSmall, help);
 			t.text = h;
 			t.textColor = 0x7f7f7f;
@@ -85,6 +95,9 @@ class OptionsModal extends ui.Modal {
 
 	override function update() {
 		super.update();
+		/**
+			WARNING: the following code was fixed in a quite DIRTY way to support keyboard keys. Do not use this as some good practice example :)
+		**/
 
 		var current = elements[curIdx];
 		cursor.y = current.f.y;
@@ -92,21 +105,30 @@ class OptionsModal extends ui.Modal {
 		cursor.scaleY = current.f.outerHeight;
 
 		// Move cursor
-		if( ca.downDown() && !cd.has("autoFireLock") ) {
+		if( ( ca.downDown() || ca.isKeyboardDown(K.DOWN) ) && !cd.has("autoFireLock") ) {
 			curIdx = M.imin( curIdx+1, elements.length-1 );
-			cd.setS("autoFireLock", !cd.hasSetS("autoFireFirst",Const.INFINITE) ? 0.16 : 0.04);
+			if( ca.downDown() )
+				cd.setS("autoFireLock", !cd.hasSetS("autoFireInitPad",Const.INFINITE) ? 0.16 : 0.04);
+			else
+				cd.setS("autoFireLock", !cd.hasSetS("autoFireInitKB",Const.INFINITE) ? 0.16 : 0.04);
 		}
 
-		if( ca.upDown() && !cd.has("autoFireLock") ) {
+		if( ( ca.upDown() || ca.isKeyboardDown(K.UP) ) && !cd.has("autoFireLock") ) {
 			curIdx = M.imax( curIdx-1, 0 );
-			cd.setS("autoFireLock", !cd.hasSetS("autoFireFirst",Const.INFINITE) ? 0.16 : 0.04);
+			if( ca.upDown() )
+				cd.setS("autoFireLock", !cd.hasSetS("autoFireInitPad",Const.INFINITE) ? 0.16 : 0.04);
+			else
+				cd.setS("autoFireLock", !cd.hasSetS("autoFireInitKB",Const.INFINITE) ? 0.16 : 0.04);
 		}
 
 		if( !ca.downDown() && !ca.upDown() )
-			cd.unset("autoFireFirst");
+			cd.unset("autoFireInitPad");
+
+		if( !ca.isKeyboardDown(K.UP) && !ca.isKeyboardDown(K.DOWN) )
+			cd.unset("autoFireInitKB");
 
 		// Enable/disable all before
-		if( ca.yPressed() ) {
+		if( ca.yPressed() || ca.isKeyboardPressed(K.PGUP) ) {
 			var curValue = current.getter();
 			for(e in elements)
 				e.setter(false);
@@ -119,26 +141,26 @@ class OptionsModal extends ui.Modal {
 		}
 
 		// Disable all
-		if( ca.lbPressed() ) {
+		if( ca.lbPressed() || ca.isKeyboardPressed(K.DELETE) ) {
 			for(e in elements)
 				e.setter(false);
 			Main.ME.startGame();
 		}
 
 		// Enable all
-		if( ca.rbPressed() ) {
+		if( ca.rbPressed() || ca.isKeyboardPressed(K.A) ) {
 			for(e in elements)
 				e.setter(true);
 			Main.ME.startGame();
 		}
 
 		// Toggle current
-		if( ca.xPressed() || ca.aPressed() ) {
+		if( ca.xPressed() || ca.aPressed() && !ca.isKeyboardDown(K.UP) || ca.isKeyboardPressed(K.ENTER) ) {
 			current.toggle();
 			Main.ME.startGame();
 		}
 
-		if( ca.startPressed() )
+		if( ca.startPressed() && !ca.isKeyboardDown(K.ENTER) || ca.isKeyboardPressed(K.ESCAPE) )
 			close();
 	}
 }
