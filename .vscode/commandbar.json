@@ -4,10 +4,19 @@
 	"skipErrorMessage": true,
 	"commands": [
 		{
-			"text": "🍊 Build HL",
+			"text": "🍊 DX",
 			"color": "orange",
-			"commandType":"palette",
-			"command": "workbench.action.tasks.runTask|HL release",
+			"commandType":"exec",
+			"command": "haxe build.directx.hxml",
+			"alignment": "right",
+			"skipTerminateQuickPick": false,
+			"priority": -9
+		},
+		{
+			"text": "🍊 OpenGL",
+			"color": "orange",
+			"commandType":"exec",
+			"command": "haxe build.opengl.hxml",
 			"alignment": "right",
 			"skipTerminateQuickPick": false,
 			"priority": -10
@@ -21,10 +30,10 @@
 			"priority": -11
 		},
 		{
-			"text": "☕ Build JS",
+			"text": "☕ JS",
 			"color": "yellow",
-			"commandType":"palette",
-			"command": "workbench.action.tasks.runTask|JS release",
+			"commandType":"exec",
+			"command": "haxe build.js.hxml",
 			"alignment": "right",
 			"skipTerminateQuickPick": false,
 			"priority": -20
@@ -32,15 +41,23 @@
 		{
 			"text": "Run JS",
 			"color": "yellow",
-			"command": "start js.html",
+			"command": "start run_js.html",
 			"alignment": "right",
 			"skipTerminateQuickPick": false,
 			"priority": -21
 		},
 		{
+			"text": "🅰️ Lang",
+			"color": "white",
+			"command": "haxe tools.langParser.hxml",
+			"alignment": "right",
+			"skipTerminateQuickPick": false,
+			"priority": -40
+		},
+		{
 			"text": "📦 Redist",
 			"color": "lightgreen",
-			"command": "haxelib run redistHelper hl.dx.hxml js.hxml remotePresenterRemap.ahk -P Gamefeel -zip",
+			"command": "haxelib run redistHelper build.directx.hxml build.opengl.hxml build.js.hxml -o redist -p GameBase -zip",
 			"alignment": "right",
 			"skipTerminateQuickPick": false,
 			"priority": -50
