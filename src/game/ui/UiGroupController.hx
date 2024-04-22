@@ -381,22 +381,22 @@ class UiGroupController extends dn.Process {
 
 		// Init current
 		if( current==null && elements.length>0 )
-			if( !cd.hasSetS("firstInitDone",Const.INFINITE) || ca.isDown(MenuLeft) || ca.isDown(MenuRight) || ca.isDown(MenuUp) || ca.isDown(MenuDown) )
+			if( !cd.hasSetS("firstInitDone",Const.INFINITE) || ca.isDown(GA_MenuLeft) || ca.isDown(GA_MenuRight) || ca.isDown(GA_MenuUp) || ca.isDown(GA_MenuDown) )
 				focusElement(elements[0]);
 
 		// Move current
 		if( current!=null ) {
-			if( ca.isPressed(MenuOk) )
+			if( ca.isPressed(GA_MenuOk) )
 				current.comp.doUse();
 
-			if( ca.isPressedAutoFire(MenuLeft) )
+			if( ca.isPressedAutoFire(GA_MenuLeft) )
 				gotoNextDir(West);
-			else if( ca.isPressedAutoFire(MenuRight) )
+			else if( ca.isPressedAutoFire(GA_MenuRight) )
 				gotoNextDir(East);
 
-			if( ca.isPressedAutoFire(MenuUp) )
+			if( ca.isPressedAutoFire(GA_MenuUp) )
 				gotoNextDir(North);
-			else if( ca.isPressedAutoFire(MenuDown) )
+			else if( ca.isPressedAutoFire(GA_MenuDown) )
 				gotoNextDir(South);
 		}
 	}

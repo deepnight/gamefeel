@@ -1,28 +1,31 @@
 /**	This abstract enum is used by the Controller class to bind general game actions to actual keyboard keys or gamepad buttons. **/
 enum abstract GameAction(Int) to Int {
-	var MoveLeft;
-	var MoveRight;
-	var MoveUp;
-	var MoveDown;
+	var GA_MoveLeft;
+	var GA_MoveRight;
+	var GA_MoveUp;
+	var GA_MoveDown;
 
-	var Jump;
-	var Restart;
+	var GA_Dash;
+	var GA_Shoot;
+	var GA_Jump;
+	var GA_Restart;
 
-	var MenuLeft;
-	var MenuRight;
-	var MenuUp;
-	var MenuDown;
-	var MenuOk;
-	var MenuCancel;
-	var Pause;
+	var GA_MenuLeft;
+	var GA_MenuRight;
+	var GA_MenuUp;
+	var GA_MenuDown;
+	var GA_MenuOk;
+	var GA_MenuCancel;
 
-	var OpenConsoleFlags;
-	var ToggleDebugDrone;
-	var DebugDroneZoomIn;
-	var DebugDroneZoomOut;
-	var DebugTurbo;
-	var DebugSlowMo;
-	var ScreenshotMode;
+	var GA_Pause;
+
+	var GA_OpenConsoleFlags;
+	var GA_ToggleDebugDrone;
+	var GA_DebugDroneZoomIn;
+	var GA_DebugDroneZoomOut;
+	var GA_DebugTurbo;
+	var GA_DebugSlowMo;
+	var GA_ScreenshotMode;
 }
 
 /** Entity state machine. Each entity can only have 1 active State at a time. **/
@@ -50,4 +53,5 @@ enum abstract SlowMoId(Int) to Int {
 
 enum abstract ChargedActionId(Int) to Int {
 	var CA_Unknown;
+	var CA_Shoot;
 }

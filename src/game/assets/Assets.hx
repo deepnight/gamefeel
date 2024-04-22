@@ -11,6 +11,7 @@ class Assets {
 	public static var fontPixelMono : h2d.Font;
 
 	/** Main atlas **/
+	public static var hero : SpriteLib;
 	public static var tiles : SpriteLib;
 
 	public static var worldData : World;
@@ -27,6 +28,7 @@ class Assets {
 		fontPixelMono = new hxd.res.BitmapFont( hxd.Res.fonts.pixica_mono_regular_16_xml.entry ).toFont();
 
 		// build sprite atlas directly from Aseprite file
+		hero = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.hero.toAseprite());
 		tiles = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.tiles.toAseprite());
 
 		// LDtk init & parsing

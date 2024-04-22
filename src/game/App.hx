@@ -17,11 +17,14 @@ class App extends dn.Process {
 	/** If TRUE, game is paused, and a Contrast filter is applied **/
 	public var screenshotMode(default,null) = false;
 
+	public var options : Options;
+
 	public function new(s:h2d.Scene) {
 		super();
 		ME = this;
 		scene = s;
         createRoot(scene);
+		options = new Options();
 
 		hxd.Window.getInstance().addEventTarget(onWindowEvent);
 
@@ -116,8 +119,7 @@ class App extends dn.Process {
 	}
 
 	final function _createGameInstance() {
-		// new Game(); // <---- Uncomment this to start an empty Game instance
-		new sample.SampleGame(); // <---- Uncomment this to start the Sample Game instance
+		new Game();
 	}
 
 
@@ -227,54 +229,58 @@ class App extends dn.Process {
 		controller.removeBindings();
 
 		// Gamepad bindings
-		controller.bindPadLStick4(MoveLeft, MoveRight, MoveUp, MoveDown);
-		controller.bindPad(Jump, A);
-		controller.bindPad(Restart, SELECT);
-		controller.bindPad(Pause, START);
-		controller.bindPad(MoveLeft, DPAD_LEFT);
-		controller.bindPad(MoveRight, DPAD_RIGHT);
-		controller.bindPad(MoveUp, DPAD_UP);
-		controller.bindPad(MoveDown, DPAD_DOWN);
+		controller.bindPadLStick4(GA_MoveLeft, GA_MoveRight, GA_MoveUp, GA_MoveDown);
+		controller.bindPad(GA_Jump, A);
+		controller.bindPad(GA_Dash, B);
+		controller.bindPad(GA_Shoot, [X,Y,RT,LT,RB,LB]);
+		controller.bindPad(GA_Restart, SELECT);
+		controller.bindPad(GA_Pause, START);
+		controller.bindPad(GA_MoveLeft, DPAD_LEFT);
+		controller.bindPad(GA_MoveRight, DPAD_RIGHT);
+		controller.bindPad(GA_MoveUp, DPAD_UP);
+		controller.bindPad(GA_MoveDown, DPAD_DOWN);
 
-		controller.bindPad(MenuUp, [DPAD_UP, LSTICK_UP]);
-		controller.bindPad(MenuDown, [DPAD_DOWN, LSTICK_DOWN]);
-		controller.bindPad(MenuLeft, [DPAD_LEFT, LSTICK_LEFT]);
-		controller.bindPad(MenuRight, [DPAD_RIGHT, LSTICK_RIGHT]);
-		controller.bindPad(MenuOk, [A, X]);
-		controller.bindPad(MenuCancel, B);
+		controller.bindPad(GA_MenuUp, [DPAD_UP, LSTICK_UP]);
+		controller.bindPad(GA_MenuDown, [DPAD_DOWN, LSTICK_DOWN]);
+		controller.bindPad(GA_MenuLeft, [DPAD_LEFT, LSTICK_LEFT]);
+		controller.bindPad(GA_MenuRight, [DPAD_RIGHT, LSTICK_RIGHT]);
+		controller.bindPad(GA_MenuOk, [A, X]);
+		controller.bindPad(GA_MenuCancel, B);
 
 		// Keyboard bindings
-		controller.bindKeyboard(MoveLeft, [K.LEFT, K.Q, K.A]);
-		controller.bindKeyboard(MoveRight, [K.RIGHT, K.D]);
-		controller.bindKeyboard(MoveUp, [K.UP, K.Z, K.W]);
-		controller.bindKeyboard(MoveDown, [K.DOWN, K.S]);
-		controller.bindKeyboard(Jump, [K.SPACE,K.UP]);
-		controller.bindKeyboard(Restart, K.R);
-		controller.bindKeyboard(ScreenshotMode, K.F9);
-		controller.bindKeyboard(Pause, K.P);
-		controller.bindKeyboard(Pause, K.PAUSE_BREAK);
+		controller.bindKeyboard(GA_MoveLeft, [K.LEFT, K.Q, K.A]);
+		controller.bindKeyboard(GA_MoveRight, [K.RIGHT, K.D]);
+		controller.bindKeyboard(GA_MoveUp, [K.UP, K.Z, K.W]);
+		controller.bindKeyboard(GA_MoveDown, [K.DOWN, K.S]);
+		controller.bindKeyboard(GA_Jump, [K.SPACE,K.UP]);
+		controller.bindKeyboard(GA_Dash, [K.SHIFT,K.CTRL]);
+		controller.bindKeyboard(GA_Shoot, [K.F]);
+		controller.bindKeyboard(GA_Restart, K.R);
+		controller.bindKeyboard(GA_ScreenshotMode, K.F9);
+		controller.bindKeyboard(GA_Pause, K.P);
+		controller.bindKeyboard(GA_Pause, K.PAUSE_BREAK);
 
-		controller.bindKeyboard(MenuUp, [K.UP, K.Z, K.W]);
-		controller.bindKeyboard(MenuDown, [K.DOWN, K.S]);
-		controller.bindKeyboard(MenuLeft, [K.LEFT, K.Q, K.A]);
-		controller.bindKeyboard(MenuRight, [K.RIGHT, K.D]);
-		controller.bindKeyboard(MenuOk, [K.SPACE, K.ENTER, K.F]);
-		controller.bindKeyboard(MenuCancel, K.ESCAPE);
+		controller.bindKeyboard(GA_MenuUp, [K.UP, K.Z, K.W]);
+		controller.bindKeyboard(GA_MenuDown, [K.DOWN, K.S]);
+		controller.bindKeyboard(GA_MenuLeft, [K.LEFT, K.Q, K.A]);
+		controller.bindKeyboard(GA_MenuRight, [K.RIGHT, K.D]);
+		controller.bindKeyboard(GA_MenuOk, [K.SPACE, K.ENTER, K.F]);
+		controller.bindKeyboard(GA_MenuCancel, K.ESCAPE);
 
 		// Debug controls
 		#if debug
-		controller.bindPad(DebugTurbo, LT);
-		controller.bindPad(DebugSlowMo, LB);
-		controller.bindPad(DebugDroneZoomIn, RSTICK_UP);
-		controller.bindPad(DebugDroneZoomOut, RSTICK_DOWN);
+		controller.bindPad(GA_DebugTurbo, LT);
+		controller.bindPad(GA_DebugSlowMo, LB);
+		controller.bindPad(GA_DebugDroneZoomIn, RSTICK_UP);
+		controller.bindPad(GA_DebugDroneZoomOut, RSTICK_DOWN);
 
-		controller.bindKeyboard(DebugDroneZoomIn, K.PGUP);
-		controller.bindKeyboard(DebugDroneZoomOut, K.PGDOWN);
-		controller.bindKeyboard(DebugTurbo, [K.END, K.NUMPAD_ADD]);
-		controller.bindKeyboard(DebugSlowMo, [K.HOME, K.NUMPAD_SUB]);
-		controller.bindPadCombo(ToggleDebugDrone, [LSTICK_PUSH, RSTICK_PUSH]);
-		controller.bindKeyboardCombo(ToggleDebugDrone, [K.CTRL,K.SHIFT, K.D]);
-		controller.bindKeyboardCombo(OpenConsoleFlags, [[K.QWERTY_TILDE], [K.QWERTY_QUOTE], ["²".code], [K.CTRL,K.SHIFT, K.F]]);
+		controller.bindKeyboard(GA_DebugDroneZoomIn, K.PGUP);
+		controller.bindKeyboard(GA_DebugDroneZoomOut, K.PGDOWN);
+		controller.bindKeyboard(GA_DebugTurbo, [K.END, K.NUMPAD_ADD]);
+		controller.bindKeyboard(GA_DebugSlowMo, [K.HOME, K.NUMPAD_SUB]);
+		controller.bindPadCombo(GA_ToggleDebugDrone, [LSTICK_PUSH, RSTICK_PUSH]);
+		controller.bindKeyboardCombo(GA_ToggleDebugDrone, [K.CTRL,K.SHIFT, K.D]);
+		controller.bindKeyboardCombo(GA_OpenConsoleFlags, [[K.QWERTY_TILDE], [K.QWERTY_QUOTE], ["²".code], [K.CTRL,K.SHIFT, K.F]]);
 		#end
 	}
 
@@ -309,13 +315,13 @@ class App extends dn.Process {
         super.update();
 
 		if( !Window.hasAnyModal() ) {
-			if( ca.isPressed(ScreenshotMode) )
+			if( ca.isPressed(GA_ScreenshotMode) )
 				setScreenshotMode( !screenshotMode );
 
-			if( ca.isPressed(Pause) )
+			if( ca.isPressed(GA_Pause) )
 				toggleGamePause();
 
-			if( ca.isPressed(OpenConsoleFlags) )
+			if( ca.isPressed(GA_OpenConsoleFlags) )
 				Console.ME.runCommand("/flags");
 		}
 

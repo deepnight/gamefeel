@@ -45,12 +45,12 @@ class Boot extends hxd.App {
 		#if debug
 		if( App.exists() ) {
 			// Slow down (toggle)
-			if( ca.isPressed(DebugSlowMo)  )
+			if( ca.isPressed(GA_DebugSlowMo)  )
 				tmodSpeedMul = tmodSpeedMul>=1 ? 0.2 : 1;
 			adjustedTmod *= tmodSpeedMul;
 
 			// Turbo (by holding a key)
-			adjustedTmod *= ca.isDown(DebugTurbo) ? 5 : 1;
+			adjustedTmod *= ca.isDown(GA_DebugTurbo) ? 5 : 1;
 		}
 		#end
 

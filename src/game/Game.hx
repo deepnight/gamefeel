@@ -10,6 +10,8 @@ class Game extends AppChildProcess {
 	/** Basic viewport control **/
 	public var camera : Camera;
 
+	public var hero : en.Hero;
+
 	/** Container of all visual game objects. Ths wrapper is moved around by Camera. **/
 	public var scroller : h2d.Layers;
 
@@ -65,9 +67,11 @@ class Game extends AppChildProcess {
 		garbageCollectEntities();
 
 		level = new Level(l);
-		// <---- Here: instanciate your level entities
+		var inf = level.data.l_Entities.all_PlayerStart[0];
+		hero = new en.Hero(inf.cx, inf.cy);
 
 		camera.centerOnTarget();
+		camera.trackEntity(hero, true);
 		hud.onLevelStart();
 		dn.Process.resizeAll();
 		dn.Gc.runNow();
@@ -223,12 +227,12 @@ class Game extends AppChildProcess {
 
 			// Attach debug drone (CTRL-SHIFT-D)
 			#if debug
-			if( ca.isPressed(ToggleDebugDrone) )
+			if( ca.isPressed(GA_ToggleDebugDrone) )
 				new DebugDrone(); // <-- HERE: provide an Entity as argument to attach Drone near it
 			#end
 
 			// Restart whole game
-			if( ca.isPressed(Restart) )
+			if( ca.isPressed(GA_Restart) )
 				App.ME.startGame();
 
 		}

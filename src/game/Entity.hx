@@ -10,6 +10,7 @@ class Entity {
 	public var destroyed(default,null) = false;
 	public var ftime(get,never) : Float; inline function get_ftime() return game.ftime;
 	public var camera(get,never) : Camera; inline function get_camera() return game.camera;
+	public var options(get,never) : Options; inline function get_options() return App.ME.options;
 
 	var tmod(get,never) : Float; inline function get_tmod() return Game.ME.tmod;
 	var utmod(get,never) : Float; inline function get_utmod() return Game.ME.utmod;
@@ -39,6 +40,9 @@ class Entity {
 	/** Sub-grid Y coordinate (from 0.0 to 1.0) **/
     public var yr = 1.0;
 
+	public var onGround(get,never) : Bool;
+		inline function get_onGround() return yr==1 && level.hasCollision(cx,cy+1) && vBase.dy>=0;
+
 	var allVelocities : VelocityArray;
 
 	/** Base X/Y velocity of the Entity **/
@@ -53,6 +57,8 @@ class Entity {
 
 	/** If TRUE, the sprite display coordinates will be an interpolation between the last known position and the current one. This is useful if the gameplay happens in the `fixedUpdate()` (so at 30 FPS), but you still want the sprite position to move smoothly at 60 FPS or more. **/
 	var interpolateSprPos = true;
+
+	var fallStartPxY = 0.;
 
 	/** Total of all X velocities **/
 	public var dxTotal(get,never) : Float; inline function get_dxTotal() return allVelocities.getSumX();
@@ -562,6 +568,16 @@ class Entity {
 		return false;
 	}
 
+	public function getChargeRatio(id:ChargedActionId) {
+		if( !isAlive() )
+			return 0.;
+
+		for(a in actions)
+			if( a.id==id )
+				return a.elapsedRatio;
+		return 0.;
+	}
+
 	public function cancelAction(?onlyId:ChargedActionId) {
 		if( !isAlive() )
 			return;
@@ -771,13 +787,36 @@ class Entity {
 	}
 
 
+	function getGravityMul() return 1.0;
+
+
+	function onLand(cHei:Float) {}
 
 	/** Called at the beginning of each X movement step **/
 	function onPreStepX() {
+		// Right collision
+		if( xr>0.8 && level.hasCollision(cx+1,cy) )
+			xr = 0.8;
+
+		// Left collision
+		if( xr<0.2 && level.hasCollision(cx-1,cy) )
+			xr = 0.2;
 	}
 
 	/** Called at the beginning of each Y movement step **/
 	function onPreStepY() {
+		// Land on ground
+		if( yr>=1 && level.hasCollision(cx,cy+1) ) {
+			onLand( (attachY-fallStartPxY)/Const.GRID );
+			vBase.clear();
+			yr = 1;
+			onPosManuallyChangedY();
+			fallStartPxY = attachY;
+		}
+
+		// Ceiling collision
+		if( yr<0.2 && level.hasCollision(cx,cy-1) )
+			yr = 0.2;
 	}
 
 
@@ -786,6 +825,13 @@ class Entity {
 	**/
 	public function fixedUpdate() {
 		updateLastFixedUpdatePos();
+
+
+		if( !onGround )
+			vBase.dy += 0.05*getGravityMul();
+
+		if( onGround || dyTotal<=0 )
+			fallStartPxY = attachY;
 
 		/*
 			Stepping: any movement greater than 33% of grid size (ie. 0.33) will increase the number of `steps` here. These steps will break down the full movement into smaller iterations to avoid jumping over grid collisions.
