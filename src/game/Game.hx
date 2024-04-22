@@ -78,7 +78,6 @@ class Game extends AppChildProcess {
 
 		// Init misc stuff
 		camera.centerOnTarget();
-		camera.targetOffY = -10;
 		camera.trackEntity(hero, true);
 		hud.onLevelStart();
 		dn.Process.resizeAll();

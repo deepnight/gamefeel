@@ -18,6 +18,7 @@ class App extends dn.Process {
 	public var screenshotMode(default,null) = false;
 
 	public var options : Options;
+	var crt : dn.heaps.filter.Crt;
 
 	public function new(s:h2d.Scene) {
 		super();
@@ -197,10 +198,18 @@ class App extends dn.Process {
 		hxd.snd.Manager.get();
 		hxd.Timer.skip(); // needed to ignore heavy Sound manager init frame
 
+		crt = new dn.heaps.filter.Crt(2,White,0.2);
+		scene.filter = crt;
+
 		// Framerate
 		hxd.Timer.smoothFactor = 0.4;
 		hxd.Timer.wantedFPS = Const.FPS;
 		dn.Process.FIXED_UPDATE_FPS = Const.FIXED_UPDATE_FPS;
+	}
+
+	override function onResize() {
+		super.onResize();
+		crt.scanlineSize = Const.SCALE;
 	}
 
 
