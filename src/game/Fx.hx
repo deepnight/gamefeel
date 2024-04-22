@@ -368,6 +368,40 @@ class Fx extends GameChildProcess {
 		}
 	}
 
+	public function climbSmoke(x:Float, y:Float, climbDir:Int, alpha:Float) {
+		// Smoke
+		var col = new Col(0xb1664b);
+		for(i in 0...10) {
+			var p = allocMain_normal(D.tiles.fxSmoke, x+rnd(0,3,true), y+rnd(0,3,true));
+			p.colorize(col);
+			p.setFadeS(R.around(0.1)*alpha, 0.1, rnd(0.3,1.5));
+
+			p.setScale(rnd(0.2,0.3,true));
+			p.scaleMul = rnd(1,1.002);
+
+			p.dx = rnd(0.1,1) * -climbDir;
+			p.dy = -rnd(0.2,0.6);
+			p.frict = rnd(0.92,0.94);
+
+			p.rotation = R.fullCircle();
+			p.dr = rnd(0,0.002,true);
+			p.lifeS = rnd(0.3,0.9);
+		}
+
+		// Dirt
+		for(i in 0...20) {
+			var p = allocBg_normal(D.tiles.fxPixel, x+rnd(0,1,true), y+rnd(0,1,true));
+			p.setFadeS(0.3, 0, rnd(4,5));
+			p.colorizeRandomDarker(col, 0.2);
+			p.dx = -climbDir * rnd(0.2,2);
+			p.dy = rnd(-1,1);
+			p.gy = R.around(0.1, 5);
+			p.frict = 0.92;
+			p.onUpdate = _physics;
+			p.delayS = rnd(0,0.1);
+		}
+	}
+
 	public function doubleJump(x:Float, y:Float) {
 		var c = new Col(0x616986);
 		// for(i in 0...10) {

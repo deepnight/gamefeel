@@ -97,7 +97,7 @@ class Hero extends Entity {
 
 		if( options.heroSquashAndStrech ) {
 			var pow = 0.2 + 0.8 * M.fclamp(cHei/6, 0, 1);
-			setSquashY(1-0.8*pow);
+			setSquashY(1-0.5*pow);
 		}
 
 		if( options.movementFx && cHei>=3 )
@@ -211,7 +211,12 @@ class Hero extends Entity {
 		yr = 0.7;
 		lockControlS(0.15);
 		setSquashY(0.8);
-		spr.anim.playOverlap(D.hero.climbStep);
+
+		if( options.heroSprite )
+			spr.anim.playOverlap(D.hero.climbStep);
+
+		if( options.movementFx )
+			fx.climbSmoke((cx+0.5 + 0.5*dir)*Const.GRID, cy*Const.GRID, stepDir, 0.5);
 	}
 
 	function climbCliff(stepDir:Int) {
@@ -223,7 +228,12 @@ class Hero extends Entity {
 		yr = 0.7;
 		lockControlS(0.2);
 		setSquashY(0.8);
-		spr.anim.playOverlap(D.hero.climbStep);
+		
+		if( options.heroSprite )
+			spr.anim.playOverlap(D.hero.climbStep);
+
+		if( options.movementFx )
+			fx.climbSmoke((cx+0.5 + 0.5*dir)*Const.GRID, cy*Const.GRID, stepDir, 0.5);
 	}
 
 	override function onPreStepX() {
@@ -302,7 +312,7 @@ class Hero extends Entity {
 					fx.doubleJump(attachX, attachY);
 
 				if( options.heroSquashAndStrech )
-					setSquashX(0.85);
+					setSquashX(0.66);
 			}
 
 			if( ( onGround || cd.has("allowJitJump") ) && ctrlQueue.consumePressOrDown(A_Jump) ) {
