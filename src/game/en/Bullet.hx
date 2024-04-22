@@ -52,8 +52,10 @@ class Bullet extends Entity {
 	}
 
 	function onBulletHitWall(hitX:Float,hitY:Float) {
-		fx.hitWall( hitX, hitY, M.radDistance(ang,0)<=M.PIHALF ? -1 : 1 );
-		fx.lightSpot( hitX+rnd(0,5,true), hitY+rnd(0,5,true), new Col(0xff0000).to(0xffcc00,rnd(0,1)), 0.1);
+		fx.hitWall( hitX, hitY, M.radDistance(ang,0)<=M.PIHALF ? -1 : 1 ); // options check happens inside
+		
+		if( options.lighting )
+			fx.lightSpot( hitX+rnd(0,5,true), hitY+rnd(0,5,true), new Col(0xff0000).to(0xffcc00,rnd(0,1)), 0.1);
 
 		destroy();
 	}
