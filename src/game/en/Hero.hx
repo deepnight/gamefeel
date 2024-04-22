@@ -20,7 +20,7 @@ class Hero extends Entity {
 
 			// spr.anim.registerStateAnim("mechWalkWeapon",2, 1.0 /* Speed is set in update */, function() return isCarryingAnything() && getCurrentVelocity()>=0.0001 );
 
-			spr.anim.registerStateAnim(D.hero.run,1, function() return M.fabs(dxTotal)>=0.010 );
+			spr.anim.registerStateAnim(D.hero.run,1, function() return M.fabs(dxTotal)>=0.04 );
 			// spr.anim.registerStateAnim("mechWalkWeapon",1, 1.0 /* Speed is set in update */, function() return weaponReady && !cd.has("running") && getCurrentVelocity()>=0.0001 );
 
 			// spr.anim.registerStateAnim("mechRun",1, 0.35 /* Speed is set in update */, function() return !weaponReady && cd.has("running") && getCurrentVelocity()>=0.010 );
@@ -205,7 +205,7 @@ class Hero extends Entity {
 		if( !controlsLocked() ) {
 			// Walk
 			if( !cd.has("walkLock") ) {
-				var spd = (onGround ? 0.011 : 0.015 ) * cd.getRatio("airControl");
+				var spd = (onGround ? 0.015 : 0.015 ) * cd.getRatio("airControl");
 				if( ca.isDown(GA_MoveRight) ) {
 					vBase.dx+=spd*tmod;
 				}
@@ -213,8 +213,10 @@ class Hero extends Entity {
 					vBase.dx-=spd*tmod;
 				}
 				else
-					vBase.dx*=Math.pow(0.9,tmod); // braking
+					vBase.dx *= Math.pow(0.85,tmod); // braking
 			}
+
+			debug(M.pretty(vBase.dx,4));
 
 			// Jump
 			if( !onGround && cd.has("extraJumping") && ca.isDown(GA_Jump) )

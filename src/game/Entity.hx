@@ -212,7 +212,7 @@ class Entity {
 		actions = new RecyclablePool(15, ()->new tools.ChargedAction());
 
 		allVelocities = new VelocityArray(15);
-		vBase = registerNewVelocity(0.82);
+		vBase = registerNewVelocity(0.9);
 		vBump = registerNewVelocity(0.93);
 
         spr = new HSprite(Assets.tiles);
