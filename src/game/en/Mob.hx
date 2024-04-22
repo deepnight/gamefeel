@@ -6,7 +6,7 @@ class Mob extends Entity {
 	public function new(x,y) {
 		super(x,y);
 		ALL.push(this);
-		life.initMaxOnMax(10);
+		life.initMaxOnMax(7);
 
 		var g = new h2d.Graphics(spr);
 		g.beginFill(options.baseArt ? 0xffcc00 : 0xffffff);
