@@ -221,8 +221,6 @@ class Hero extends Entity {
 					vBase.dx *= Math.pow(0.85,tmod); // braking
 			}
 
-			debug(M.pretty(vBase.dx,4));
-
 			if( onGround )
 				cd.setS("allowJitJump",0.15);
 
