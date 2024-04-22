@@ -347,19 +347,70 @@ class Fx extends GameChildProcess {
 		p.lifeS = 0.1;
 	}
 
-	public function landSmoke(x:Float, y:Float) {
+	public function landSmoke(x:Float, y:Float, alpha:Float) {
 		var c = 0xb78662;
 		for(i in 0...20) {
 			var dir = i%2==0 ? 1 : -1;
 			var p = allocMain_normal(D.tiles.fxSmoke, x+rnd(0,6)*dir, y+rnd(0,2,true));
 			p.colorize(c);
-			p.setFadeS(rnd(0.1,0.2), 0.1, rnd(0.3,1.5));
+			p.setFadeS(rnd(0.1,0.2)*alpha, 0.1, rnd(0.3,1.5));
 
 			p.setScale(rnd(0.3,0.5,true));
 			p.scaleMul = rnd(1,1.002);
 
 			p.dx = rnd(0.1,1) * dir;
 			p.dy = -rnd(0.1,0.4);
+			p.frict = rnd(0.92,0.94);
+
+			p.rotation = rnd(0,6.28);
+			p.dr = rnd(0,0.002,true);
+			p.lifeS = rnd(0.3,0.9);
+		}
+	}
+
+	public function doubleJump(x:Float, y:Float) {
+		var c = new Col(0x616986);
+		// for(i in 0...10) {
+		// 	var dir = i%2==0 ? 1 : -1;
+		// 	var p = allocMain_normal(D.tiles.fxSmoke, x+rnd(0,2)*dir, y+rnd(0,2,true));
+		// 	p.colorize(c);
+		// 	p.setFadeS(R.around(0.1), 0.1, rnd(0.3,1.5));
+
+		// 	p.setScale(rnd(0.3,0.5,true));
+		// 	p.scaleMul = rnd(1,1.002);
+
+		// 	// p.dx = rnd(0.1,1) * dir;
+		// 	p.dy = rnd(0.1,0.6);
+		// 	p.frict = rnd(0.92,0.94);
+
+		// 	p.rotation = rnd(0,6.28);
+		// 	p.dr = rnd(0,0.002,true);
+		// 	p.lifeS = rnd(0.3,0.9);
+		// }
+
+		for(i in 0...15) {
+			var dir = i%2==0 ? 1 : -1;
+			var p = allocMain_add(D.tiles.fxLineFadeBoth, x+rnd(0,8)*dir, y-rnd(0,3));
+			p.colorize(c);
+			p.setFadeS(R.around(0.1), 0, rnd(0.1,0.2));
+
+			p.scaleX = rnd(0.2, 0.5, true);
+			p.dy = -rnd(0.5,1);
+			p.frict = R.around(0.8);
+			p.scaleMul = rnd(0.98,0.99);
+			p.lifeS = rnd(0.1,0.2);
+		}
+
+		for(i in 0...10) {
+			var dir = i%2==0 ? 1 : -1;
+			var p = allocMain_normal(D.tiles.fxSmoke, x+rnd(0,5)*dir, y+rnd(0,2,true));
+			p.colorize(c);
+			p.setFadeS(R.around(0.11), 0.1, rnd(0.3,1.5));
+
+			p.setScale(rnd(0.3,0.6,true));
+			p.scaleMul = rnd(1,1.002);
+
+			p.dy = -rnd(0.2,2);
 			p.frict = rnd(0.92,0.94);
 
 			p.rotation = rnd(0,6.28);

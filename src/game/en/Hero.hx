@@ -13,14 +13,16 @@ class Hero extends Entity {
 		if( options.heroSprite ) {
 			// Real animations
 			spr.set(Assets.hero, D.hero.idle);
+			spr.setCenterRatio();
 			spr.anim.registerStateAnim(D.hero.jumpUp,4, function() return !onGround && vBase.dy<0);
 			spr.anim.registerStateAnim(D.hero.jumpDown,4, function() return !onGround && vBase.dy>=0);
 			spr.anim.registerStateAnim(D.hero.land,3, function() return onGround && cd.has("landed"));
-			spr.anim.registerStateAnim(D.hero.idleWeapon,2, function() return isChargingAction(CA_Shoot) || cd.has("gunHolding"));
+			spr.anim.registerStateAnim(D.hero.runWeapon,2.1, function() return ( isChargingAction(CA_Shoot) || cd.has("gunHeld") ) && M.fabs(dxTotal)>=0.08);
+			spr.anim.registerStateAnim(D.hero.idleWeapon,2, function() return isChargingAction(CA_Shoot) || cd.has("gunHeld"));
 
 			// spr.anim.registerStateAnim("mechWalkWeapon",2, 1.0 /* Speed is set in update */, function() return isCarryingAnything() && getCurrentVelocity()>=0.0001 );
 
-			spr.anim.registerStateAnim(D.hero.run,1, function() return M.fabs(dxTotal)>=0.04 );
+			spr.anim.registerStateAnim(D.hero.run,1, function() return M.fabs(dxTotal)>=0.08 && !cd.has("walkLock") );
 			// spr.anim.registerStateAnim("mechWalkWeapon",1, 1.0 /* Speed is set in update */, function() return weaponReady && !cd.has("running") && getCurrentVelocity()>=0.0001 );
 
 			// spr.anim.registerStateAnim("mechRun",1, 0.35 /* Speed is set in update */, function() return !weaponReady && cd.has("running") && getCurrentVelocity()>=0.010 );
@@ -55,20 +57,15 @@ class Hero extends Entity {
 		super.onLand(cHei);
 
 		var pow = M.fclamp((cHei-2)/6, 0, 1);
-			cd.setS("landed", 0.5*pow);
+		cd.setS("landed", 0.1 + 0.5*pow);
 
 		if( cHei>=4 ) {
-			// Assets.SBANK.stepHeavy0().playOnGroup(2,0.33);
-			// Assets.SBANK.land0().playOnGroup(3,0.2);
-
 			if( options.physicalReactions ) // TODO mobs phys reactions
 				for(e in Mob.ALL) {
 					e.vBase.dx += dirTo(e) * rnd(0.06,0.11);
 					e.vBase.dy = -rnd(0.1,0.2);
 				}
 		}
-		// else
-		// 	Assets.SBANK.land0().playOnGroup(3,0.2);
 
 		if( options.camShakesXY ) {
 			game.camera.bump(0, 6*pow);
@@ -78,20 +75,28 @@ class Hero extends Entity {
 		if( options.camShakesZoom )
 			game.camera.bumpZoom(0.03*pow);
 
-		if( options.controlLocks && cHei>2 ) {
-			var pow = M.fclamp((cHei-2)/6, 0, 1);
-			vBase.dx *= (1-0.5)*pow;
-			lockControlS( 0.2*pow );
-			cd.setS("walkLock",0.75*pow);
-		}
+		if( options.controlLocks )
+			if( cHei>2 ) {
+				var pow = M.fclamp((cHei-2)/6, 0, 1);
+				vBase.dx *= (1-0.5)*pow;
+				lockControlS( 0.2*pow );
+				cd.setS("walkLock",0.75*pow);
+			}
+			else {
+				lockControlS( 0.06 );
+				vBase.dx *= 0.5;
+			}
 
 		if( options.heroSquashAndStrech ) {
-			var pow = M.fclamp(cHei/6, 0, 1);
+			var pow = 0.8 * M.fclamp(cHei/6, 0, 1);
 			setSquashY(1-0.8*pow);
 		}
 
-		if( options.heroSprite && cHei>=3 )
-			fx.landSmoke(attachX, attachY);
+		if( options.movementFx && cHei>=3 )
+			if( cHei>=3 )
+				fx.landSmoke(attachX, attachY, 1);
+			else
+				fx.landSmoke(attachX, attachY, 0.25);
 	}
 
 	override function postUpdate() {
@@ -111,7 +116,7 @@ class Hero extends Entity {
 					gun.x -= 4 * cd.getRatio("gunRecoil");
 					gun.y-=2;
 				}
-				else if( isChargingAction(CA_Shoot) || cd.has("gunHolding") || burstCount>0 ) {
+				else if( isChargingAction(CA_Shoot) || cd.has("gunHeld") || burstCount>0 ) {
 					gun.x += 3 - 1*getChargeRatio(CA_Shoot);
 					gun.y += -1 -1*getChargeRatio(CA_Shoot);
 				}
@@ -162,7 +167,7 @@ class Hero extends Entity {
 		b.speed = options.randomizeBullets ? rnd(0.95,1.05) : 1;
 		lockControlS(0.1);
 		cd.setS("gunRecoil", 0.1);
-		cd.setS("gunHolding", getControlLockS());
+		cd.setS("gunHeld", 2.5);
 
 		if( options.cartridges )
 			fx.cartridge(b.attachX, b.attachY, -dir);
@@ -225,23 +230,25 @@ class Hero extends Entity {
 				cd.setS("allowJitJump",0.15);
 
 			// Jump extra power when held
-			if( !onGround && cd.has("extraJumping") && ca.isDown(A_Jump) )
-				vBase.dy+=-0.08*tmod;
+			// if( !onGround && cd.has("extraJumping") && ca.isDown(A_Jump) )
+			// 	vBase.dy+=-0.04*tmod;
 
 			if( !onGround && !cd.has("allowJitJump") && ca.isPressed(A_Jump) && cd.has("allowAirJump") ) {
 				// Double jump
-				vBase.dy = -0.2;
+				vBase.dy = -0.52;
 				cd.unset("allowAirJump");
 				cd.setS("extraJumping",0.1);
 				cd.setS("reduceGravity",0.3);
+				if( options.movementFx )
+					fx.doubleJump(attachX, attachY);
+
 				if( options.heroSquashAndStrech )
 					setSquashX(0.85);
 			}
 
 			if( ( onGround || cd.has("allowJitJump") ) && ca.isPressed(A_Jump) ) {
 				// Normal jump
-				// Assets.SBANK.dash1(0.2);
-				vBase.dy = -0.16;
+				vBase.dy = -0.45;
 				cd.setS("reduceGravity",0.1);
 				cd.setS("extraJumping", 0.1);
 				cd.setS("allowAirJump",Const.INFINITE);
@@ -257,7 +264,6 @@ class Hero extends Entity {
 				vBase.dx = dashDir*0.5;
 				vBase.dy *= 0.1;
 				burstCount = 0;
-				// Assets.SBANK.jetpack0().playOnGroup(3,0.3);
 
 				if( options.camShakesXY )
 					game.camera.bump(dashDir*6, 0);
@@ -275,8 +281,6 @@ class Hero extends Entity {
 
 			// Shoot
 			if( burstCount<=0 && ca.isDown(A_Shoot) && !cd.has("shootLock") && !isChargingAction(CA_Shoot) ) {
-				// if( options.gunAiming )
-				// 	Assets.SBANK.aim0(0.5);
 				chargeAction(CA_Shoot, options.gunAiming ? 0.39 : 0., (a)->{
 					burstCount = 4;
 				});
@@ -293,7 +297,6 @@ class Hero extends Entity {
 		// Burst shooting
 		if( burstCount>0 && !cd.hasSetS("burstLock", options.randomizeBullets ? rnd(0.04,0.07) : 0.06)) {
 			burstCount--;
-			// Assets.SBANK.gun0().playOnGroup(1,0.8);
 			shoot();
 			if( burstCount<=0 && !options.gunAiming )
 				lockControlS(0.35); // to compensate for the missing aiming phase
