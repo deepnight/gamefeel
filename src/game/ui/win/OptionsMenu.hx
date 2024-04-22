@@ -36,6 +36,7 @@ class OptionsMenu extends ui.win.SimpleMenu {
 
 	function applyChanges() {
 		App.ME.startGame();
+		trace(content.outerWidth);
 	}
 
 	function setAllOptions(v:Bool) {

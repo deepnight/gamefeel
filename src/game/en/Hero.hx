@@ -110,7 +110,7 @@ class Hero extends Entity {
 			gun.y += isWalking ? M.fabs( Math.sin(0.2+ftime*0.3)*1 ) : 0;
 			gun.rotation = 0;
 
-			if( options.gunAiming ) {
+			if( options.gunAimingAnim ) {
 				if( cd.has("gunRecoil") ) {
 					gun.rotation = -0.15 * cd.getRatio("gunRecoil");
 					gun.x -= 4 * cd.getRatio("gunRecoil");
@@ -281,7 +281,7 @@ class Hero extends Entity {
 
 			// Shoot
 			if( burstCount<=0 && ca.isDown(A_Shoot) && !cd.has("shootLock") && !isChargingAction(CA_Shoot) ) {
-				chargeAction(CA_Shoot, options.gunAiming ? 0.39 : 0., (a)->{
+				chargeAction(CA_Shoot, options.gunAimingAnim ? 0.39 : 0., (a)->{
 					burstCount = 4;
 				});
 			}
@@ -298,7 +298,7 @@ class Hero extends Entity {
 		if( burstCount>0 && !cd.hasSetS("burstLock", options.randomizeBullets ? rnd(0.04,0.07) : 0.06)) {
 			burstCount--;
 			shoot();
-			if( burstCount<=0 && !options.gunAiming )
+			if( burstCount<=0 && !options.gunAimingAnim )
 				lockControlS(0.35); // to compensate for the missing aiming phase
 		}
 

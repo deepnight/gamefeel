@@ -9,7 +9,7 @@
 	public var heroSquashAndStrech = true;
 	public var randomizeBullets = true;
 	public var basicAnimations = true;
-	public var gunAiming = true;
+	public var gunAimingAnim = true;
 
 	@separator
 	public var cartridges = true;
