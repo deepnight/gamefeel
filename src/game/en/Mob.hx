@@ -9,8 +9,9 @@ class Mob extends Entity {
 		life.initMaxOnMax(5);
 
 		var g = new h2d.Graphics(spr);
-		g.beginFill(options.baseArt ? 0xffcc00 : 0xffffff);
+		g.beginFill(options.baseArt ? 0xcc3806 : 0x7e7e7e);
 		g.drawRect(-innerRadius, -hei, innerRadius*2, hei);
+		g.colorAdd = spr.colorAdd;
 	}
 
 	override function dispose() {

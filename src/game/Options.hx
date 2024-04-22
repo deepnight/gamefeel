@@ -36,6 +36,5 @@
 	public var levelTextures = true;
 	public var heroSprite = true;
 
-	public function new() {
-	}
+	public function new() {}
 }
