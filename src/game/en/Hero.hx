@@ -24,17 +24,13 @@ class Hero extends Entity {
 			spr.anim.registerStateAnim(D.hero.jumpUp,4, function() return !onGround && vBase.dy<0);
 			spr.anim.registerStateAnim(D.hero.jumpDown,4, function() return !onGround && vBase.dy>=0);
 			spr.anim.registerStateAnim(D.hero.land,3, function() return onGround && cd.has("landed"));
-			spr.anim.registerStateAnim(D.hero.runWeapon,2.1, function() return ( isChargingAction(CA_Shoot) || cd.has("gunHeld") ) && M.fabs(dxTotal)>=0.08);
-			spr.anim.registerStateAnim(D.hero.idleWeapon,2, function() return isChargingAction(CA_Shoot) || cd.has("gunHeld"));
 
-			// spr.anim.registerStateAnim("mechWalkWeapon",2, 1.0 /* Speed is set in update */, function() return isCarryingAnything() && getCurrentVelocity()>=0.0001 );
+			spr.anim.registerStateAnim(D.hero.readyWeapon,2, 2, function() return isChargingAction(CA_PrepareGun));
 
-			spr.anim.registerStateAnim(D.hero.run,1, function() return M.fabs(dxTotal)>=0.08 && !cd.has("walkLock") );
-			// spr.anim.registerStateAnim("mechWalkWeapon",1, 1.0 /* Speed is set in update */, function() return weaponReady && !cd.has("running") && getCurrentVelocity()>=0.0001 );
+			spr.anim.registerStateAnim(D.hero.runWeapon,1.1, function() return ( isChargingAction(CA_Shoot) || gunIsReady() ) && M.fabs(dxTotal)>=0.08);
+			spr.anim.registerStateAnim(D.hero.run,1.0, function() return M.fabs(dxTotal)>=0.08 && !cd.has("walkLock") );
 
-			// spr.anim.registerStateAnim("mechRun",1, 0.35 /* Speed is set in update */, function() return !weaponReady && cd.has("running") && getCurrentVelocity()>=0.010 );
-			// spr.anim.registerStateAnim("mechWalk",1, 1.0 /* Speed is set in update */, function() return !weaponReady && !cd.has("running") && getCurrentVelocity()>=0.0001 );
-
+			spr.anim.registerStateAnim(D.hero.idleWeapon,0.1, function() return isChargingAction(CA_Shoot) || gunIsReady() );
 			spr.anim.registerStateAnim(D.hero.idle,0);
 		}
 		else {
@@ -51,6 +47,10 @@ class Hero extends Entity {
 		gun.beginFill(c.toBlack(0.2)); gun.drawRect(3,-1,4,4); // back hand
 		gun.beginFill(0xffffff); gun.drawRect(-3,-5,12,6); // gun
 		gun.beginFill(c); gun.drawRect(-2,0,4,4); // front hand
+	}
+
+	public function gunIsReady() {
+		return cd.has("gunReady");
 	}
 
 	override function dispose() {
@@ -83,15 +83,15 @@ class Hero extends Entity {
 			game.camera.bumpZoom(0.03*pow);
 
 		if( options.controlLocks )
-			if( cHei>2 ) {
+			if( cHei>3 ) {
 				var pow = M.fclamp((cHei-2)/6, 0, 1);
 				vBase.dx *= (1-0.5)*pow;
 				lockControlS( 0.2*pow );
 				cd.setS("walkLock",0.75*pow);
 			}
 			else {
-				lockControlS( 0.1 );
-				vBase.dx *= 0.4;
+				lockControlS( 0.06 );
+				vBase.dx *= 0.7;
 			}
 
 		if( options.heroSquashAndStrech ) {
@@ -123,7 +123,7 @@ class Hero extends Entity {
 					gun.x -= 4 * cd.getRatio("gunRecoil");
 					gun.y-=2;
 				}
-				else if( isChargingAction(CA_Shoot) || cd.has("gunHeld") || burstCount>0 ) {
+				else if( isChargingAction(CA_Shoot) || gunIsReady() || burstCount>0 ) {
 					gun.x += 3 - 1*getChargeRatio(CA_Shoot);
 					gun.y += -1 -1*getChargeRatio(CA_Shoot);
 				}
@@ -174,7 +174,6 @@ class Hero extends Entity {
 		b.speed = options.randomizeBullets ? rnd(0.95,1.05) : 1;
 		lockControlS(0.1);
 		cd.setS("gunRecoil", 0.1);
-		cd.setS("gunHeld", 2.5);
 
 		if( options.cartridges )
 			fx.cartridge(b.attachX, b.attachY, -dir);
@@ -229,6 +228,9 @@ class Hero extends Entity {
 			// Walk
 			if( !cd.has("walkLock") ) {
 				var spd = (onGround ? 0.015 : 0.019 ) * cd.getRatio("airControl");
+				if( isChargingAction() )
+					spd *= 0.33;
+
 				if( ca.isDown(A_MoveRight) ) {
 					vBase.dx+=spd*tmod;
 				}
@@ -293,10 +295,22 @@ class Hero extends Entity {
 			}
 
 			// Shoot
-			if( burstCount<=0 && ca.isDown(A_Shoot) && !cd.has("shootLock") && !isChargingAction(CA_Shoot) ) {
-				chargeAction(CA_Shoot, options.gunAimingAnim ? 0.39 : 0., (a)->{
-					burstCount = 4;
-				});
+			if( burstCount<=0 && ca.isDown(A_Shoot) && !cd.has("shootLock") && !isChargingAction(CA_Shoot) && !isChargingAction(CA_PrepareGun) ) {
+				if( !options.gunAimingAnim ) {
+					burstCount = 3;
+				}
+				else {
+					if( !gunIsReady() )
+						chargeAction(CA_PrepareGun, 0.33, (a)->{
+							cd.setS("gunReady", 2.5);
+							burstCount = 3;
+						});
+					else
+						chargeAction(CA_Shoot, 0.06, (a)->{
+							cd.setS("gunReady", 2.5);
+							burstCount = 3;
+						});
+				}
 			}
 		}
 

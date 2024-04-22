@@ -54,4 +54,5 @@ enum abstract SlowMoId(Int) to Int {
 enum abstract ChargedActionId(Int) to Int {
 	var CA_Unknown;
 	var CA_Shoot;
+	var CA_PrepareGun;
 }
