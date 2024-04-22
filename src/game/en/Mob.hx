@@ -6,6 +6,7 @@ class Mob extends Entity {
 	public function new(x,y) {
 		super(x,y);
 		ALL.push(this);
+		life.initMaxOnMax(10);
 
 		var g = new h2d.Graphics(spr);
 		g.beginFill(options.baseArt ? 0xffcc00 : 0xffffff);
@@ -34,13 +35,13 @@ class Mob extends Entity {
 		if( options.blinkImpact )
 			blink(0xffffff);
 
-		// if( options.lighting )
-		// 	fx.lightSpot(centerX+rnd(0,15)*-impactDir, centerY+rnd(0,8,true), 0xff0000, rnd(0.15,0.18));
+		if( options.lighting )
+			fx.lightSpot(centerX+rnd(0,15)*-impactDir, centerY+rnd(0,8,true), 0xff0000, rnd(0.15,0.18));
 
-		// if( options.blood ) {
-		// 	fx.bloodBackHits(centerX, centerY, impactDir, 2);
-		// 	fx.bloodFrontHits(centerX, centerY, -impactDir, 0.6);
-		// }
+		if( options.blood ) {
+			fx.bloodBackHits(centerX, centerY, impactDir, 2);
+			fx.bloodFrontHits(centerX, centerY, -impactDir, 0.6);
+		}
 	}
 
 	override function onDie() {

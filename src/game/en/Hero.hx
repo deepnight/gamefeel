@@ -90,8 +90,8 @@ class Hero extends Entity {
 			setSquashY(1-0.8*pow);
 		}
 
-		// if( options.heroSprite && cHei>=3 )
-		// 	fx.landSmoke(attachX, attachY);
+		if( options.heroSprite && cHei>=3 )
+			fx.landSmoke(attachX, attachY);
 	}
 
 	override function postUpdate() {
@@ -132,46 +132,51 @@ class Hero extends Entity {
 		return destroyed || cd.has("controlsLocked");
 	}
 
+	inline function getControlLockS() {
+		return cd.getS("controlsLocked");
+	}
+
 
 	function shoot() {
-		// if( options.camShakesXY )
-		// 	game.camera.bumpXY(-dir*3, 0);
+		if( options.camShakesXY )
+			game.camera.bump(-dir*3, 0);
 
-		// if( options.flashes )
-		// 	fx.flashBangS(0xffcc00, 0.04, 0.1);
+		if( options.flashes )
+			fx.flashBangS(0xffcc00, 0.04, 0.1);
 
-		// if( options.heroSquashAndStrech )
-		// 	skew(1.2,0.9);
+		if( options.heroSquashAndStrech )
+			setSquashX(1.2);
 
-		// if( options.physicalReactions ) {
-		// 	dx += -dir*rnd(0,0.01);
-		// 	animOffsetX+=-dir*rnd(1,3);
-		// }
+		if( options.physicalReactions ) {
+			vBase.dx += -dir*rnd(0,0.01);
+			sprOffsetX += -dir*rnd(1,3);
+		}
 
-		// var off = options.randomizeBullets ? rnd(0, 2.5, true) : 0;
-		// if( options.heroSprite )
-		// 	off-=3;
-		// var b = new en.Bullet(this, off);
-		// if( options.randomizeBullets )
-		// 	b.ang += 0.04 - rnd(0,0.065);
-		// b.speed = options.randomizeBullets ? rnd(0.95,1.05) : 1;
-		// lockControlS(0.1);
-		// cd.setS("gunRecoil", 0.1);
-		// cd.setS("gunHolding", getLockS());
+		// Create Bullet entity
+		var off = options.randomizeBullets ? rnd(0, 2.5, true) : 0;
+		if( options.heroSprite )
+			off-=3;
+		var b = new en.Bullet(this, off);
+		if( options.randomizeBullets )
+			b.ang += 0.04 - rnd(0,0.065);
+		b.speed = options.randomizeBullets ? rnd(0.95,1.05) : 1;
+		lockControlS(0.1);
+		cd.setS("gunRecoil", 0.1);
+		cd.setS("gunHolding", getControlLockS());
 
-		// if( options.cartridges )
-		// 	fx.cartridge(b.footX, b.footY, -dir);
+		if( options.cartridges )
+			fx.cartridge(b.attachX, b.attachY, -dir);
 
-		// if( options.gunShotFx )
-		// 	fx.gunShot(b.footX+dir*8, b.footY-1, dir);
+		if( options.gunShotFx )
+			fx.gunShot(b.attachX+dir*8, b.attachY-1, dir);
 
-		// if( options.lighting ) {
-		// 	fx.lightSpot(
-		// 		centerX+dir*10 + rnd(0,3,true), centerY-1+rnd(0,3,true),
-		// 		new Col(0xff0000).to(0xffcc00,rnd(0,1)),
-		// 		0.2
-		// 	);
-		// }
+		if( options.lighting ) {
+			fx.lightSpot(
+				centerX+dir*10 + rnd(0,3,true), centerY-1+rnd(0,3,true),
+				new Col(0xff0000).to(0xffcc00,rnd(0,1)),
+				0.2
+			);
+		}
 	}
 
 	override function getGravityMul():Float {
@@ -271,7 +276,7 @@ class Hero extends Entity {
 			}
 
 			// Shoot
-			if( burstCount<=0 && ca.isDown(GA_Shoot) && !cd.has("shootLock") ) {
+			if( burstCount<=0 && ca.isDown(GA_Shoot) && !cd.has("shootLock") && !isChargingAction(CA_Shoot) ) {
 				// if( options.gunAiming )
 				// 	Assets.SBANK.aim0(0.5);
 				chargeAction(CA_Shoot, options.gunAiming ? 0.39 : 0., (a)->{

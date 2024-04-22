@@ -60,6 +60,7 @@ class Entity {
 	var interpolateSprPos = true;
 
 	var fallStartPxY = 0.;
+	var collidesWithWalls = true;
 
 	/** Total of all X velocities **/
 	public var dxTotal(get,never) : Float; inline function get_dxTotal() return allVelocities.getSumX();
@@ -116,6 +117,8 @@ class Entity {
 	var sprSquashX = 1.0;
 	/** Sprite Y squash & stretch scaling, which automatically comes back to 1 after a few frames **/
 	var sprSquashY = 1.0;
+
+	var sprOffsetX = 0.;
 
 	/** Entity visibility **/
 	public var entityVisible = true;
@@ -729,7 +732,7 @@ class Entity {
 		Post-update loop, which is guaranteed to happen AFTER any preUpdate/update. This is usually where render and display is updated
 	**/
     public function postUpdate() {
-		spr.x = sprX;
+		spr.x = sprX + sprOffsetX;
 		spr.y = sprY;
         spr.scaleX = dir*sprScaleX * sprSquashX;
         spr.scaleY = sprScaleY * sprSquashY;
@@ -737,6 +740,8 @@ class Entity {
 
 		sprSquashX += (1-sprSquashX) * M.fmin(1, 0.2*tmod);
 		sprSquashY += (1-sprSquashY) * M.fmin(1, 0.2*tmod);
+
+		sprOffsetX *= Math.pow(0.8,tmod);
 
 		if( cd.has("shaking") ) {
 			spr.x += Math.cos(ftime*1.1)*shakePowX * cd.getRatio("shaking");
@@ -795,29 +800,33 @@ class Entity {
 
 	/** Called at the beginning of each X movement step **/
 	function onPreStepX() {
-		// Right collision
-		if( xr>0.8 && level.hasCollision(cx+1,cy) )
-			xr = 0.8;
+		if( collidesWithWalls ) {
+			// Right collision
+			if( xr>0.8 && level.hasCollision(cx+1,cy) )
+				xr = 0.8;
 
-		// Left collision
-		if( xr<0.2 && level.hasCollision(cx-1,cy) )
-			xr = 0.2;
+			// Left collision
+			if( xr<0.2 && level.hasCollision(cx-1,cy) )
+				xr = 0.2;
+		}
 	}
 
 	/** Called at the beginning of each Y movement step **/
 	function onPreStepY() {
-		// Land on ground
-		if( yr>=1 && level.hasCollision(cx,cy+1) ) {
-			onLand( (attachY-fallStartPxY)/Const.GRID );
-			vBase.clear();
-			yr = 1;
-			onPosManuallyChangedY();
-			fallStartPxY = attachY;
-		}
+		if( collidesWithWalls ) {
+			// Land on ground
+			if( yr>=1 && level.hasCollision(cx,cy+1) ) {
+				onLand( (attachY-fallStartPxY)/Const.GRID );
+				vBase.clear();
+				yr = 1;
+				onPosManuallyChangedY();
+				fallStartPxY = attachY;
+			}
 
-		// Ceiling collision
-		if( yr<0.2 && level.hasCollision(cx,cy-1) )
-			yr = 0.2;
+			// Ceiling collision
+			if( yr<0.2 && level.hasCollision(cx,cy-1) )
+				yr = 0.2;
+		}
 	}
 
 
