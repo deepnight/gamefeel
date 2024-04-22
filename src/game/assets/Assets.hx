@@ -59,6 +59,7 @@ class Assets {
 		if( Game.exists() && Game.ME.isPaused() )
 			tmod = 0;
 
+		hero.tmod = tmod;
 		tiles.tmod = tmod;
 		// <-- add other atlas TMOD updates here
 	}
