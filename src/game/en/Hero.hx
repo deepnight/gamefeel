@@ -87,10 +87,10 @@ class Hero extends Entity {
 			game.camera.bumpZoom(0.03*pow);
 
 		if( options.controlLocks )
-			if( cHei>3 ) {
-				var pow = M.fclamp((cHei-2)/6, 0, 1);
+			if( cHei>4 ) {
+				var pow = M.fclamp((cHei-4)/2, 0, 1);
 				vBase.dx *= (1-0.5)*pow;
-				lockControlS( 0.2*pow );
+				lockControlS( 0.3*pow );
 				cd.setS("walkLock",0.75*pow);
 			}
 			else {
@@ -199,9 +199,22 @@ class Hero extends Entity {
 	}
 
 
+	function debugInputPress(a:GameAction, label:String, col:Col) {
+		if( ca.isPressed(a) ) {
+			fx.markerEntity(this, col, 0.1);
+			popText(label, col);
+		}
+	}
+
 	override function preUpdate() {
 		super.preUpdate();
 		ctrlQueue.earlyFrameUpdate(game.stime);
+
+		if( Console.ME.hasFlag(F_ShowInputs) ) {
+			debugInputPress(A_Jump, "JUMP", "#fff756");
+			debugInputPress(A_Dash, "DASH", "#0caaff");
+			debugInputPress(A_Shoot, "SHOOT", "#ff850c");
+		}
 	}
 
 
@@ -257,6 +270,19 @@ class Hero extends Entity {
 	}
 
 
+	function checkControlPress(a:GameAction) {
+		return options.ctrlQueue
+			? ctrlQueue.consumePress(a)
+			: ca.isPressed(a);
+	}
+
+	function checkControlPressOrDown(a:GameAction) {
+		return options.ctrlQueue
+			? ctrlQueue.consumePressOrDown(a)
+			: ca.isDown(a);
+	}
+
+
 	var burstCount = 0;
 	override function frameUpdate() {
 		super.frameUpdate();
@@ -300,14 +326,11 @@ class Hero extends Entity {
 					vBase.dx *= Math.pow(0.85,tmod); // braking
 			}
 
-			if( onGround )
+			// Just in time jump
+			if( onGround && options.justInTimeJump )
 				cd.setS("allowJitJump",0.15);
 
-			// Jump extra power when held
-			// if( !onGround && cd.has("extraJumping") && ca.isDown(A_Jump) )
-			// 	vBase.dy+=-0.04*tmod;
-
-			if( !onGround && !cd.has("allowJitJump") && cd.has("allowAirJump") && ctrlQueue.consumePress(A_Jump) ) {
+			if( !onGround && !cd.has("allowJitJump") && cd.has("allowAirJump") && checkControlPress(A_Jump) ) {
 				// Double jump
 				vBase.dy = -0.52;
 				cd.unset("allowAirJump");
@@ -320,7 +343,7 @@ class Hero extends Entity {
 					setSquashX(0.66);
 			}
 
-			if( ( onGround || cd.has("allowJitJump") ) && ctrlQueue.consumePressOrDown(A_Jump) ) {
+			if( ( onGround || cd.has("allowJitJump") ) && checkControlPressOrDown(A_Jump) ) {
 				// Normal jump
 				vBase.dy = -0.45;
 				cd.setS("reduceGravity",0.1);
@@ -332,7 +355,7 @@ class Hero extends Entity {
 			}
 
 			// Dash
-			if( !cd.has("dashLock") && ctrlQueue.consumePress(A_Dash) ) {
+			if( !cd.has("dashLock") && checkControlPress(A_Dash) ) {
 				cd.setS("dashLock",0.8);
 				dashDir = dir;
 				vBase.dx = dashDir*0.5;
@@ -357,7 +380,7 @@ class Hero extends Entity {
 			}
 
 			// Shoot
-			if( burstCount<=0 && ca.isDown(A_Shoot) && !cd.has("shootLock") && !isChargingAction(CA_Shoot) && !isChargingAction(CA_PrepareGun) ) {
+			if( burstCount<=0 && !cd.has("shootLock") && !isChargingAction(CA_Shoot) && !isChargingAction(CA_PrepareGun) && checkControlPressOrDown(A_Shoot) ) {
 				if( !options.gunAimingAnim ) {
 					burstCount = 3;
 				}

@@ -35,6 +35,8 @@
 	@separator
 	public var smallStepsHelper = true;
 	public var cliffGrabHelper = true;
+	public var justInTimeJump = true;
+	public var ctrlQueue = true;
 
 	@separator
 	public var levelTextures = true;
