@@ -4,14 +4,12 @@
 **/
 
 class Boot extends hxd.App {
-	#if debug
 	// Debug controls over game speed
 	var tmodSpeedMul = 1.0;
 
 	// Shortcut to controller
 	var ca(get,never) : ControllerAccess<GameAction>;
 		inline function get_ca() return App.ME.ca;
-	#end
 
 
 	/**
