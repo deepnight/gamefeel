@@ -169,9 +169,9 @@ class Hero extends Entity {
 		}
 
 		// Create Bullet entity
-		var off = options.randomizeBullets ? rnd(0, 2.5, true) : 0;
+		var off = options.randomizeBullets ? rnd(0, 1.5, true) : 0;
 		if( options.heroSprite )
-			off-=3;
+			off-=1;
 		var b = new en.Bullet(this, off);
 		if( options.randomizeBullets )
 			b.ang += 0.04 - rnd(0,0.065);
@@ -183,7 +183,7 @@ class Hero extends Entity {
 			fx.cartridge(b.attachX, b.attachY, -dir);
 
 		if( options.gunShotFx )
-			fx.gunShot(b.attachX+dir*8, b.attachY-1, dir);
+			fx.gunShot(b.attachX+dir*8, b.attachY+off, dir);
 
 		if( options.lighting ) {
 			fx.lightSpot(
