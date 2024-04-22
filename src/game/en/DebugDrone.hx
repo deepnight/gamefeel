@@ -55,8 +55,8 @@ class DebugDrone extends Entity {
 		help.text = [
 			"CANCEL -- Escape",
 			"MOVE -- ARROWS/pad",
-			"ZOOM IN -- "+ca.input.getAllBindindTextsFor(GA_DebugDroneZoomIn).join(", "),
-			"ZOOM OUT -- "+ca.input.getAllBindindTextsFor(GA_DebugDroneZoomOut).join(", "),
+			"ZOOM IN -- "+ca.input.getAllBindindTextsFor(A_DebugDroneZoomIn).join(", "),
+			"ZOOM OUT -- "+ca.input.getAllBindindTextsFor(A_DebugDroneZoomOut).join(", "),
 		].join("\n");
 		help.setScale(Const.UI_SCALE);
 		help.x = 4*Const.UI_SCALE;
@@ -98,22 +98,22 @@ class DebugDrone extends Entity {
 
 		if( !App.ME.anyInputHasFocus() ) {
 			// Fly around
-			var dist = ca.getAnalogDist4(GA_MoveLeft, GA_MoveRight, GA_MoveUp, GA_MoveDown);
+			var dist = ca.getAnalogDist4(A_MoveLeft, A_MoveRight, A_MoveUp, A_MoveDown);
 			if( dist > 0 ) {
-				var a = ca.getAnalogAngle4(GA_MoveLeft, GA_MoveRight, GA_MoveUp, GA_MoveDown);
+				var a = ca.getAnalogAngle4(A_MoveLeft, A_MoveRight, A_MoveUp, A_MoveDown);
 				droneDx+=Math.cos(a) * dist*spd * tmod;
 				droneDy+=Math.sin(a) * dist*spd * tmod;
 			}
 
 			// Zoom controls
-			if( ca.isDown(GA_DebugDroneZoomOut) )
+			if( ca.isDown(A_DebugDroneZoomOut) )
 				camera.forceZoom( camera.baseZoom-0.04*camera.baseZoom );
 
-			if( ca.isDown(GA_DebugDroneZoomIn) )
+			if( ca.isDown(A_DebugDroneZoomIn) )
 				camera.forceZoom( camera.baseZoom+0.02*camera.baseZoom );
 
 			// Destroy
-			if( ca.isKeyboardPressed(K.ESCAPE) || ca.isPressed(GA_ToggleDebugDrone) ) {
+			if( ca.isKeyboardPressed(K.ESCAPE) || ca.isPressed(A_ToggleDebugDrone) ) {
 				destroy();
 				return;
 			}

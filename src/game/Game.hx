@@ -229,12 +229,12 @@ class Game extends AppChildProcess {
 
 			// Attach debug drone (CTRL-SHIFT-D)
 			#if debug
-			if( ca.isPressed(GA_ToggleDebugDrone) )
+			if( ca.isPressed(A_ToggleDebugDrone) )
 				new DebugDrone(); // <-- HERE: provide an Entity as argument to attach Drone near it
 			#end
 
 			// Restart whole game
-			if( ca.isPressed(GA_Restart) )
+			if( ca.isPressed(A_Restart) )
 				App.ME.startGame();
 
 		}

@@ -188,7 +188,7 @@ class Window extends dn.Process {
 
 	override function update() {
 		super.update();
-		if( canBeClosedManually && isModal && ca.isPressed(GA_MenuCancel) )
+		if( canBeClosedManually && isModal && ca.isPressed(A_MenuCancel) )
 			close();
 	}
 }

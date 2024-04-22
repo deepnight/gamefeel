@@ -191,9 +191,9 @@ class Hero extends Entity {
 			cd.setS("airControl",2);
 
 		// Dir control
-		if( ca.isDown(GA_MoveRight) )
+		if( ca.isDown(A_MoveRight) )
 			dir = 1;
-		else if( ca.isDown(GA_MoveLeft) )
+		else if( ca.isDown(A_MoveLeft) )
 			dir = -1;
 
 		// Run step frames
@@ -211,10 +211,10 @@ class Hero extends Entity {
 			// Walk
 			if( !cd.has("walkLock") ) {
 				var spd = (onGround ? 0.015 : 0.019 ) * cd.getRatio("airControl");
-				if( ca.isDown(GA_MoveRight) ) {
+				if( ca.isDown(A_MoveRight) ) {
 					vBase.dx+=spd*tmod;
 				}
-				else if( ca.isDown(GA_MoveLeft) ) {
+				else if( ca.isDown(A_MoveLeft) ) {
 					vBase.dx-=spd*tmod;
 				}
 				else
@@ -227,10 +227,10 @@ class Hero extends Entity {
 				cd.setS("allowJitJump",0.15);
 
 			// Jump extra power when held
-			if( !onGround && cd.has("extraJumping") && ca.isDown(GA_Jump) )
+			if( !onGround && cd.has("extraJumping") && ca.isDown(A_Jump) )
 				vBase.dy+=-0.08*tmod;
 
-			if( !onGround && !cd.has("allowJitJump") && ca.isPressed(GA_Jump) && cd.has("allowAirJump") ) {
+			if( !onGround && !cd.has("allowJitJump") && ca.isPressed(A_Jump) && cd.has("allowAirJump") ) {
 				// Double jump
 				vBase.dy = -0.2;
 				cd.unset("allowAirJump");
@@ -240,7 +240,7 @@ class Hero extends Entity {
 					setSquashX(0.85);
 			}
 
-			if( ( onGround || cd.has("allowJitJump") ) && ca.isPressed(GA_Jump) ) {
+			if( ( onGround || cd.has("allowJitJump") ) && ca.isPressed(A_Jump) ) {
 				// Normal jump
 				// Assets.SBANK.dash1(0.2);
 				vBase.dy = -0.16;
@@ -253,7 +253,7 @@ class Hero extends Entity {
 			}
 
 			// Dash
-			if( ( ca.isPressed(GA_Dash) || cd.has("dashQueued") ) && !cd.hasSetS("dashLock",0.3) ) {
+			if( ( ca.isPressed(A_Dash) || cd.has("dashQueued") ) && !cd.hasSetS("dashLock",0.3) ) {
 				cd.unset("dashQueued");
 				dashDir = dir;
 				vBase.dx = dashDir*0.5;
@@ -276,7 +276,7 @@ class Hero extends Entity {
 			}
 
 			// Shoot
-			if( burstCount<=0 && ca.isDown(GA_Shoot) && !cd.has("shootLock") && !isChargingAction(CA_Shoot) ) {
+			if( burstCount<=0 && ca.isDown(A_Shoot) && !cd.has("shootLock") && !isChargingAction(CA_Shoot) ) {
 				// if( options.gunAiming )
 				// 	Assets.SBANK.aim0(0.5);
 				chargeAction(CA_Shoot, options.gunAiming ? 0.39 : 0., (a)->{
@@ -302,7 +302,7 @@ class Hero extends Entity {
 		}
 
 		// Queue dash action
-		if( ca.isPressed(GA_Dash) && !controlsLocked() && !cd.has("dashing") ) {
+		if( ca.isPressed(A_Dash) && !controlsLocked() && !cd.has("dashing") ) {
 			if( isChargingAction() )
 				cancelAction();
 			cd.setS("dashQueued", 0.25);
