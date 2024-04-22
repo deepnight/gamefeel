@@ -37,4 +37,10 @@
 	public var heroSprite = true;
 
 	public function new() {}
+
+	public function setAll(v:Bool) {
+		for(k in Type.getInstanceFields(Options))
+			if( Type.typeof(Reflect.field(this,k)) == TBool )
+				Reflect.setField(this, k, v);
+	}
 }

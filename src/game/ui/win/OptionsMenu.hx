@@ -37,9 +37,7 @@ class OptionsMenu extends ui.win.SimpleMenu {
 	}
 
 	function setAllOptions(v:Bool) {
-		for(k in Type.getInstanceFields(Options))
-			Reflect.setField(options, k, v);
-
+		options.setAll(v);
 		applyChanges();
 	}
 }
