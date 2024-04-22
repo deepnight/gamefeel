@@ -234,6 +234,7 @@ class App extends dn.Process {
 		controller.bindPad(A_Dash, B);
 		controller.bindPad(A_Shoot, [X,Y,RT,RB]);
 		controller.bindPad(A_Restart, SELECT);
+		controller.bindPad(A_Pause, LT);
 		controller.bindPad(A_Options, START);
 		controller.bindPad(A_MoveLeft, DPAD_LEFT);
 		controller.bindPad(A_MoveRight, DPAD_RIGHT);
@@ -257,7 +258,8 @@ class App extends dn.Process {
 		controller.bindKeyboard(A_Shoot, [K.F]);
 		controller.bindKeyboard(A_Restart, K.R);
 		controller.bindKeyboard(A_ScreenshotMode, K.F9);
-		controller.bindKeyboard(A_Options, [K.P, K.PAUSE_BREAK, K.O, K.ENTER, K.ESCAPE]);
+		controller.bindKeyboard(A_Pause, [K.P, K.PAUSE_BREAK]);
+		controller.bindKeyboard(A_Options, [K.O, K.ENTER, K.ESCAPE]);
 
 		controller.bindKeyboard(A_MenuUp, [K.UP, K.Z, K.W]);
 		controller.bindKeyboard(A_MenuDown, [K.DOWN, K.S]);
@@ -321,6 +323,9 @@ class App extends dn.Process {
 
 			if( ca.isPressed(A_Options) )
 				new ui.win.OptionsMenu();
+
+			if( !Window.hasAnyModal() && ca.isPressed(A_Pause) )
+				Game.ME.togglePause();
 		}
 
 		if( ui.Console.ME.isActive() )
