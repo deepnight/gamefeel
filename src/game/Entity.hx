@@ -824,8 +824,10 @@ class Entity {
 			}
 
 			// Ceiling collision
-			if( yr<0.2 && level.hasCollision(cx,cy-1) )
-				yr = 0.2;
+			if( yr<0.6 && level.hasCollision(cx,cy-1) ) {
+				vBase.dy *= 0.5;
+				yr = 0.6;
+			}
 		}
 	}
 
