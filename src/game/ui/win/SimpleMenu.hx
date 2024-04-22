@@ -29,7 +29,6 @@ class SimpleMenu extends ui.Window {
 			case Center: content.maxHeight = Std.int( 0.8 * h()/Const.UI_SCALE );
 			case Fill: content.maxHeight = Std.int( h()/Const.UI_SCALE );
 		}
-		content.debug = true;
 	}
 
 	public function addSpacer() {

@@ -148,8 +148,8 @@ class Window extends dn.Process {
 		// Horizontal
 		if( horizontalAlign==Fill )
 			content.minWidth = content.maxWidth = wid;
-		else
-			content.minWidth = content.maxWidth = null;
+		// else
+		// 	content.minWidth = content.maxWidth = null;
 
 		switch horizontalAlign {
 			case Start: content.x = 0;
@@ -161,8 +161,8 @@ class Window extends dn.Process {
 		// Vertical
 		if( verticalAlign==Fill )
 			content.minHeight = content.maxHeight = hei;
-		else
-			content.minHeight = content.maxHeight = null;
+		// else
+		// 	content.minHeight = content.maxHeight = null;
 
 		switch verticalAlign {
 			case Start: content.y = 0;

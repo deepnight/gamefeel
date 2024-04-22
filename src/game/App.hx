@@ -257,7 +257,7 @@ class App extends dn.Process {
 		controller.bindKeyboard(A_Shoot, [K.F]);
 		controller.bindKeyboard(A_Restart, K.R);
 		controller.bindKeyboard(A_ScreenshotMode, K.F9);
-		controller.bindKeyboard(A_Options, [K.P, K.PAUSE_BREAK, K.O, K.ENTER]);
+		controller.bindKeyboard(A_Options, [K.P, K.PAUSE_BREAK, K.O, K.ENTER, K.ESCAPE]);
 
 		controller.bindKeyboard(A_MenuUp, [K.UP, K.Z, K.W]);
 		controller.bindKeyboard(A_MenuDown, [K.DOWN, K.S]);
@@ -313,7 +313,7 @@ class App extends dn.Process {
 
         super.update();
 
-		if( !Window.hasAnyModal() ) {
+		if( !cd.has("modalRecentlyActive") ) {
 			if( ca.isPressed(A_ScreenshotMode) )
 				setScreenshotMode( !screenshotMode );
 
@@ -327,6 +327,8 @@ class App extends dn.Process {
 		if( ui.Console.ME.isActive() )
 			cd.setF("consoleRecentlyActive",2);
 
+		if( Window.hasAnyModal() )
+			cd.setF("modalRecentlyActive",2);
 
 		// Mem track reporting
 		#if debug

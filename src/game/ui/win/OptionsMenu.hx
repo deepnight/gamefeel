@@ -4,7 +4,7 @@ class OptionsMenu extends ui.win.SimpleMenu {
 	public function new() {
 		super();
 
-		horizontalAlign = Fill;
+		horizontalAlign = Center;
 		verticalAlign = End;
 		var barFlow = new h2d.Flow(content);
 
@@ -32,11 +32,6 @@ class OptionsMenu extends ui.win.SimpleMenu {
 		onClose = function() {
 			applyChanges();
 		};
-	}
-
-	override function close() {
-		super.close();
-		trace("closed");
 	}
 
 	function applyChanges() {

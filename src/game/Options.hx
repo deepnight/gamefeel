@@ -16,6 +16,8 @@
 	public var gunShotFx = true;
 	public var bulletImpactFx = true;
 	public var bulletImpactBurnFx = true;
+	public var lighting = true;
+	public var movementFx = true;
 
 	@separator
 	public var physicalReactions = true;
@@ -27,9 +29,7 @@
 	public var cadavers = true;
 
 	@separator
-	public var sounds = true;
 	public var levelTextures = true;
-	public var lighting = true;
 	public var heroSprite = true;
 
 	public function new() {
