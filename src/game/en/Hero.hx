@@ -201,6 +201,49 @@ class Hero extends Entity {
 		ctrlQueue.earlyFrameUpdate(game.stime);
 	}
 
+
+	function climbStep(stepDir:Int) {
+		dir = stepDir;
+		cd.setS("smallStepLock",0.1);
+		vBase.dx += 0.15*stepDir;
+		vBase.dy = -0.35;
+		xr = 0.5 + 0.1*stepDir;
+		yr = 0.7;
+		lockControlS(0.15);
+		setSquashY(0.8);
+		spr.anim.playOverlap(D.hero.climbStep);
+	}
+
+	function climbCliff(stepDir:Int) {
+		dir = stepDir;
+		cd.setS("smallStepLock",0.1);
+		vBase.dx += 0.15*stepDir;
+		vBase.dy = -0.35;
+		xr = 0.5 + 0.1*stepDir;
+		yr = 0.7;
+		lockControlS(0.2);
+		setSquashY(0.8);
+		spr.anim.playOverlap(D.hero.climbStep);
+	}
+
+	override function onPreStepX() {
+		super.onPreStepX();
+
+		if( options.smallStepsHelper && level.marks.has(M_SmallStep,cx,cy) && !cd.has("smallStepLock")) {
+			if( dir>0 && xr>=0.6 && yr>0.5 && dyTotal>=0 && level.marks.hasWithBit(M_SmallStep,SM_Right,cx,cy) )
+				climbStep(1);
+			else if( dir<0 && xr<=0.4 && yr>0.5 && dyTotal>=0 && level.marks.hasWithBit(M_SmallStep,SM_Left,cx,cy) )
+				climbStep(-1);
+		}
+		if( options.cliffGrabHelper && level.marks.has(M_Cliff,cx,cy) && !cd.has("cliffLock")) {
+			if( dir>0 && xr>=0.6 && yr>0.2 && dyTotal>=0 && level.marks.hasWithBit(M_Cliff,SM_Right,cx,cy) )
+				climbCliff(1);
+			else if( dir<0 && xr<=0.4 && yr>0.2 && dyTotal>=0 && level.marks.hasWithBit(M_Cliff,SM_Left,cx,cy) )
+				climbCliff(-1);
+		}
+	}
+
+
 	var burstCount = 0;
 	override function frameUpdate() {
 		super.frameUpdate();

@@ -55,8 +55,6 @@ class Level extends GameChildProcess {
 				else
 					marks.setWithBit(M_Cliff, SM_Left, cx,cy);
 		}
-
-		renderDebugMark(M_SmallStep);
 	}
 
 	public function renderDebugMark(mark:LevelMark, ?subBit:LevelSubMark) {

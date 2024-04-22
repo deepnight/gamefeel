@@ -41,10 +41,14 @@ enum abstract Affect(Int) {
 
 enum abstract LevelMark(Int) to Int {
 	var M_Coll_Wall; // 0
+	var M_SmallStep;
+	var M_Cliff;
 }
 
 enum abstract LevelSubMark(Int) to Int {
 	var SM_None; // 0
+	var SM_Left;
+	var SM_Right;
 }
 
 enum abstract SlowMoId(Int) to Int {

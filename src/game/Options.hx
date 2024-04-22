@@ -29,6 +29,10 @@
 	public var cadavers = true;
 
 	@separator
+	public var smallStepsHelper = true;
+	public var cliffGrabHelper = true;
+
+	@separator
 	public var levelTextures = true;
 	public var heroSprite = true;
 
