@@ -402,6 +402,9 @@ class Hero extends Entity {
 		// Dash movement
 		if( cd.has("dashing") ) {
 			vBase.dx+=dashDir*0.06*tmod;
+			if( options.slowMos )
+				game.addSlowMo(S_Dash, 0.3, 0.7);
+
 			if( options.heroSquashAndStrech )
 				setSquashX(1.3);
 		}

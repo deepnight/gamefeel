@@ -48,6 +48,7 @@ class Mob extends Entity {
 
 	override function onDie() {
 		super.onDie();
+
 		if( options.cadavers )
 			new en.Cadaver(this);
 	}

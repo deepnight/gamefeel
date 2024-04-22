@@ -37,6 +37,7 @@
 	public var cliffGrabHelper = true;
 	public var justInTimeJump = true;
 	public var ctrlQueue = true;
+	public var slowMos = true;
 
 	@separator
 	public var levelTextures = true;

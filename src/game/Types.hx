@@ -54,6 +54,7 @@ enum abstract LevelSubMark(Int) to Int {
 
 enum abstract SlowMoId(Int) to Int {
 	var S_Default; // 0
+	var S_Dash;
 }
 
 enum abstract ChargedActionId(Int) to Int {
