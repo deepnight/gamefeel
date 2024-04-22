@@ -74,7 +74,7 @@ class Hero extends Entity {
 				for(e in Mob.ALL) {
 					var pow = 1 - M.fclamp( distCase(e) / 12, 0, 1 );
 					e.vBase.dx += dirTo(e) * rnd(0.1,0.2) * pow;
-					e.vBase.dy = -rnd(0.2,0.3) * pow;
+					e.vBase.dy = -rnd(0.3,0.4) * pow;
 				}
 		}
 
@@ -403,7 +403,7 @@ class Hero extends Entity {
 		if( cd.has("dashing") ) {
 			vBase.dx+=dashDir*0.06*tmod;
 			if( options.slowMos )
-				game.addSlowMo(S_Dash, 0.3, 0.7);
+				game.addSlowMo(S_Dash, 0.4, 0.8);
 
 			if( options.heroSquashAndStrech )
 				setSquashX(1.3);
