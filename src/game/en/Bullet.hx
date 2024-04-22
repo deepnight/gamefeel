@@ -16,20 +16,29 @@ class Bullet extends Entity {
 		vBase.frict = 1;
 		hei = 2;
 
-		var g = new h2d.Graphics(spr);
-		spr.smooth = true;
-		spr.set(Assets.tiles, D.tiles.empty);
-		if( options.baseArt ) {
-			g.beginFill(0xff0000,0.33);
-			g.drawRect(-16, -1, 13, 1);
-		}
-		if( options.randomizeBullets ) {
-			g.beginFill( new Col(0xffff00).to(0xff9900, rnd(0,1)) );
-			g.drawRect(-3, -1, irnd(6,8), 2);
+		if( options.heroSprite ) {
+			spr.set(Assets.tiles, D.tiles.bullet);
+			spr.colorize(Yellow);
+			spr.setCenterRatio(0.9, 0.5);
+			spr.blendMode = Add;
+			sprScaleX = rnd(1,2);
 		}
 		else {
-			g.beginFill(0xffcc00);
-			g.drawRect(-3, -0.5, 6, 2);
+			spr.set(Assets.tiles, D.tiles.empty);
+			var g = new h2d.Graphics(spr);
+			if( options.baseArt ) {
+				g.beginFill(0xff0000,0.5);
+				g.drawRect(-16, -1, 13, 1);
+			}
+
+			if( options.randomizeBullets ) {
+				g.beginFill( new Col(0xffff00).to(0xff9900, rnd(0,1)) );
+				g.drawRect(-3, -1, irnd(2,3), 2);
+			}
+			else {
+				g.beginFill(0xffcc00);
+				g.drawRect(-3, -0.5, 3, 2);
+			}
 		}
 	}
 
@@ -51,11 +60,13 @@ class Bullet extends Entity {
 		super.postUpdate();
 		spr.scaleX = M.fabs(spr.scaleX); // ignore dir
 		spr.rotation = ang;
+		if( !cd.hasSetS("tailFx",0.03) )
+			fx.bulletTail(this, Red);
 	}
 
 	override function frameUpdate() {
-		vBase.dx = Math.cos(ang)*0.85*speed;
-		vBase.dy = Math.sin(ang)*0.85*speed;
+		vBase.dx = Math.cos(ang)*0.9*speed;
+		vBase.dy = Math.sin(ang)*0.9*speed;
 
 		super.frameUpdate();
 
@@ -65,9 +76,8 @@ class Bullet extends Entity {
 		for(e in Mob.ALL) {
 			if( e.isAlive() && attachX>=e.left && attachX<=e.right && attachY>=e.top && attachY<=e.bottom ) {
 				e.hit(1, hero);
-				if( options.bulletImpactFx ) {
+				if( options.bulletImpactFx )
 					fx.hitEntity( e.centerX-dir*4, attachY, -dir );
-				}
 				destroy();
 			}
 		}

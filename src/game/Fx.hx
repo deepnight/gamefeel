@@ -256,6 +256,20 @@ class Fx extends GameChildProcess {
 			}
 	}
 
+
+	public function bulletTail(e:Bullet, col:Col) {
+		var p = allocMain_add(D.tiles.fxLineFadeLeft, e.sprX, e.sprY);
+		p.setFadeS(0.3, 0.03, 0.15);
+		p.colorize(col);
+		p.setCenterRatio(1,0.5);
+		p.scaleX = e.dir;
+		p.scaleY = 0.5;
+		p.moveAng(e.ang, 1);
+		p.rotation = e.ang;
+		p.lifeS = 0.1;
+	}
+
+
 	public function gunShot(x:Float, y:Float, dir:Int) {
 		// Long main line
 		var p = allocMain_add(D.tiles.fxShoot, x,y);
