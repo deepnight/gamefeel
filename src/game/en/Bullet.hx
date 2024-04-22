@@ -25,10 +25,12 @@ class Bullet extends Entity {
 		}
 		else {
 			spr.set(Assets.tiles, D.tiles.empty);
+			spr.smooth = true;
 			var g = new h2d.Graphics(spr);
 			if( options.baseArt ) {
+				// Tail
 				g.beginFill(0xff0000,0.5);
-				g.drawRect(-16, -1, 13, 1);
+				g.drawRect(-16, -0.5, 13, 1);
 			}
 
 			if( options.randomizeBullets ) {
@@ -37,7 +39,7 @@ class Bullet extends Entity {
 			}
 			else {
 				g.beginFill(0xffcc00);
-				g.drawRect(-3, -0.5, 3, 2);
+				g.drawRect(-3, -1.5, 3, 3);
 			}
 		}
 	}
@@ -53,7 +55,7 @@ class Bullet extends Entity {
 
 	function onBulletHitWall(hitX:Float,hitY:Float) {
 		fx.hitWall( hitX, hitY, M.radDistance(ang,0)<=M.PIHALF ? -1 : 1 ); // options check happens inside
-		
+
 		if( options.lighting )
 			fx.lightSpot( hitX+rnd(0,5,true), hitY+rnd(0,5,true), new Col(0xff0000).to(0xffcc00,rnd(0,1)), 0.1);
 
