@@ -61,11 +61,11 @@ class Hero extends Entity {
 			// Assets.SBANK.stepHeavy0().playOnGroup(2,0.33);
 			// Assets.SBANK.land0().playOnGroup(3,0.2);
 
-			// if( options.physicalReactions ) // TODO mobs phys reactions
-			// 	for(e in Mob.ALL) {
-			// 		e.dx+=dirTo(e) * rnd(0.06,0.11);
-			// 		e.dy = -rnd(0.1,0.2);
-			// 	}
+			if( options.physicalReactions ) // TODO mobs phys reactions
+				for(e in Mob.ALL) {
+					e.vBase.dx += dirTo(e) * rnd(0.06,0.11);
+					e.vBase.dy = -rnd(0.1,0.2);
+				}
 		}
 		// else
 		// 	Assets.SBANK.land0().playOnGroup(3,0.2);
@@ -205,7 +205,7 @@ class Hero extends Entity {
 		if( !controlsLocked() ) {
 			// Walk
 			if( !cd.has("walkLock") ) {
-				var spd = (onGround ? 0.015 : 0.015 ) * cd.getRatio("airControl");
+				var spd = (onGround ? 0.015 : 0.019 ) * cd.getRatio("airControl");
 				if( ca.isDown(GA_MoveRight) ) {
 					vBase.dx+=spd*tmod;
 				}
@@ -218,13 +218,16 @@ class Hero extends Entity {
 
 			debug(M.pretty(vBase.dx,4));
 
-			// Jump
+			if( onGround )
+				cd.setS("allowJitJump",0.15);
+
+			// Jump extra power when held
 			if( !onGround && cd.has("extraJumping") && ca.isDown(GA_Jump) )
 				vBase.dy+=-0.08*tmod;
 
-			if( !onGround && ca.isPressed(GA_Jump) && cd.has("allowAirJump") ) {
+			if( !onGround && !cd.has("allowJitJump") && ca.isPressed(GA_Jump) && cd.has("allowAirJump") ) {
 				// Double jump
-				vBase.dy = -0.1;
+				vBase.dy = -0.2;
 				cd.unset("allowAirJump");
 				cd.setS("extraJumping",0.1);
 				cd.setS("reduceGravity",0.3);
@@ -232,13 +235,14 @@ class Hero extends Entity {
 					setSquashX(0.85);
 			}
 
-			if( onGround && ca.isPressed(GA_Jump) ) {
+			if( ( onGround || cd.has("allowJitJump") ) && ca.isPressed(GA_Jump) ) {
 				// Normal jump
 				// Assets.SBANK.dash1(0.2);
 				vBase.dy = -0.16;
 				cd.setS("reduceGravity",0.1);
 				cd.setS("extraJumping", 0.1);
 				cd.setS("allowAirJump",Const.INFINITE);
+				cd.unset("allowJitJump");
 				if( options.heroSquashAndStrech )
 					setSquashX(0.55);
 			}
@@ -248,6 +252,7 @@ class Hero extends Entity {
 				cd.unset("dashQueued");
 				dashDir = dir;
 				vBase.dx = dashDir*0.5;
+				vBase.dy *= 0.1;
 				burstCount = 0;
 				// Assets.SBANK.jetpack0().playOnGroup(3,0.3);
 
@@ -257,7 +262,8 @@ class Hero extends Entity {
 				if( options.camShakesZoom )
 					game.camera.bumpZoom(0.03);
 
-				cd.setS("dashing", 0.08);
+				cd.setS("dashing", 0.12);
+				cd.setS("reduceGravity",0.1);
 				lockControlS( cd.getS("dashing")+0.1 );
 
 				if( options.heroSprite )
