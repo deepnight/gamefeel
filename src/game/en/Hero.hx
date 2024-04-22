@@ -9,6 +9,8 @@ class Hero extends Entity {
 	public function new(x,y) {
 		super(x,y);
 
+		hei = 22;
+
 		ca = App.ME.controller.createAccess();
 		ca.lockCondition = ()->App.ME.anyInputHasFocus() || Window.hasAnyModal();
 		ctrlQueue = new ControllerQueue(ca);
@@ -16,7 +18,7 @@ class Hero extends Entity {
 		ctrlQueue.watch(A_Shoot);
 		ctrlQueue.watch(A_Dash);
 
-		var c : Col = options.baseArt ? 0x00ff00 : 0xffffff;
+		var c : Col = options.baseArt ? 0x1e65e9 : 0xffffff;
 
 		if( options.heroSprite ) {
 			// Real animations
@@ -118,21 +120,21 @@ class Hero extends Entity {
 			gun.x += ( isWalking ? -2 + Math.cos(ftime*0.2)*3 : 0 );
 			gun.y += isWalking ? M.fabs( Math.sin(0.2+ftime*0.3)*1 ) : 0;
 			gun.rotation = 0;
+		}
 
-			if( options.gunAimingAnim ) {
-				if( cd.has("gunRecoil") ) {
-					gun.rotation = -0.15 * cd.getRatio("gunRecoil");
-					gun.x -= 4 * cd.getRatio("gunRecoil");
-					gun.y-=2;
-				}
-				else if( isChargingAction(CA_Shoot) || gunIsReady() || burstCount>0 ) {
-					gun.x += 3 - 1*getChargeRatio(CA_Shoot);
-					gun.y += -1 -1*getChargeRatio(CA_Shoot);
-				}
-				else {
-					gun.y+=2;
-					gun.rotation = 0.4;
-				}
+		if( options.gunAimingAnim ) {
+			if( cd.has("gunRecoil") ) {
+				gun.rotation = -0.15 * cd.getRatio("gunRecoil");
+				gun.x -= 4 * cd.getRatio("gunRecoil");
+				gun.y-=2;
+			}
+			else if( isChargingAction(CA_Shoot) || gunIsReady() || burstCount>0 ) {
+				gun.x += 3 - 1*getChargeRatio(CA_Shoot);
+				gun.y += -1 -1*getChargeRatio(CA_Shoot);
+			}
+			else {
+				gun.y+=2;
+				gun.rotation = 0.4;
 			}
 		}
 	}
@@ -193,7 +195,7 @@ class Hero extends Entity {
 	}
 
 	override function getGravityMul():Float {
-		return super.getGravityMul() * ( 0.3 + 0.7*(1-cd.getRatio("reduceGravity")) );
+		return super.getGravityMul() * ( 0.1 + 0.9*(1-cd.getRatio("reduceGravity")) );
 	}
 
 
@@ -331,7 +333,7 @@ class Hero extends Entity {
 
 			// Dash
 			if( !cd.has("dashLock") && ctrlQueue.consumePress(A_Dash) ) {
-				cd.setS("dashLock",0.3);
+				cd.setS("dashLock",0.8);
 				dashDir = dir;
 				vBase.dx = dashDir*0.5;
 				vBase.dy *= 0.1;
@@ -344,8 +346,11 @@ class Hero extends Entity {
 					game.camera.bumpZoom(0.03);
 
 				cd.setS("dashing", 0.12);
-				cd.setS("reduceGravity",0.1);
+				cd.setS("reduceGravity",0.2);
 				lockControlS( cd.getS("dashing")+0.1 );
+
+				if( options.movementFx )
+					fx.dash(centerX, centerY, dir);
 
 				if( options.heroSprite )
 					vBase.dy-=0.1;

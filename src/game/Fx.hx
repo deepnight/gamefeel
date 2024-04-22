@@ -402,25 +402,26 @@ class Fx extends GameChildProcess {
 		}
 	}
 
+	public function dash(x:Float,y:Float, dir:Float) {
+		for(i in 0...30) {
+			var p = allocMain_add(D.tiles.fxLineFadeBoth, x+rnd(6,10)*dir, y+rnd(0,8,true));
+			p.setCenterRatio(0.8, 0.5);
+			p.colorize("#2f3caf");
+			p.setFadeS(rnd(0.20, 0.35), 0.03, 0.07);
+			p.rotation = dir>0 ? 0 : M.PI;
+
+			p.dx = dir*rnd(4,8);
+			p.frict = R.around(0.8);
+
+			p.dsX = R.around(0.3);
+			p.dsFrict = 0.8;
+			p.scaleXMul = rnd(0.98,0.99);
+			p.lifeS = R.around(0.06);
+		}
+	}
+
 	public function doubleJump(x:Float, y:Float) {
 		var c = new Col(0x616986);
-		// for(i in 0...10) {
-		// 	var dir = i%2==0 ? 1 : -1;
-		// 	var p = allocMain_normal(D.tiles.fxSmoke, x+rnd(0,2)*dir, y+rnd(0,2,true));
-		// 	p.colorize(c);
-		// 	p.setFadeS(R.around(0.1), 0.1, rnd(0.3,1.5));
-
-		// 	p.setScale(rnd(0.3,0.5,true));
-		// 	p.scaleMul = rnd(1,1.002);
-
-		// 	// p.dx = rnd(0.1,1) * dir;
-		// 	p.dy = rnd(0.1,0.6);
-		// 	p.frict = rnd(0.92,0.94);
-
-		// 	p.rotation = rnd(0,6.28);
-		// 	p.dr = rnd(0,0.002,true);
-		// 	p.lifeS = rnd(0.3,0.9);
-		// }
 
 		for(i in 0...15) {
 			var dir = i%2==0 ? 1 : -1;

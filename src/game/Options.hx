@@ -1,10 +1,14 @@
 @:keep class Options {
 	public var baseArt = true;
+	public var blinkImpact = true;
 	public var flashbang = true;
+	public var lighting = true;
 	public var camShakesXY = true;
 	public var camShakesZoom = true;
+
+	@separator
 	public var controlLocks = true;
-	public var blinkImpact = true;
+	public var physicalReactions = true;
 
 	@separator
 	public var mobSquashAndStrech = true;
@@ -20,11 +24,9 @@
 	public var gunShotFx = true;
 	public var bulletImpactFx = true;
 	public var bulletImpactBurnFx = true;
-	public var lighting = true;
 	public var movementFx = true;
 
 	@separator
-	public var physicalReactions = true;
 	public var blood = true;
 	public var cadavers = true;
 
