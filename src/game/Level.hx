@@ -14,6 +14,9 @@ class Level extends GameChildProcess {
 	public var data : World_Level;
 	var tilesetSource : h2d.Tile;
 
+	var wrapper : h2d.Object;
+	var debugRender : h2d.Graphics;
+
 	public var marks : dn.MarkerMap<LevelMark>;
 	var invalidated = true;
 
@@ -21,6 +24,9 @@ class Level extends GameChildProcess {
 		super();
 
 		createRootInLayers(Game.ME.scroller, Const.DP_BG);
+		wrapper = new h2d.Object(root);
+		debugRender = new h2d.Graphics(root);
+
 		data = ldtkLevel;
 		cWid = data.l_Collisions.cWid;
 		cHei = data.l_Collisions.cHei;
@@ -29,11 +35,37 @@ class Level extends GameChildProcess {
 		tilesetSource = hxd.Res.levels.sampleWorldTiles.toAseprite().toTile();
 
 		marks = new dn.MarkerMap(cWid, cHei);
+		function _hasColl(cx,cy) {
+			return data.l_Collisions.getInt(cx,cy)==1;
+		}
 		for(cy in 0...cHei)
 		for(cx in 0...cWid) {
 			if( data.l_Collisions.getInt(cx,cy)==1 )
 				marks.set(M_Coll_Wall, cx,cy);
+
+			if( !_hasColl(cx,cy) && _hasColl(cx+1,cy) && !_hasColl(cx+1,cy-1) )
+				if( _hasColl(cx,cy+1) )
+					marks.setWithBit(M_SmallStep, SM_Right, cx,cy);
+				else
+					marks.setWithBit(M_Cliff, SM_Right, cx,cy);
+
+			if( !_hasColl(cx,cy) && _hasColl(cx-1,cy) && !_hasColl(cx-1,cy-1) )
+				if( _hasColl(cx,cy+1) )
+					marks.setWithBit(M_SmallStep, SM_Left, cx,cy);
+				else
+					marks.setWithBit(M_Cliff, SM_Left, cx,cy);
 		}
+
+		renderDebugMark(M_SmallStep);
+	}
+
+	public function renderDebugMark(mark:LevelMark, ?subBit:LevelSubMark) {
+		debugRender.clear();
+		debugRender.beginFill(Pink,0.66);
+		for(cx in 0...cWid)
+		for(cy in 0...cHei)
+			if( subBit!=null && marks.hasWithBit(mark,subBit, cx,cy) || subBit==null && marks.has(mark, cx,cy) )
+				debugRender.drawRect(cx*Const.GRID, cy*Const.GRID, Const.GRID, Const.GRID);
 	}
 
 	override function onDispose() {
@@ -63,16 +95,16 @@ class Level extends GameChildProcess {
 	/** Render current level**/
 	function render() {
 		// Placeholder level render
-		root.removeChildren();
+		wrapper.removeChildren();
 
 
-		var bg = new h2d.Bitmap(h2d.Tile.fromColor(Const.BG_COLOR), root);
+		var bg = new h2d.Bitmap(h2d.Tile.fromColor(Const.BG_COLOR), wrapper);
 		bg.scaleX = data.pxWid;
 		bg.scaleY = data.pxHei;
 
 		if( !options.levelTextures ) {
 			// Simple rendering
-			var g = new h2d.Graphics(root);
+			var g = new h2d.Graphics(wrapper);
 			for(cx in 0...cWid)
 			for(cy in 0...cHei)
 				if( marks.has(M_Coll_Wall, cx,cy) ) {
@@ -82,7 +114,7 @@ class Level extends GameChildProcess {
 		}
 		else {
 			// Full rendering
-			var tg = new h2d.TileGroup(tilesetSource, root);
+			var tg = new h2d.TileGroup(tilesetSource, wrapper);
 			data.l_Collisions.render(tg);
 		}
 	}

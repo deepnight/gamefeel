@@ -107,7 +107,7 @@ class Console extends h2d.Console {
 
 					var col = 0xffcc00;
 					log('Displaying $mark (bit=$bit)...', col);
-					// Game.ME.level.renderDebugMark(cast mark, bit);
+					Game.ME.level.renderDebugMark(cast mark, bit);
 				}
 			);
 			this.addAlias("m","mark");
