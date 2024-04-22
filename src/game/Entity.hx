@@ -817,7 +817,7 @@ class Entity {
 			// Land on ground
 			if( yr>=1 && level.hasCollision(cx,cy+1) ) {
 				onLand( (attachY-fallStartPxY)/Const.GRID );
-				vBase.clear();
+				vBase.dy = 0;
 				yr = 1;
 				onPosManuallyChangedY();
 				fallStartPxY = attachY;
