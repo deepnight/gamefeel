@@ -232,7 +232,7 @@ class App extends dn.Process {
 		controller.bindPadLStick4(A_MoveLeft, A_MoveRight, A_MoveUp, A_MoveDown);
 		controller.bindPad(A_Jump, A);
 		controller.bindPad(A_Dash, B);
-		controller.bindPad(A_Shoot, [X,Y,RT,LT,RB,LB]);
+		controller.bindPad(A_Shoot, [X,Y,RT,RB]);
 		controller.bindPad(A_Restart, SELECT);
 		controller.bindPad(A_Options, START);
 		controller.bindPad(A_MoveLeft, DPAD_LEFT);
