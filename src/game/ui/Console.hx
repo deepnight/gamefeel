@@ -5,14 +5,13 @@ enum abstract ConsoleFlag(Int) to Int from Int {
 	var F_CameraScrolling;
 	var F_Bounds;
 	var F_Affects;
+	var F_DisableSceneFilter;
 }
 
 class Console extends h2d.Console {
 	public static var ME : Console;
-	#if debug
 	var flags : Map<ConsoleFlag,Bool>;
 	var allFlags : Array<{ name:String, value:Int }> = [];
-	#end
 
 	var stats : Null<dn.heaps.StatsBox>;
 
@@ -29,38 +28,39 @@ class Console extends h2d.Console {
 		h2d.Console.HIDE_LOG_TIMEOUT = #if debug 60 #else 5 #end;
 		Lib.redirectTracesToH2dConsole(this);
 
+		// Debug console flags
+		flags = new Map();
+		allFlags = dn.MacroTools.getAbstractEnumValues(ConsoleFlag);
+		allFlags.sort( (a,b)->Reflect.compare(a.name, b.name) );
+		this.addCommand("flags", "Open the console flags window", [], function() {
+			this.hide();
+			var w = new ui.win.SimpleMenu();
+			w.verticalAlign = End;
+			w.addButton("Disable all", false, ()->{
+				for(f in allFlags)
+					if( hasFlag(f.value) )
+						setFlag(f.value, false);
+			});
+			for(f in allFlags)
+				w.addCheckBox(f.name.substr(2), ()->hasFlag(f.value), v->setFlag(f.value,v));
+		});
+		this.addAlias("f","flags");
+		this.addAlias("flag","flags");
+
+		// List all console flags
+		this.addCommand("list", [], function() {
+			for(f in allFlags)
+				log( (hasFlag(f.value) ? "+" : "-")+f.name, hasFlag(f.value)?0x80ff00:0xff8888 );
+		});
+
+		// Controller debugger
+		this.addCommand("ctrl", [], ()->{
+			App.ME.ca.toggleDebugger(App.ME, dbg->{
+				dbg.root.filter = new dn.heaps.filter.PixelOutline();
+			});
+		});
+
 		#if debug
-			// Debug console flags
-			flags = new Map();
-			allFlags = dn.MacroTools.getAbstractEnumValues(ConsoleFlag);
-			allFlags.sort( (a,b)->Reflect.compare(a.name, b.name) );
-			this.addCommand("flags", "Open the console flags window", [], function() {
-				this.hide();
-				var w = new ui.win.SimpleMenu();
-				w.verticalAlign = End;
-				w.addButton("Disable all", false, ()->{
-					for(f in allFlags)
-						if( hasFlag(f.value) )
-							setFlag(f.value, false);
-				});
-				for(f in allFlags)
-					w.addCheckBox(f.name.substr(2), ()->hasFlag(f.value), v->setFlag(f.value,v));
-			});
-			this.addAlias("f","flags");
-			this.addAlias("flag","flags");
-
-			// List all console flags
-			this.addCommand("list", [], function() {
-				for(f in allFlags)
-					log( (hasFlag(f.value) ? "+" : "-")+f.name, hasFlag(f.value)?0x80ff00:0xff8888 );
-			});
-
-			// Controller debugger
-			this.addCommand("ctrl", [], ()->{
-				App.ME.ca.toggleDebugger(App.ME, dbg->{
-					dbg.root.filter = new dn.heaps.filter.PixelOutline();
-				});
-			});
 
 			// Garbage collector
 			this.addCommand("gc", [{ name:"state", t:AInt, opt:true }], (?state:Int)->{
@@ -135,12 +135,10 @@ class Console extends h2d.Console {
 		this.addAlias("stats","fps");
 
 		// All flag aliases
-		#if debug
 		for(f in allFlags)
 			addCommand(f.name.substr(2), [], ()->{
 				setFlag(f.value, !hasFlag(f.value));
 			});
-		#end
 	}
 
 	public function disableStats() {
@@ -198,20 +196,6 @@ class Console extends h2d.Console {
 		return "";
 	}
 
-	/** Creates a shortcut command "/flag" to toggle specified flag state **/
-	// inline function addFlagCommandAlias(flag:ConsoleFlag) {
-	// 	#if debug
-	// 	var str = Std.string(flag);
-	// 	for(f in allFlags)
-	// 		if( f.value==flag ) {
-	// 			str = f.name;
-	// 			break;
-	// 		}
-	// 	addCommand(str, [], ()->{
-	// 		setFlag(flag, !hasFlag(flag));
-	// 	});
-	// 	#end
-	// }
 
 	override function handleCommand(command:String) {
 		var flagReg = ~/[\/ \t]*\+[ \t]*([\w]+)/g; // cleanup missing spaces
@@ -223,7 +207,6 @@ class Console extends h2d.Console {
 		h2d.Console.HIDE_LOG_TIMEOUT = Const.INFINITE;
 	}
 
-	#if debug
 	public function setFlag(f:ConsoleFlag, v:Bool) {
 		var hadBefore = hasFlag(f);
 
@@ -237,9 +220,6 @@ class Console extends h2d.Console {
 		return v;
 	}
 	public function hasFlag(f:ConsoleFlag) return flags.get(f)==true;
-	#else
-	public inline function hasFlag(f:ConsoleFlag) return false;
-	#end
 
 	public function onFlagChange(f:ConsoleFlag, v:Bool) {}
 

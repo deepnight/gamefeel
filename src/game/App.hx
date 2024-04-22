@@ -318,6 +318,11 @@ class App extends dn.Process {
 			Game.ME.onDbReload();
 	}
 
+	override function postUpdate() {
+		super.postUpdate();
+		crt.enable = !Console.ME.hasFlag(F_DisableSceneFilter);
+	}
+
     override function update() {
 		Assets.update(tmod);
 
