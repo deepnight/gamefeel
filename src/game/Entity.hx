@@ -11,6 +11,7 @@ class Entity {
 	public var ftime(get,never) : Float; inline function get_ftime() return game.ftime;
 	public var camera(get,never) : Camera; inline function get_camera() return game.camera;
 	public var options(get,never) : Options; inline function get_options() return App.ME.options;
+	public var hero(get,never) : en.Hero; inline function get_hero() return Game.ME.hero;
 
 	var tmod(get,never) : Float; inline function get_tmod() return Game.ME.tmod;
 	var utmod(get,never) : Float; inline function get_utmod() return Game.ME.utmod;

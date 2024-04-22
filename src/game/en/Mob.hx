@@ -2,7 +2,6 @@ package en;
 
 class Mob extends Entity {
 	public static var ALL : Array<Mob> = [];
-	public var life = 1;
 
 	public function new(x,y) {
 		super(x,y);
@@ -10,7 +9,7 @@ class Mob extends Entity {
 
 		var g = new h2d.Graphics(spr);
 		g.beginFill(options.baseArt ? 0xffcc00 : 0xffffff);
-		g.drawRect(-radius, -hei, radius*2, hei);
+		g.drawRect(-innerRadius, -hei, innerRadius*2, hei);
 	}
 
 	override function dispose() {
@@ -18,48 +17,40 @@ class Mob extends Entity {
 		ALL.remove(this);
 	}
 
-	override function isAlive():Bool {
-		return super.isAlive() && life>0;
-	}
 
-	public function hit(dmg:Int, impactDir:Int) {
-		life-=dmg;
+	override function hit(dmg:Int, from:Null<Entity>) {
+		super.hit(dmg, from);
+		var impactDir = from!=null ? from.dirTo(this) : -dir;
 
 		if( options.mobSquashAndStrech )
-			skew(0.6, 1.35);
+			setSquashX(0.6);
 
 		if( options.physicalReactions )
 			if( !cd.hasSetS("firstImpact",0.4) )
-				bump(impactDir * rnd(0.040, 0.060), -0.05);
+				vBump.addXY(impactDir * rnd(0.040, 0.060), -0.05);
 			else
-				bump(impactDir*rnd(0.005,0.010), 0);
+				vBump.addXY(impactDir * rnd(0.005,0.010), 0);
 
 		if( options.blinkImpact )
 			blink(0xffffff);
 
-		if( options.lighting )
-			fx.lightSpot(centerX+rnd(0,15)*-impactDir, centerY+rnd(0,8,true), 0xff0000, rnd(0.15,0.18));
+		// if( options.lighting )
+		// 	fx.lightSpot(centerX+rnd(0,15)*-impactDir, centerY+rnd(0,8,true), 0xff0000, rnd(0.15,0.18));
 
-		if( options.blood ) {
-			fx.bloodBackHits(centerX, centerY, impactDir, 2);
-			fx.bloodFrontHits(centerX, centerY, -impactDir, 0.6);
-		}
-
-		if( life<=0 ) {
-			life = 0;
-			onDie();
-		}
+		// if( options.blood ) {
+		// 	fx.bloodBackHits(centerX, centerY, impactDir, 2);
+		// 	fx.bloodFrontHits(centerX, centerY, -impactDir, 0.6);
+		// }
 	}
 
-	function onDie() {
+	override function onDie() {
+		super.onDie();
 		if( options.cadavers )
 			new en.Cadaver(this);
-
-		destroy();
 	}
 
-	override function update() {
-		super.update();
+	override function fixedUpdate() {
+		super.fixedUpdate();
 		dir = dirTo(hero);
 	}
 }

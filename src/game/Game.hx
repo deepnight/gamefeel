@@ -69,6 +69,8 @@ class Game extends AppChildProcess {
 		level = new Level(l);
 		var inf = level.data.l_Entities.all_PlayerStart[0];
 		hero = new en.Hero(inf.cx, inf.cy);
+		for(inf in level.data.l_Entities.all_Enemy)
+			new en.Mob(inf.cx, inf.cy);
 
 		camera.centerOnTarget();
 		camera.trackEntity(hero, true);
