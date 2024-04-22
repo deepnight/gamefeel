@@ -158,6 +158,8 @@ class Entity {
 	var debugBounds : Null<h2d.Graphics>;
 	var invalidateDebugBounds = false;
 
+	var popTf : Null<h2d.Text>;
+
 	/** Defines X alignment of entity at its attach point (0 to 1.0) **/
 	public var pivotX(default,set) : Float = 0.5;
 	/** Defines Y alignment of entity at its attach point (0 to 1.0) **/
@@ -486,6 +488,22 @@ class Entity {
 	}
 
 
+	public function popText(txt:String, col:Col=White) {
+		if( popTf==null ) {
+			popTf = new h2d.Text(Assets.fontPixel);
+			game.scroller.add(popTf,Const.DP_UI);
+		}
+
+		popTf.text = txt;
+		popTf.textColor = col;
+		popTf.visible = true;
+		popTf.alpha = 1;
+		popTf.x = Std.int(attachX - popTf.textWidth*0.5);
+		popTf.y = Std.int(top - popTf.textHeight - 4);
+
+		cd.setS("keepPop", 0.5);
+	}
+
 	/** Print some value below entity **/
 	public inline function debug(?v:Dynamic, c:Col=0xffffff) {
 		#if debug
@@ -709,14 +727,6 @@ class Entity {
 
 
 		#if debug
-		// Display the list of active "affects" (with `/set affect` in console)
-		if( ui.Console.ME.hasFlag(F_Affects) ) {
-			var all = [];
-			for(k in affects.keys())
-				all.push( k+"=>"+M.pretty( getAffectDurationS(k) , 1) );
-			debug(all);
-		}
-
 		// Show bounds (with `/bounds` in console)
 		if( ui.Console.ME.hasFlag(F_Bounds) && debugBounds==null )
 			enableDebugBounds();
@@ -775,6 +785,15 @@ class Entity {
 			}
 			debugBounds.x = Std.int(attachX);
 			debugBounds.y = Std.int(attachY);
+		}
+
+		// Fade text pop
+		if( popTf!=null && popTf.visible && !cd.has("keepPop") ) {
+			popTf.alpha -= 0.05*tmod;
+			if( popTf.alpha<=0 ) {
+				popTf.visible = false;
+				popTf.alpha = 1;
+			}
 		}
 	}
 
