@@ -7,9 +7,10 @@ class Mob extends Entity {
 		super(x,y);
 		ALL.push(this);
 		life.initMaxOnMax(5);
+		hei = 24;
 
 		var g = new h2d.Graphics(spr);
-		g.beginFill(options.baseArt ? 0xcc3806 : 0x7e7e7e);
+		g.beginFill(0xcc3806);
 		g.drawRect(-innerRadius, -hei, innerRadius*2, hei);
 		g.colorAdd = spr.colorAdd;
 	}
