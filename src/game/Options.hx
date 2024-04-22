@@ -7,10 +7,6 @@
 	public var camShakesZoom = true;
 
 	@separator
-	public var controlLocks = true;
-	public var physicalReactions = true;
-
-	@separator
 	public var mobSquashAndStrech = true;
 	public var heroSquashAndStrech = true;
 
@@ -23,8 +19,13 @@
 	public var cartridges = true;
 	public var gunShotFx = true;
 	public var bulletImpactFx = true;
-	public var bulletImpactBurnFx = true;
+	public var bulletImpactDustFx = true;
+	public var bulletWallBurnFx = true;
 	public var movementFx = true;
+
+	@separator
+	public var controlLocks = true;
+	public var physicalReactions = true;
 
 	@separator
 	public var blood = true;

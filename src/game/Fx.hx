@@ -202,8 +202,8 @@ class Fx extends GameChildProcess {
 			p.lifeS = 0.12;
 		}
 
-		// Falling dots
-		if( options.bulletImpactBurnFx )
+		// Falling sparks
+		if( options.bulletImpactDustFx )
 			for(i in 0...5) {
 				var p = allocMain_add(D.tiles.fxPixel, x, y+rnd(0,2,true));
 				p.setFadeS(rnd(0.5,0.9), 0, rnd(0.2, 0.5));
@@ -217,8 +217,8 @@ class Fx extends GameChildProcess {
 				p.onUpdate = _physics;
 			}
 
-		// Stuck dots
-		if( options.bulletImpactBurnFx )
+		// Burning dots
+		if( options.bulletWallBurnFx )
 			for(i in 0...7) {
 				var p = allocMain_add(D.tiles.fxPixel, x+rnd(0,1,true)*-normalDir, y+rnd(0,6,true));
 				p.colorAnimS( new Col(0xffd524).to(0xff6606, rnd(0,1) ), 0x990000, rnd(0.3,2) );
@@ -240,8 +240,8 @@ class Fx extends GameChildProcess {
 		p.scaleYMul = 0.91;
 		p.lifeS = 0.12;
 
-		// Falling dots
-		if( options.bulletImpactBurnFx )
+		// Falling sparks
+		if( options.bulletImpactDustFx )
 			for(i in 0...5) {
 				var p = allocMain_add(D.tiles.fxPixel, x, y+rnd(0,2,true));
 				p.setFadeS(rnd(0.5,0.9), 0, rnd(0.2, 0.5));
@@ -262,8 +262,7 @@ class Fx extends GameChildProcess {
 		p.setFadeS(0.3, 0.03, 0.15);
 		p.colorize(col);
 		p.setCenterRatio(1,0.5);
-		p.scaleX = e.dir;
-		p.scaleY = 0.5;
+		p.scaleX = e.dir*1;
 		p.moveAng(e.ang, 1);
 		p.rotation = e.ang;
 		p.lifeS = 0.1;
