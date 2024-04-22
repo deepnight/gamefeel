@@ -1,4 +1,6 @@
 class Level extends GameChildProcess {
+	public var options(get,never) : Options; inline function get_options() return App.ME.options;
+
 	/** Level grid-based width**/
 	public var cWid(default,null): Int;
 	/** Level grid-based height **/
@@ -63,8 +65,26 @@ class Level extends GameChildProcess {
 		// Placeholder level render
 		root.removeChildren();
 
-		var tg = new h2d.TileGroup(tilesetSource, root);
-		data.l_Collisions.render(tg);
+
+		var bg = new h2d.Bitmap(h2d.Tile.fromColor(Const.BG_COLOR), root);
+		bg.scaleX = data.pxWid;
+		bg.scaleY = data.pxHei;
+
+		if( !options.levelTextures ) {
+			// Simple rendering
+			var g = new h2d.Graphics(root);
+			for(cx in 0...cWid)
+			for(cy in 0...cHei)
+				if( marks.has(M_Coll_Wall, cx,cy) ) {
+					g.beginFill(new Col("#724f2d"));
+					g.drawRect(cx*Const.GRID, cy*Const.GRID, Const.GRID, Const.GRID);
+				}
+		}
+		else {
+			// Full rendering
+			var tg = new h2d.TileGroup(tilesetSource, root);
+			data.l_Collisions.render(tg);
+		}
 	}
 
 	override function postUpdate() {

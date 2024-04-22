@@ -44,6 +44,7 @@ class Const {
 	public static var BUILD_INFO(get,never) : String;
 		static function get_BUILD_INFO() return dn.MacroTools.getBuildInfo();
 
+	public static var BG_COLOR = new Col(0x151C23);
 
 	/** Game layers indexes **/
 	static var _inc = 0;

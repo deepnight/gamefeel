@@ -11,6 +11,7 @@ class Window extends dn.Process {
 	public static var ALL : Array<Window> = [];
 	static var MODAL_COUNT = 0;
 
+	public var options(get,never) : Options; inline function get_options() return App.ME.options;
 	public var content: h2d.Flow;
 
 	var ca : ControllerAccess<GameAction>;
@@ -27,7 +28,7 @@ class Window extends dn.Process {
 		super(p==null ? App.ME : p);
 
 		ALL.push(this);
-		createRootInLayers(Game.ME.root, Const.DP_UI);
+		createRootInLayers(App.ME.root, Const.DP_UI);
 		root.filter = new h2d.filter.Nothing(); // force pixel perfect rendering
 
 		content = new h2d.Flow(root);
@@ -80,7 +81,7 @@ class Window extends dn.Process {
 		ca.dispose();
 		ca = null;
 
-		if( !hasAnyModal() )
+		if( Game.exists() && !hasAnyModal() )
 			Game.ME.resume();
 	}
 

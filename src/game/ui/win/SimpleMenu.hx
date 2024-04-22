@@ -29,11 +29,12 @@ class SimpleMenu extends ui.Window {
 			case Center: content.maxHeight = Std.int( 0.8 * h()/Const.UI_SCALE );
 			case Fill: content.maxHeight = Std.int( h()/Const.UI_SCALE );
 		}
+		content.debug = true;
 	}
 
 	public function addSpacer() {
 		var f = new h2d.Flow(content);
-		f.minWidth = f.minHeight = 4;
+		f.minWidth = f.minHeight = 12;
 	}
 
 	public function addTitle(str:String) {
@@ -61,12 +62,4 @@ class SimpleMenu extends ui.Window {
 
 		uiCtrl.register(bt);
 	}
-
-	// public function addRadio(label:String, isActive:Bool, onPick:Void->Void, close=false) {
-	// 	return addButton(
-	// 		Lib.padRight(label,labelPadLen-3) + '<${isActive?"X":" "}>',
-	// 		()->onPick(),
-	// 		close
-	// 	);
-	// }
 }

@@ -1,6 +1,8 @@
 class Game extends AppChildProcess {
 	public static var ME : Game;
 
+	public var options(get,never) : Options; inline function get_options() return App.ME.options;
+
 	/** Game controller (pad or keyboard) **/
 	public var ca : ControllerAccess<GameAction>;
 
@@ -73,6 +75,7 @@ class Game extends AppChildProcess {
 			new en.Mob(inf.cx, inf.cy);
 
 		camera.centerOnTarget();
+		camera.targetOffY = -10;
 		camera.trackEntity(hero, true);
 		hud.onLevelStart();
 		dn.Process.resizeAll();
@@ -218,15 +221,6 @@ class Game extends AppChildProcess {
 
 		// Global key shortcuts
 		if( !App.ME.anyInputHasFocus() && !ui.Window.hasAnyModal() && !Console.ME.isActive() ) {
-			// Exit by pressing ESC twice
-			#if hl
-			if( ca.isKeyboardPressed(K.ESCAPE) )
-				if( !cd.hasSetS("exitWarn",3) )
-					hud.notify(Lang.t._("Press ESCAPE again to exit."));
-				else
-					App.ME.exit();
-			#end
-
 			// Attach debug drone (CTRL-SHIFT-D)
 			#if debug
 			if( ca.isPressed(A_ToggleDebugDrone) )
