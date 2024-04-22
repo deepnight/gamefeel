@@ -68,10 +68,11 @@ class Hero extends Entity {
 		cd.setS("landed", 0.5*pow);
 
 		if( cHei>=4 ) {
-			if( options.physicalReactions ) // TODO mobs phys reactions
+			if( options.physicalReactions )
 				for(e in Mob.ALL) {
-					e.vBase.dx += dirTo(e) * rnd(0.06,0.11);
-					e.vBase.dy = -rnd(0.1,0.2);
+					var pow = 1 - M.fclamp( distCase(e) / 12, 0, 1 );
+					e.vBase.dx += dirTo(e) * rnd(0.1,0.2) * pow;
+					e.vBase.dy = -rnd(0.2,0.3) * pow;
 				}
 		}
 
@@ -154,7 +155,7 @@ class Hero extends Entity {
 		if( options.camShakesXY )
 			game.camera.bump(-dir*3, 0);
 
-		if( options.flashes )
+		if( options.flashbang )
 			fx.flashBangS(0xffcc00, 0.04, 0.1);
 
 		if( options.heroSquashAndStrech )
@@ -228,7 +229,7 @@ class Hero extends Entity {
 		yr = 0.7;
 		lockControlS(0.2);
 		setSquashY(0.8);
-		
+
 		if( options.heroSprite )
 			spr.anim.playOverlap(D.hero.climbStep);
 
@@ -282,8 +283,10 @@ class Hero extends Entity {
 			// Walk
 			if( !cd.has("walkLock") ) {
 				var spd = (onGround ? 0.015 : 0.019 ) * cd.getRatio("airControl");
-				if( isChargingAction() )
-					spd *= 0.33;
+				if( isChargingAction(CA_PrepareGun) )
+					spd *= 0.1;
+				// else if( isChargingAction(CA_Shoot) )
+					// spd *= 0.66;
 
 				if( ca.isDown(A_MoveRight) ) {
 					vBase.dx+=spd*tmod;
