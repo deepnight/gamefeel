@@ -31,7 +31,6 @@ class OptionsMenu extends ui.win.SimpleMenu {
 	}
 
 	function applyChanges() {
-		trace("apply changes");
 		Game.ME.restartLevel();
 		Game.ME.resume();
 		delayer.addF(Game.ME.pause, 1);
