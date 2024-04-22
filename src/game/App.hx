@@ -267,16 +267,15 @@ class App extends dn.Process {
 		controller.bindKeyboard(A_MenuCancel, K.ESCAPE);
 
 		// Debug controls
-		#if debug
-		controller.bindPad(A_DebugTurbo, LT);
 		controller.bindPad(A_DebugSlowMo, LB);
+		controller.bindKeyboard(A_DebugSlowMo, [K.HOME, K.NUMPAD_SUB]);
+		#if debug
 		controller.bindPad(A_DebugDroneZoomIn, RSTICK_UP);
 		controller.bindPad(A_DebugDroneZoomOut, RSTICK_DOWN);
 
 		controller.bindKeyboard(A_DebugDroneZoomIn, K.PGUP);
 		controller.bindKeyboard(A_DebugDroneZoomOut, K.PGDOWN);
-		controller.bindKeyboard(A_DebugTurbo, [K.END, K.NUMPAD_ADD]);
-		controller.bindKeyboard(A_DebugSlowMo, [K.HOME, K.NUMPAD_SUB]);
+		// controller.bindKeyboard(A_DebugTurbo, [K.END, K.NUMPAD_ADD]);
 		controller.bindPadCombo(A_ToggleDebugDrone, [LSTICK_PUSH, RSTICK_PUSH]);
 		controller.bindKeyboardCombo(A_ToggleDebugDrone, [K.CTRL,K.SHIFT, K.D]);
 		controller.bindKeyboardCombo(A_OpenConsoleFlags, [[K.QWERTY_TILDE], [K.QWERTY_QUOTE], ["²".code], [K.CTRL,K.SHIFT, K.F]]);

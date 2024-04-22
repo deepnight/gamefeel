@@ -28,15 +28,13 @@ class OptionsMenu extends ui.win.SimpleMenu {
 					applyChanges();
 				});
 			}
-
-		onClose = function() {
-			applyChanges();
-		};
 	}
 
 	function applyChanges() {
-		App.ME.startGame();
-		trace(content.outerWidth);
+		trace("apply changes");
+		Game.ME.restartLevel();
+		Game.ME.resume();
+		delayer.addF(Game.ME.pause, 1);
 	}
 
 	function setAllOptions(v:Bool) {

@@ -10,6 +10,7 @@ class Hero extends Entity {
 		super(x,y);
 
 		ca = App.ME.controller.createAccess();
+		ca.lockCondition = ()->App.ME.anyInputHasFocus() || Window.hasAnyModal();
 		ctrlQueue = new ControllerQueue(ca);
 		ctrlQueue.watch(A_Jump);
 		ctrlQueue.watch(A_Shoot);

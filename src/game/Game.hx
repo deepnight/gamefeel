@@ -61,6 +61,7 @@ class Game extends AppChildProcess {
 
 	/** Load a level **/
 	function startLevel(l:World.World_Level) {
+		// Delete existing level
 		if( level!=null )
 			level.destroy();
 		fx.clear();
@@ -68,18 +69,24 @@ class Game extends AppChildProcess {
 			e.destroy();
 		garbageCollectEntities();
 
+		// Create level
 		level = new Level(l);
 		var inf = level.data.l_Entities.all_PlayerStart[0];
 		hero = new en.Hero(inf.cx, inf.cy);
 		for(inf in level.data.l_Entities.all_Enemy)
 			new en.Mob(inf.cx, inf.cy);
 
+		// Init misc stuff
 		camera.centerOnTarget();
 		camera.targetOffY = -10;
 		camera.trackEntity(hero, true);
 		hud.onLevelStart();
 		dn.Process.resizeAll();
 		dn.Gc.runNow();
+	}
+
+	public function restartLevel() {
+		startLevel(level.data);
 	}
 
 

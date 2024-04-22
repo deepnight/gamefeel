@@ -42,7 +42,6 @@ class Boot extends hxd.App {
 
 		// Debug controls over app speed
 		var adjustedTmod = hxd.Timer.tmod;
-		#if debug
 		if( App.exists() ) {
 			// Slow down (toggle)
 			if( ca.isPressed(A_DebugSlowMo)  )
@@ -52,7 +51,6 @@ class Boot extends hxd.App {
 			// Turbo (by holding a key)
 			adjustedTmod *= ca.isDown(A_DebugTurbo) ? 5 : 1;
 		}
-		#end
 
 		#if( hl && !debug )
 		try {
