@@ -27,7 +27,7 @@ class Bullet extends Entity {
 			spr.set(Assets.tiles, D.tiles.empty);
 			spr.smooth = true;
 			var g = new h2d.Graphics(spr);
-			if( options.baseArt ) {
+			if( options.bulletTail ) {
 				// Tail
 				g.beginFill(0xff0000,0.5);
 				g.drawRect(-16, -0.5, 13, 1);
@@ -66,7 +66,7 @@ class Bullet extends Entity {
 		super.postUpdate();
 		spr.scaleX = M.fabs(spr.scaleX); // ignore dir
 		spr.rotation = ang;
-		if( !cd.hasSetS("tailFx",0.03) )
+		if( options.bulletTail && !cd.hasSetS("tailFx",0.03) )
 			fx.bulletTail(this, Red);
 	}
 

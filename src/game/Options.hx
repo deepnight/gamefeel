@@ -18,6 +18,7 @@
 	@separator
 	public var cartridges = true;
 	public var gunShotFx = true;
+	public var bulletTail = true;
 	public var bulletImpactFx = true;
 	public var bulletImpactDustFx = true;
 	public var bulletWallBurnFx = true;

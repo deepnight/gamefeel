@@ -263,7 +263,9 @@ class Fx extends GameChildProcess {
 		p.colorize(col);
 		p.setCenterRatio(1,0.5);
 		p.scaleX = e.dir*1;
+		p.scaleXMul = 0.95;
 		p.moveAng(e.ang, 1);
+		p.frict = 0.87;
 		p.rotation = e.ang;
 		p.lifeS = 0.1;
 	}
@@ -390,8 +392,8 @@ class Fx extends GameChildProcess {
 		// Dirt
 		for(i in 0...20) {
 			var p = allocBg_normal(D.tiles.fxPixel, x+rnd(0,1,true), y+rnd(0,1,true));
-			p.setFadeS(0.3, 0, rnd(4,5));
-			p.colorizeRandomDarker(col, 0.2);
+			p.setFadeS(rnd(0.1,0.5), 0, rnd(4,5));
+			p.colorizeRandomDarker(col, 0.5);
 			p.dx = -climbDir * rnd(0.2,2);
 			p.dy = rnd(-1,1);
 			p.gy = R.around(0.1, 5);
