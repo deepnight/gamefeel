@@ -5,6 +5,7 @@ class Game extends AppChildProcess {
 
 	/** Game controller (pad or keyboard) **/
 	public var ca : ControllerAccess<GameAction>;
+	public var mouseDowns : Map<MouseButton, Bool> = new Map();
 
 	/** Particles **/
 	public var fx : Fx;
@@ -45,9 +46,41 @@ class Game extends AppChildProcess {
 		hud = new ui.Hud();
 		camera = new Camera();
 
+		App.ME.scene.addEventListener(onEvent);
+
 		startLevel(Assets.worldData.all_worlds.SampleWorld.all_levels.FirstLevel);
 	}
 
+
+	function onEvent(ev:hxd.Event) {
+		switch ev.kind {
+			case EPush: mouseDowns.set(ev.button==0?MB_Left:MB_Right, true);
+			case ERelease: mouseDowns.remove(ev.button==0?MB_Left:MB_Right);
+			case EMove:
+			case EOver:
+			case EOut:
+			case EWheel:
+			case EFocus:
+			case EFocusLost:
+			case EKeyDown:
+			case EKeyUp:
+			case EReleaseOutside:
+			case ETextInput:
+			case ECheck:
+		}
+	}
+
+	public function onAppBlur() {
+		mouseDowns = new Map();
+	}
+
+	public function onMouseLeave() {
+		mouseDowns = new Map();
+	}
+
+	public inline function isMouseDown(btn:MouseButton) {
+		return mouseDowns.exists(btn);
+	}
 
 	public static function isGameControllerLocked() {
 		return !exists() || ME.isPaused() || App.ME.anyInputHasFocus();
@@ -82,6 +115,19 @@ class Game extends AppChildProcess {
 		hud.onLevelStart();
 		dn.Process.resizeAll();
 		dn.Gc.runNow();
+
+		// #if !debug
+		if( !App.ME.cd.hasSetS("disclaimerOnce",Const.INFINITE) ) {
+			var win = new ui.win.SimpleMenu();
+			win.content.horizontalAlign = Middle;
+			win.content.padding = 8;
+			win.addTitle("Game feel demo");
+			win.addSpacer();
+			win.addText("This demo is not an actual game, but a playable demonstration of various game feel techniques.");
+			win.addSpacer();
+			win.addButton("Continue", ()->{});
+		}
+		// #end
 	}
 
 	public function restartLevel() {
@@ -125,6 +171,7 @@ class Game extends AppChildProcess {
 	override function onDispose() {
 		super.onDispose();
 
+		App.ME.scene.removeEventListener(onEvent);
 		fx.destroy();
 		for(e in Entity.ALL)
 			e.destroy();

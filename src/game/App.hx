@@ -67,9 +67,15 @@ class App extends dn.Process {
 	}
 
 	function onMouseEnter(e:hxd.Event) {}
-	function onMouseLeave(e:hxd.Event) {}
+	function onMouseLeave(e:hxd.Event) {
+		if( Game.exists() )
+			Game.ME.onMouseLeave();
+	}
 	function onWindowFocus(e:hxd.Event) {}
-	function onWindowBlur(e:hxd.Event) {}
+	function onWindowBlur(e:hxd.Event) {
+		if( Game.exists() )
+			Game.ME.onAppBlur();
+	}
 
 
 	#if hl
@@ -262,9 +268,9 @@ class App extends dn.Process {
 		controller.bindKeyboard(A_MoveRight, [K.RIGHT, K.D]);
 		controller.bindKeyboard(A_MoveUp, [K.UP, K.Z, K.W]);
 		controller.bindKeyboard(A_MoveDown, [K.DOWN, K.S]);
-		controller.bindKeyboard(A_Jump, [K.SPACE,K.UP]);
+		controller.bindKeyboard(A_Jump, [K.SPACE, K.UP, K.Z, K.W]);
 		controller.bindKeyboard(A_Dash, [K.SHIFT,K.CTRL]);
-		controller.bindKeyboard(A_Shoot, [K.F]);
+		controller.bindKeyboard(A_Shoot, [K.F,K.E]);
 		controller.bindKeyboard(A_Restart, K.R);
 		controller.bindKeyboard(A_ScreenshotMode, K.F9);
 		controller.bindKeyboard(A_Pause, [K.P, K.PAUSE_BREAK]);

@@ -46,7 +46,16 @@ class Hud extends GameChildProcess {
 		var tf = new h2d.Text(Assets.fontPixel, keys);
 		tf.text = "/";
 		keys.getProperties(tf).offsetY = -2;
-		keys.addChild( App.ME.controller.getFirstBindindIconFor(a, Keyboard) );
+		switch a {
+			case A_Shoot:
+				keys.addChild( App.ME.controller.getMouseButtonIcon(0) );
+
+			case A_Jump:
+				keys.addChild( App.ME.controller.getMouseButtonIcon(1) );
+
+			case _:
+				keys.addChild( App.ME.controller.getFirstBindindIconFor(a, Keyboard) );
+		}
 
 		return createText(keys, txt, p);
 	}

@@ -330,6 +330,11 @@ class Hero extends Entity {
 			if( onGround && options.justInTimeJump )
 				cd.setS("allowJitJump",0.15);
 
+			if( game.isMouseDown(MB_Right) && !cd.hasSetS("mouseRight",Const.INFINITE) )
+				ctrlQueue.emulatePressOnly(A_Jump);
+			else if( !game.isMouseDown(MB_Right) && cd.has("mouseRight") )
+				cd.unset("mouseRight");
+
 			if( !onGround && !cd.has("allowJitJump") && cd.has("allowAirJump") && checkControlPress(A_Jump) ) {
 				// Double jump
 				vBase.dy = -0.52;
@@ -380,6 +385,8 @@ class Hero extends Entity {
 			}
 
 			// Shoot
+			if( game.isMouseDown(MB_Left) && !cd.hasSetS("mouseLeft",0.2) )
+				ctrlQueue.emulatePressOnly(A_Shoot);
 			if( burstCount<=0 && !cd.has("shootLock") && !isChargingAction(CA_Shoot) && !isChargingAction(CA_PrepareGun) && checkControlPressOrDown(A_Shoot) ) {
 				if( !options.gunAimingAnim ) {
 					burstCount = 3;

@@ -62,3 +62,8 @@ enum abstract ChargedActionId(Int) to Int {
 	var CA_Shoot;
 	var CA_PrepareGun;
 }
+
+enum abstract MouseButton(Int) to Int {
+	var MB_Left;
+	var MB_Right;
+}
