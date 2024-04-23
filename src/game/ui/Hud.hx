@@ -1,12 +1,16 @@
 package ui;
 
 class Hud extends GameChildProcess {
+	var uiWid(get,never) : Int; inline function get_uiWid() return Std.int( w()/Const.UI_SCALE );
+
 	var flow : h2d.Flow;
 	var invalidated = true;
 	var notifications : Array<h2d.Flow> = [];
 	var notifTw : dn.Tweenie;
 
 	var debugText : h2d.Text;
+
+	var help : h2d.Flow;
 
 	public function new() {
 		super();
@@ -17,16 +21,49 @@ class Hud extends GameChildProcess {
 		root.filter = new h2d.filter.Nothing(); // force pixel perfect rendering
 
 		flow = new h2d.Flow(root);
+		flow.horizontalAlign = Middle;
 		notifications = [];
+
+		help = new h2d.Flow(flow);
+		help.paddingHorizontal = 2;
+		help.backgroundTile = h2d.Tile.fromColor(Black,1,1, 0.6);
+		help.verticalAlign = Middle;
+		help.horizontalSpacing = 8;
+		createText(App.ME.controller.getFirstBindindIconFor(A_Options, Gamepad), "Toggle gamefeel elements", help);
+		createText(App.ME.controller.getFirstBindindIconFor(A_Restart, Gamepad), "Restart", help);
+		createText(App.ME.controller.getFirstBindindIconFor(A_Shoot, Gamepad), "Shoot", help);
+		createText(App.ME.controller.getFirstBindindIconFor(A_Jump, Gamepad), "Jump", help);
+		createText(App.ME.controller.getFirstBindindIconFor(A_Dash, Gamepad), "Dash", help);
 
 		debugText = new h2d.Text(Assets.fontPixel, root);
 		debugText.filter = new dn.heaps.filter.PixelOutline();
 		clearDebug();
 	}
 
+	function createText(?iconTile:h2d.Tile, ?iconFlow:h2d.Flow, txt:String, col:Col=White, ?p) {
+		var f = new h2d.Flow(p);
+		f.horizontalSpacing = 2;
+		f.verticalAlign = Middle;
+
+		if( iconTile!=null )
+			new h2d.Bitmap(iconTile,f);
+
+		if( iconFlow!=null )
+			f.addChild(iconFlow);
+
+		var tf = new h2d.Text(Assets.fontPixel, f);
+		tf.text = txt;
+		tf.textColor = col;
+		tf.filter = new dn.heaps.filter.PixelOutline();
+		f.getProperties(tf).offsetY = -2;
+
+		return f;
+	}
+
 	override function onResize() {
 		super.onResize();
 		root.setScale(Const.UI_SCALE);
+		flow.minWidth = uiWid;
 	}
 
 	/** Clear debug printing **/
