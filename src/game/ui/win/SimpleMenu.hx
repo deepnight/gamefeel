@@ -40,6 +40,10 @@ class SimpleMenu extends ui.Window {
 		new ui.component.Title( str, Col.coldGray(0.6), content );
 	}
 
+	public function addText(str:String) {
+		new ui.component.Text( str, Black, content );
+	}
+
 	public function addButton(label:String, ?tile:h2d.Tile, autoClose=true, cb:Void->Void) {
 		var bt = new ui.component.Button(label, tile, content);
 		bt.minWidth = content.colWidth;

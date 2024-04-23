@@ -21,29 +21,42 @@ class Hud extends GameChildProcess {
 		root.filter = new h2d.filter.Nothing(); // force pixel perfect rendering
 
 		flow = new h2d.Flow(root);
+		flow.paddingTop = 4;
 		flow.horizontalAlign = Middle;
 		notifications = [];
 
 		help = new h2d.Flow(flow);
-		help.paddingHorizontal = 2;
-		help.backgroundTile = h2d.Tile.fromColor(Black,1,1, 0.6);
 		help.verticalAlign = Middle;
-		help.horizontalSpacing = 8;
-		createText(App.ME.controller.getFirstBindindIconFor(A_Options, Gamepad), "Toggle gamefeel elements", help);
-		createText(App.ME.controller.getFirstBindindIconFor(A_Restart, Gamepad), "Restart", help);
-		createText(App.ME.controller.getFirstBindindIconFor(A_Shoot, Gamepad), "Shoot", help);
-		createText(App.ME.controller.getFirstBindindIconFor(A_Jump, Gamepad), "Jump", help);
-		createText(App.ME.controller.getFirstBindindIconFor(A_Dash, Gamepad), "Dash", help);
+		help.horizontalSpacing = 16;
+		createControlText(A_Options, "Toggle gamefeel elements", help);
+		createControlText(A_Restart, "Restart", help);
+		createControlText(A_Shoot, "Shoot", help);
+		createControlText(A_Jump, "Jump", help);
+		createControlText(A_Dash, "Dash", help);
 
 		debugText = new h2d.Text(Assets.fontPixel, root);
 		debugText.filter = new dn.heaps.filter.PixelOutline();
 		clearDebug();
 	}
 
-	function createText(?iconTile:h2d.Tile, ?iconFlow:h2d.Flow, txt:String, col:Col=White, ?p) {
+	function createControlText(a:GameAction, txt:String, ?p:h2d.Object) {
+		var keys = new h2d.Flow();
+		keys.verticalAlign = Middle;
+		keys.addChild( App.ME.controller.getFirstBindindIconFor(a, Gamepad) );
+		var tf = new h2d.Text(Assets.fontPixel, keys);
+		tf.text = "/";
+		keys.getProperties(tf).offsetY = -2;
+		keys.addChild( App.ME.controller.getFirstBindindIconFor(a, Keyboard) );
+
+		return createText(keys, txt, p);
+	}
+
+	function createText(?iconTile:h2d.Tile, ?iconFlow:h2d.Flow, txt:String, col:Col=White, ?p:h2d.Object) {
 		var f = new h2d.Flow(p);
-		f.horizontalSpacing = 2;
+		f.horizontalSpacing = 4;
 		f.verticalAlign = Middle;
+		f.paddingHorizontal = 2;
+		f.backgroundTile = h2d.Tile.fromColor(Black,1,1, 0.6);
 
 		if( iconTile!=null )
 			new h2d.Bitmap(iconTile,f);
