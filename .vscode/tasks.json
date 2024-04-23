@@ -4,43 +4,22 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "HL debug",
-            "type": "hxml",
-            "file": "hl.debug.hxml",
+            "label": "HaxeActiveConf",
+            "type": "haxe",
+            "args": "active configuration",
+            "problemMatcher": [
+                "$haxe-absolute",
+                "$haxe",
+                "$haxe-error",
+                "$haxe-trace"
+            ],
             "presentation": {
                 "reveal": "never",
-                "panel": "dedicated",
-                "clear": true
             },
-            "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
-        },
-
-        {
-            "label": "HL release",
-            "type": "hxml",
-            "file": "hl.dx.hxml",
-            "presentation": {
-                "reveal": "never",
-                "panel": "dedicated",
-                "clear": true
             },
-            "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
         },
-
-        {
-            "label": "JS release",
-            "type": "hxml",
-            "file": "js.hxml",
-            "presentation": {
-                "reveal": "never",
-                "panel": "dedicated",
-                "clear": true
-            },
-            "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
-        }
     ]
 }
