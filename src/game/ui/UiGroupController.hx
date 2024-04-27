@@ -59,7 +59,7 @@ class UiGroupController extends dn.Process {
 
 			comp.interactive.onClick = ev->{
 				if( ev.button==0 )
-					comp.doUse();
+					comp.use();
 			}
 
 			comp.interactive.enableRightButton = true;
@@ -387,7 +387,7 @@ class UiGroupController extends dn.Process {
 		// Move current
 		if( current!=null ) {
 			if( ca.isPressed(A_MenuOk) )
-				current.comp.doUse();
+				current.comp.use();
 
 			if( ca.isPressedAutoFire(A_MenuLeft) )
 				gotoNextDir(West);
@@ -509,10 +509,12 @@ private class UiGroupElement {
 
 	public dynamic function onFocus() {
 		group.defaultOnFocus(this);
+		comp.onFocus();
 	}
 
 	public dynamic function onBlur() {
 		group.defaultOnBlur(this);
+		comp.onBlur();
 	}
 
 	public function overlapsElement(other:UiGroupElement) {

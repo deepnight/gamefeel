@@ -9,12 +9,22 @@ class UiComponent extends h2d.Flow {
 		return super.toString()+".UiComponent";
 	}
 
-	public final function doUse() {
+	public final function use() {
 		onUse();
 		onUseCb();
 	}
-	function onUse() {}
 
-	// Callback after `doUse()` call. DO NOT call this manually!
+	function onUse() {}
 	public dynamic function onUseCb() {}
+
+	public function onFocus() {
+		onFocusCb();
+	}
+	public dynamic function onFocusCb() {}
+
+	public function onBlur() {
+		onBlurCb();
+	}
+	public dynamic function onBlurCb() {}
+
 }

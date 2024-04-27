@@ -1,4 +1,5 @@
 @:keep class Options {
+	@help("Render base art")
 	public var baseArt = true;
 	public var blinkImpact = true;
 	public var flashbang = true;

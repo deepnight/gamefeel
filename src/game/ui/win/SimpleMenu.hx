@@ -53,6 +53,7 @@ class SimpleMenu extends ui.Window {
 				close();
 		}
 		uiCtrl.register(bt);
+		return bt;
 	}
 
 	public function addCheckBox(label:String, getter:Void->Bool, setter:Bool->Void, autoClose=false) {
@@ -64,5 +65,6 @@ class SimpleMenu extends ui.Window {
 		}
 
 		uiCtrl.register(bt);
+		return bt;
 	}
 }
