@@ -1,11 +1,21 @@
 @:keep class Options {
-	@help("Render base art")
-	public var baseArt = true;
+	@help("Produce a short white flash on Enemy entities hit by a bullet")
 	public var blinkImpact = true;
+
+	@help("Produce a screen yellow flash when player shoots.")
 	public var flashbang = true;
+
+	@help("Spawn a yellow halo particle when player shoots, or when a bullet hits something.")
 	public var lighting = true;
+
+	@help("Shake the camera when player shoots (X shake) or lands from a high place (Y shake).")
 	public var camShakesXY = true;
-	public var camShakesZoom = true;
+
+	@help("Abruptly offset the camera for a short period of time. Used when player shoots, dashes or lands from a high place.")
+	public var camBumpXY = true;
+
+	@help("Abruptly zoom-in the camera for a short period of time. Used when player lands or dashes.")
+	public var camBumpZoom = true;
 
 	@separator
 	public var mobSquashAndStrech = true;

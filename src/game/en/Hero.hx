@@ -18,7 +18,7 @@ class Hero extends Entity {
 		ctrlQueue.watch(A_Shoot);
 		ctrlQueue.watch(A_Dash);
 
-		var c : Col = options.baseArt ? 0x1e65e9 : 0xffffff;
+		var c = new Col(0x1e65e9);
 
 		if( options.heroSprite ) {
 			// Real animations
@@ -46,7 +46,7 @@ class Hero extends Entity {
 
 		// Gun placeholder
 		gun = new h2d.Graphics(spr);
-		gun.visible = options.baseArt && !options.heroSprite;
+		gun.visible = !options.heroSprite;
 		gun.beginFill(c.toBlack(0.2)); gun.drawRect(3,-1,4,4); // back hand
 		gun.beginFill(0xffffff); gun.drawRect(-3,-5,12,6); // gun
 		gun.beginFill(c); gun.drawRect(-2,0,4,4); // front hand
@@ -78,12 +78,13 @@ class Hero extends Entity {
 				}
 		}
 
-		if( options.camShakesXY ) {
-			game.camera.bump(0, 6*pow);
-			game.camera.shakeS(0.6*pow, 0.8*pow);
-		}
+		if( options.camBumpXY )
+			game.camera.bump(0, 10*pow);
 
-		if( options.camShakesZoom )
+		if( options.camShakesXY )
+			game.camera.shakeS(0.6*pow, 0.8*pow);
+
+		if( options.camBumpZoom )
 			game.camera.bumpZoom(0.03*pow);
 
 		if( options.controlLocks )
@@ -154,8 +155,11 @@ class Hero extends Entity {
 
 
 	function shoot() {
-		if( options.camShakesXY )
+		if( options.camBumpXY )
 			game.camera.bump(-dir*3, 0);
+
+		if( options.camShakesXY )
+			game.camera.shakeS(0.1, 0.2);
 
 		if( options.flashbang )
 			fx.flashBangS(0xffcc00, 0.04, 0.1);
@@ -301,10 +305,12 @@ class Hero extends Entity {
 			// Run
 			vBase.dx *= 0.4;
 			vBase.dy *= 0.4;
-			if( options.camShakesXY ) {
+
+			if( options.camBumpXY )
 				game.camera.bump(0,0.5);
+
+			if( options.camShakesXY )
 				game.camera.shakeS(0.3,0.2);
-			}
 		}
 
 		if( !controlsLocked() ) {
@@ -367,10 +373,10 @@ class Hero extends Entity {
 				vBase.dy *= 0.1;
 				burstCount = 0;
 
-				if( options.camShakesXY )
+				if( options.camBumpXY )
 					game.camera.bump(dashDir*6, 0);
 
-				if( options.camShakesZoom )
+				if( options.camBumpZoom )
 					game.camera.bumpZoom(0.03);
 
 				cd.setS("dashing", 0.12);
