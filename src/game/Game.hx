@@ -122,7 +122,7 @@ class Game extends AppChildProcess {
 			win.content.horizontalAlign = Middle;
 			win.content.padding = 8;
 			win.addText("This demo is not an actual game, but a playable demonstration of various game feel techniques.");
-			win.addText("Press ESCAPE (keyboard) or START (gamepad) to open the menu.");
+			win.addText("Press ENTER (keyboard) or START (gamepad) to open the menu.");
 			win.addSpacer();
 			win.addButton("Continue", ()->{});
 		}
