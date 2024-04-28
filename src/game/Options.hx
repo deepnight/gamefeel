@@ -95,28 +95,45 @@
 	@when("Player lands from a high place")
 	public var controlLocks = true;
 
-	@help("Physical movements of enemies that are a consequence of external events.")
+	@help("Physical movements of enemy entites. They may fall from a cliff because of these.")
 	@when("Enemies are hit by bullets, or player lands nearby")
 	public var enemyPhysicalReactions = true;
 
 	@separator
+
+	@help("Killing an enemy spawns a Cadaver entity that falls to the ground.")
 	public var cadavers = true;
 
 	@separator
+
+	@help("This traversal assist allows the Player to automatically jump small steps by just walking over it.")
 	public var smallStepsHelper = true;
+
+	@help("This traversal assist allows the Player to automatically grab a cliff edge when it misses it by just a few pixels.")
 	public var cliffGrabHelper = true;
 
 	@help("Spawn small particles of dust as player is assisted by traversal helpers (steps/cliffs).")
 	@when("Player climbs a step or a cliff")
 	public var climbFx = true;
 
+	@help("Allows the Player to jump even if it's no longer on the ground.")
 	public var justInTimeJump = true;
+
+	@help("Queue Player inputs to avoid losing them when the Player is 'locked' (eg. stunned).")
 	public var ctrlQueue = true;
+
+	@help("Slow down the game when the Player dashes, to give slightly more time for movements anticipation.")
+	@when("Player dashes")
 	public var slowMos = true;
 
 	@separator
+
+	@help("Render level textures.")
 	public var levelTextures = true;
+
+	@help("Render hero sprite, and its animations if they are enabled.")
 	public var heroSprite = true;
+
 
 	public function new() {}
 
