@@ -26,12 +26,16 @@ class OptionsMenu extends ui.win.SimpleMenu {
 				// Separator
 				var meta = haxe.rtti.Meta.getFields(Options);
 				var help = null;
+				var when = null;
 				for(m in Reflect.fields(meta)) {
 					if( m!=k )
 						continue;
 
-					if( Reflect.hasField( Reflect.field(meta,m), "help" ) )
+					if( Reflect.hasField( Reflect.field(meta,m), "help" ) ) {
 						help = Reflect.field( Reflect.field(meta,m), "help" )[0];
+						if( Reflect.hasField( Reflect.field(meta,m), "when" ) )
+							when = Reflect.field( Reflect.field(meta,m), "when" )[0];
+					}
 
 					if( Reflect.hasField( Reflect.field(meta,m), "separator" ) )
 						addSpacer();
@@ -42,13 +46,13 @@ class OptionsMenu extends ui.win.SimpleMenu {
 					applyChanges();
 				});
 				if( help!=null )
-					attachHelp(bt, k, help);
+					attachHelp(bt, k, help, when);
 			}
 	}
 
-	function attachHelp(bt:ui.UiComponent, name:String, desc:String) {
+	function attachHelp(bt:ui.UiComponent, name:String, desc:String, ?when:String) {
 		bt.onFocusCb = function() {
-			setHelp(name, desc);
+			setHelp(name, desc, when);
 		};
 		bt.onBlurCb = function() {
 			clearHelp();
@@ -60,14 +64,14 @@ class OptionsMenu extends ui.win.SimpleMenu {
 		helpFlow.visible = false;
 	}
 
-	function setHelp(name:String, desc:String) {
+	function setHelp(name:String, desc:String, ?when:String) {
 		clearHelp();
 		helpFlow.visible = true;
 
 		var tf = new h2d.Text(Assets.fontPixel, helpFlow);
 		tf.text = name.toUpperCase();
 		tf.textColor = White;
-		tf.alpha = 0.6;
+		tf.alpha = 0.4;
 		emitResizeAtEndOfFrame();
 
 		helpFlow.addSpacing(4);
@@ -75,6 +79,14 @@ class OptionsMenu extends ui.win.SimpleMenu {
 		var tf = new h2d.Text(Assets.fontPixel, helpFlow);
 		tf.text = desc;
 		tf.textColor = White;
+
+		if( when!=null ) {
+			var tf = new h2d.Text(Assets.fontPixel, helpFlow);
+			tf.text = '(when: $when)';
+			tf.alpha = 0.6;
+			tf.textColor = White;
+		}
+
 		emitResizeAtEndOfFrame();
 	}
 

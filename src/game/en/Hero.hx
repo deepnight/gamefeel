@@ -24,14 +24,16 @@ class Hero extends Entity {
 			// Real animations
 			spr.set(Assets.hero, D.hero.idle);
 			spr.setCenterRatio();
-			spr.anim.registerStateAnim(D.hero.jumpUp,4, function() return !onGround && vBase.dy<0);
-			spr.anim.registerStateAnim(D.hero.jumpDown,4, function() return !onGround && vBase.dy>=0);
-			spr.anim.registerStateAnim(D.hero.land,3, function() return onGround && cd.has("landed"));
+			if( options.basicAnimations ) {
+				spr.anim.registerStateAnim(D.hero.jumpUp,4, function() return !onGround && vBase.dy<0);
+				spr.anim.registerStateAnim(D.hero.jumpDown,4, function() return !onGround && vBase.dy>=0);
+				spr.anim.registerStateAnim(D.hero.land,3, function() return onGround && cd.has("landed"));
+
+				spr.anim.registerStateAnim(D.hero.runWeapon,1.1, function() return ( isChargingAction(CA_Shoot) || gunIsReady() ) && M.fabs(dxTotal)>=0.08);
+				spr.anim.registerStateAnim(D.hero.run,1.0, function() return M.fabs(dxTotal)>=0.08 && !cd.has("walkLock") );
+			}
 
 			spr.anim.registerStateAnim(D.hero.readyWeapon,2, 2, function() return isChargingAction(CA_PrepareGun));
-
-			spr.anim.registerStateAnim(D.hero.runWeapon,1.1, function() return ( isChargingAction(CA_Shoot) || gunIsReady() ) && M.fabs(dxTotal)>=0.08);
-			spr.anim.registerStateAnim(D.hero.run,1.0, function() return M.fabs(dxTotal)>=0.08 && !cd.has("walkLock") );
 
 			spr.anim.registerStateAnim(D.hero.idleWeapon,0.1, function() return isChargingAction(CA_Shoot) || gunIsReady() );
 			spr.anim.registerStateAnim(D.hero.idle,0);
@@ -123,7 +125,7 @@ class Hero extends Entity {
 			gun.rotation = 0;
 		}
 
-		if( options.gunAimingAnim ) {
+		if( options.gunAnimations ) {
 			if( cd.has("gunRecoil") ) {
 				gun.rotation = -0.15 * cd.getRatio("gunRecoil");
 				gun.x -= 4 * cd.getRatio("gunRecoil");
@@ -394,8 +396,10 @@ class Hero extends Entity {
 			if( game.isMouseDown(MB_Left) && !cd.hasSetS("mouseLeft",0.2) )
 				ctrlQueue.emulatePressOnly(A_Shoot);
 			if( burstCount<=0 && !cd.has("shootLock") && !isChargingAction(CA_Shoot) && !isChargingAction(CA_PrepareGun) && checkControlPressOrDown(A_Shoot) ) {
-				if( !options.gunAimingAnim ) {
+				if( !options.gunAnimations ) {
 					burstCount = 3;
+					if( options.basicAnimations )
+						cd.setS("gunReady", 2.5);
 				}
 				else {
 					if( !gunIsReady() )
@@ -426,7 +430,7 @@ class Hero extends Entity {
 		if( burstCount>0 && !cd.hasSetS("burstLock", options.randomizeBullets ? rnd(0.04,0.07) : 0.06)) {
 			burstCount--;
 			shoot();
-			if( burstCount<=0 && !options.gunAimingAnim )
+			if( burstCount<=0 && !options.gunAnimations )
 				lockControlS(0.35); // to compensate for the missing aiming phase
 		}
 
