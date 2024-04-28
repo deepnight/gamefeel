@@ -72,7 +72,7 @@ class Hero extends Entity {
 		cd.setS("landed", 0.5*pow);
 
 		if( cHei>=4 ) {
-			if( options.physicalReactions )
+			if( options.enemyPhysicalReactions )
 				for(e in Mob.ALL) {
 					var pow = 1 - M.fclamp( distCase(e) / 12, 0, 1 );
 					e.vBase.dx += dirTo(e) * rnd(0.1,0.2) * pow;
@@ -169,10 +169,11 @@ class Hero extends Entity {
 		if( options.heroSquashAndStrech )
 			setSquashX(1.2);
 
-		if( options.physicalReactions ) {
-			vBase.dx += -dir*rnd(0,0.01);
+		if( options.gunRecoilVisual )
 			sprOffsetX += -dir*rnd(1,3);
-		}
+
+		if( options.gunRecoilMovement )
+			vBase.dx += -dir*rnd(0,0.01);
 
 		// Create Bullet entity
 		var off = options.randomizeBullets ? rnd(0, 1.5, true) : 0;

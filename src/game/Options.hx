@@ -81,9 +81,23 @@
 	@when("Player dashes")
 	public var dashFx = true;
 
+	@help("Slightly offset player sprite, without affecting actual ingame physical position.")
+	@when("Player shoots")
+	public var gunRecoilVisual = true;
+
+	@help("Slightly move player entity as player shoots.")
+	@when("Player shoots")
+	public var gunRecoilMovement = true;
+
 	@separator
+
+	@help("Briefly lock player controls to simulate a short 'stun' moment after intense events.")
+	@when("Player lands from a high place")
 	public var controlLocks = true;
-	public var physicalReactions = true;
+
+	@help("Physical movements of enemies that are a consequence of external events.")
+	@when("Enemies are hit by bullets, or player lands nearby")
+	public var enemyPhysicalReactions = true;
 
 	@separator
 	public var cadavers = true;

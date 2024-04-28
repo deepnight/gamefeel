@@ -28,7 +28,7 @@ class Mob extends Entity {
 		if( options.mobSquashAndStrech )
 			setSquashX(0.6);
 
-		if( options.physicalReactions )
+		if( options.enemyPhysicalReactions )
 			if( !cd.hasSetS("firstImpact",0.4) )
 				vBump.addXY(impactDir * rnd(0.040, 0.060), -0.05);
 			else
