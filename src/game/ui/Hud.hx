@@ -2,6 +2,7 @@ package ui;
 
 class Hud extends GameChildProcess {
 	var uiWid(get,never) : Int; inline function get_uiWid() return Std.int( w()/Const.UI_SCALE );
+	var uiHei(get,never) : Int; inline function get_uiHei() return Std.int( h()/Const.UI_SCALE );
 
 	var flow : h2d.Flow;
 	var invalidated = true;
@@ -11,6 +12,7 @@ class Hud extends GameChildProcess {
 	var debugText : h2d.Text;
 
 	var help : h2d.Flow;
+	var copyright : h2d.Flow;
 
 	public function new() {
 		super();
@@ -25,10 +27,16 @@ class Hud extends GameChildProcess {
 		flow.horizontalAlign = Middle;
 		notifications = [];
 
+		copyright = new h2d.Flow(root);
+		copyright.horizontalAlign = Middle;
+		copyright.horizontalSpacing = 16;
+		copyright.padding = 3;
+		createText("Source: deepnight.net", copyright);
+
 		help = new h2d.Flow(flow);
 		help.verticalAlign = Middle;
 		help.horizontalSpacing = 16;
-		createControlText(A_Options, "Toggle gamefeel elements", help);
+		createControlText(A_Options, "Gamefeel options", help);
 		createControlText(A_Restart, "Restart", help);
 		createControlText(A_Shoot, "Shoot", help);
 		createControlText(A_Jump, "Jump", help);
@@ -76,16 +84,21 @@ class Hud extends GameChildProcess {
 		var tf = new h2d.Text(Assets.fontPixel, f);
 		tf.text = txt;
 		tf.textColor = col;
-		tf.filter = new dn.heaps.filter.PixelOutline();
 		f.getProperties(tf).offsetY = -2;
+		tf.filter = new dn.heaps.filter.PixelOutline();
 
 		return f;
 	}
 
 	override function onResize() {
 		super.onResize();
+
 		root.setScale(Const.UI_SCALE);
+
 		flow.minWidth = uiWid;
+
+		copyright.minWidth = uiWid;
+		copyright.y = uiHei - copyright.outerHeight - 4;
 	}
 
 	/** Clear debug printing **/
