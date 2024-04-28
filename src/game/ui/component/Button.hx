@@ -15,6 +15,7 @@ class Button extends ui.UiComponent {
 			new h2d.Bitmap(iconTile, this);
 
 		tf = new h2d.Text(Assets.fontPixelMono, this);
+		getProperties(tf).offsetY = -2;
 		if( label!=null )
 			setLabel(label, col);
 	}
