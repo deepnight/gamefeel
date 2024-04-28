@@ -106,7 +106,7 @@ class Hero extends Entity {
 			setSquashY(1-0.5*pow);
 		}
 
-		if( options.movementFx && cHei>=3 )
+		if( options.jumpFx && cHei>=3 )
 			if( cHei>=3 )
 				fx.landSmoke(attachX, attachY, 1);
 			else
@@ -237,7 +237,7 @@ class Hero extends Entity {
 		if( options.heroSprite )
 			spr.anim.playOverlap(D.hero.climbStep);
 
-		if( options.movementFx )
+		if( options.climbFx )
 			fx.climbSmoke((cx+0.5 + 0.5*dir)*Const.GRID, cy*Const.GRID, stepDir, 0.5);
 	}
 
@@ -254,7 +254,7 @@ class Hero extends Entity {
 		if( options.heroSprite )
 			spr.anim.playOverlap(D.hero.climbStep);
 
-		if( options.movementFx )
+		if( options.climbFx )
 			fx.climbSmoke((cx+0.5 + 0.5*dir)*Const.GRID, cy*Const.GRID, stepDir, 0.5);
 	}
 
@@ -349,7 +349,7 @@ class Hero extends Entity {
 				cd.unset("allowAirJump");
 				cd.setS("extraJumping",0.1);
 				cd.setS("reduceGravity",0.3);
-				if( options.movementFx )
+				if( options.jumpFx )
 					fx.doubleJump(attachX, attachY);
 
 				if( options.heroSquashAndStrech )
@@ -385,7 +385,7 @@ class Hero extends Entity {
 				cd.setS("reduceGravity",0.2);
 				lockControlS( cd.getS("dashing")+0.1 );
 
-				if( options.movementFx )
+				if( options.dashFx )
 					fx.dash(centerX, centerY, dir);
 
 				if( options.heroSprite )

@@ -66,11 +66,20 @@
 	@when("Bullets hit anything")
 	public var bulletImpactDustFx = true;
 
+	@help("Produce a pack of small particles at impact point on walls. They slowly fade from yellow to red then disappear.")
+	@when("Bullets hit a wall")
 	public var bulletWallBurnFx = true;
+
+	@help("Produce (lots of) blood particles on impacts that stick to nearby walls/grounds. They last for a very long time.")
+	@when("Bullets hit enemies")
 	public var blood = true;
 
-	@help("Produce a small smoke puff when the player lands.")
-	public var movementFx = true;
+	@help("Produce a small smoke puff when the player jumps, double-jumps or lands.")
+	public var jumpFx = true;
+
+	@help("Produce lines particles representing a trail of blue light as player dashes.")
+	@when("Player dashes")
+	public var dashFx = true;
 
 	@separator
 	public var controlLocks = true;
@@ -82,6 +91,11 @@
 	@separator
 	public var smallStepsHelper = true;
 	public var cliffGrabHelper = true;
+
+	@help("Spawn small particles of dust as player is assisted by traversal helpers (steps/cliffs).")
+	@when("Player climbs a step or a cliff")
+	public var climbFx = true;
+
 	public var justInTimeJump = true;
 	public var ctrlQueue = true;
 	public var slowMos = true;
