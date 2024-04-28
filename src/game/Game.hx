@@ -121,9 +121,8 @@ class Game extends AppChildProcess {
 			var win = new ui.win.SimpleMenu();
 			win.content.horizontalAlign = Middle;
 			win.content.padding = 8;
-			win.addTitle("Game feel demo");
-			win.addSpacer();
 			win.addText("This demo is not an actual game, but a playable demonstration of various game feel techniques.");
+			win.addText("Press ESCAPE (keyboard) or START (gamepad) to open the menu.");
 			win.addSpacer();
 			win.addButton("Continue", ()->{});
 		}
