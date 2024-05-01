@@ -341,8 +341,10 @@ class App extends dn.Process {
 			if( ca.isPressed(A_OpenConsoleFlags) )
 				Console.ME.runCommand("/flags");
 
-			if( ca.isPressed(A_Options) )
+			if( ca.isPressed(A_Options) ) {
+				Game.ME.hud.hideOptionsPointer();
 				new ui.win.OptionsMenu();
+			}
 
 			if( !Window.hasAnyModal() && ca.isPressed(A_Pause) )
 				Game.ME.togglePause();

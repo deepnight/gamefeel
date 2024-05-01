@@ -12,6 +12,7 @@ class Hud extends GameChildProcess {
 	var debugText : h2d.Text;
 
 	var help : h2d.Flow;
+	var optionsPointer : h2d.Flow;
 	var copyright : h2d.Flow;
 
 	public function new() {
@@ -33,10 +34,17 @@ class Hud extends GameChildProcess {
 		copyright.padding = 3;
 		createText("Source: deepnight.net", copyright);
 
+		optionsPointer = new h2d.Flow(root);
+		optionsPointer.layout = Vertical;
+		optionsPointer.horizontalAlign = Middle;
+		optionsPointer.setScale(2);
+		createControlText(A_Options, "Open game-feel options", optionsPointer);
+		Assets.tiles.getBitmap(D.tiles.arrowSouth, optionsPointer);
+
 		help = new h2d.Flow(flow);
 		help.verticalAlign = Middle;
 		help.horizontalSpacing = 16;
-		createControlText(A_Options, "Gamefeel options", help);
+		createControlText(A_Options, "Game-feel options", help);
 		createControlText(A_Restart, "Restart", help);
 		createControlText(A_Shoot, "Shoot", help);
 		createControlText(A_Jump, "Jump", help);
@@ -97,7 +105,10 @@ class Hud extends GameChildProcess {
 
 		flow.minWidth = uiWid;
 
-		copyright.minWidth = uiWid;
+		optionsPointer.x = Std.int( uiWid*0.5 - optionsPointer.outerWidth*optionsPointer.scaleX*0.5 );
+		optionsPointer.y = Std.int( uiHei - optionsPointer.outerHeight*optionsPointer.scaleY - 4 );
+
+		copyright.x = uiWid - copyright.outerWidth - 4;
 		copyright.y = uiHei - copyright.outerHeight - 4;
 	}
 
@@ -161,6 +172,10 @@ class Hud extends GameChildProcess {
 
 	}
 
+	public function hideOptionsPointer() {
+		optionsPointer.visible = false;
+	}
+
 	public inline function invalidate() invalidated = true;
 
 	function render() {}
@@ -179,5 +194,7 @@ class Hud extends GameChildProcess {
 			invalidated = false;
 			render();
 		}
+
+		optionsPointer.y = Std.int( uiHei - optionsPointer.outerHeight*optionsPointer.scaleY - 4 - M.fabs(Math.sin(ftime*0.13)*12) );
 	}
 }
