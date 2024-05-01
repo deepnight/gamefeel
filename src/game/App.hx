@@ -326,7 +326,7 @@ class App extends dn.Process {
 
 	override function postUpdate() {
 		super.postUpdate();
-		crt.enable = !Console.ME.hasFlag(F_DisableSceneFilter);
+		crt.enable = Console.ME.hasFlag(F_EnableCrtFilter);
 	}
 
     override function update() {

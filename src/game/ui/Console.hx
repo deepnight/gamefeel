@@ -5,7 +5,7 @@ enum abstract ConsoleFlag(Int) to Int from Int {
 	var F_Camera;
 	var F_CameraScrolling;
 	var F_Bounds;
-	var F_DisableSceneFilter;
+	var F_EnableCrtFilter;
 }
 
 class Console extends h2d.Console {
