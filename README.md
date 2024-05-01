@@ -11,7 +11,10 @@ You can enable or disable individual game features in this demo by pressing the 
 
 # Compiling
 
-You will need the [Haxe](https://haxe.org) compiler and [Heaps](https://heaps.io)  library
+The individual examples should be quite self-explanatory and rather straight forward to implement in any game engine. However, if you need any kind of insight on how they work, feel free to open an issue or drop my an email :)
+
+You will need the [Haxe](https://haxe.org) compiler and [Heaps](https://heaps.io)  library.
+
 You should read the instructions on my GameBase project (https://github.com/deepnight/gameBase).
 
 # Credits
