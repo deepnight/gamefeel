@@ -35,6 +35,7 @@ class Hud extends GameChildProcess {
 		createText("Source: deepnight.net", copyright);
 
 		optionsPointer = new h2d.Flow(root);
+		optionsPointer.visible = !App.ME.cd.has("optionsPointerDone");
 		optionsPointer.layout = Vertical;
 		optionsPointer.horizontalAlign = Middle;
 		optionsPointer.setScale(2);
@@ -173,6 +174,7 @@ class Hud extends GameChildProcess {
 	}
 
 	public function hideOptionsPointer() {
+		App.ME.cd.setS("optionsPointerDone",Const.INFINITE);
 		optionsPointer.visible = false;
 	}
 
