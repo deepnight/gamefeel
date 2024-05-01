@@ -57,7 +57,7 @@
 		{
 			"text": "📦 Redist",
 			"color": "lightgreen",
-			"command": "haxelib run redistHelper build.directx.hxml build.js.hxml -o redist -p GameFeelDemo",
+			"command": "haxelib run redistHelper build.directx.hxml build.js.hxml -o redist -p GameFeelDemo -zip",
 			"alignment": "right",
 			"skipTerminateQuickPick": false,
 			"priority": -50
