@@ -142,8 +142,8 @@ class Window extends dn.Process {
 
 		root.setScale(Const.UI_SCALE);
 
-		var wid = M.ceil( w()/Const.UI_SCALE );
-		var hei = M.ceil( h()/Const.UI_SCALE );
+		var wid = M.ceil( stageWid/Const.UI_SCALE );
+		var hei = M.ceil( stageHei/Const.UI_SCALE );
 
 		// Horizontal
 		if( horizontalAlign==Fill )
