@@ -5,6 +5,7 @@ class Hero extends Entity {
 	var ctrlQueue : dn.heaps.input.ControllerQueue<GameAction>;
 	var gun : h2d.Graphics;
 	var dashDir : Int;
+	var inputDebugger: InputDebugger;
 
 	public function new(x,y) {
 		super(x,y);
@@ -17,6 +18,8 @@ class Hero extends Entity {
 		ctrlQueue.watch(A_Jump);
 		ctrlQueue.watch(A_Shoot);
 		ctrlQueue.watch(A_Dash);
+
+		inputDebugger = new tools.InputDebugger(ca, this);
 
 		var c = new Col(0x1e65e9);
 
@@ -206,21 +209,14 @@ class Hero extends Entity {
 	}
 
 
-	function debugInputPress(a:GameAction, label:String, col:Col) {
-		if( ca.isPressed(a) ) {
-			fx.markerEntity(this, col, 0.1);
-			popText(label, col);
-		}
-	}
-
 	override function preUpdate() {
 		super.preUpdate();
 		ctrlQueue.earlyFrameUpdate(game.stime);
 
 		if( Console.ME.hasFlag(F_ShowInputs) ) {
-			debugInputPress(A_Jump, "JUMP", "#fff756");
-			debugInputPress(A_Dash, "DASH", "#0caaff");
-			debugInputPress(A_Shoot, "SHOOT", "#ff850c");
+			inputDebugger.logPress(A_Jump, "JUMP", "#fff756");
+			inputDebugger.logPress(A_Dash, "DASH", "#0caaff");
+			inputDebugger.logPress(A_Shoot, "SHOOT", "#ff850c");
 		}
 	}
 
