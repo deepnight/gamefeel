@@ -1,8 +1,8 @@
 package ui;
 
 class Hud extends GameChildProcess {
-	var uiWid(get,never) : Int; inline function get_uiWid() return Std.int( w()/Const.UI_SCALE );
-	var uiHei(get,never) : Int; inline function get_uiHei() return Std.int( h()/Const.UI_SCALE );
+	var uiWid(get,never) : Int; inline function get_uiWid() return Std.int( stageWid/Const.UI_SCALE );
+	var uiHei(get,never) : Int; inline function get_uiHei() return Std.int( stageHei/Const.UI_SCALE );
 
 	var flow : h2d.Flow;
 	var invalidated = true;
@@ -126,7 +126,7 @@ class Hud extends GameChildProcess {
 		else
 			debugText.text += "\n"+v;
 		debugText.visible = true;
-		debugText.x = Std.int( w()/Const.UI_SCALE - 4 - debugText.textWidth );
+		debugText.x = Std.int( stageWid/Const.UI_SCALE - 4 - debugText.textWidth );
 	}
 
 
@@ -145,7 +145,7 @@ class Hud extends GameChildProcess {
 		// Text
 		var tf = new h2d.Text(Assets.fontPixel, f);
 		tf.text = str;
-		tf.maxWidth = 0.6 * w()/Const.UI_SCALE;
+		tf.maxWidth = 0.6 * stageWid/Const.UI_SCALE;
 		tf.textColor = 0xffffff;
 		tf.filter = new dn.heaps.filter.PixelOutline( color.toBlack(0.2) );
 

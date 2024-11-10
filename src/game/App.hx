@@ -118,10 +118,10 @@ class App extends dn.Process {
 		}
 		else {
 			// Fresh start
-			delayer.addF( ()->{
+			delayer.nextFrame( ()->{
 				_createGameInstance();
 				hxd.Timer.skip();
-			}, 1 );
+			});
 		}
 	}
 

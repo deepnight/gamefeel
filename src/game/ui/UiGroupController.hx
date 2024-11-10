@@ -518,14 +518,14 @@ private class UiGroupElement {
 	}
 
 	public function overlapsElement(other:UiGroupElement) {
-		return dn.Geom.rectOverlapsRect(
+		return dn.geom.Geom.rectOverlapsRect(
 			globalLeft, globalTop, globalWidth, globalHeight,
 			other.globalLeft, other.globalTop, other.globalWidth, other.globalHeight
 		);
 	}
 
 	public function overlapsRect(x:Float, y:Float, w:Int, h:Int) {
-		return dn.Geom.rectOverlapsRect(
+		return dn.geom.Geom.rectOverlapsRect(
 			globalLeft, globalTop, globalWidth, globalHeight,
 			x, y, w, h
 		);
