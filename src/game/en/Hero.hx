@@ -339,12 +339,10 @@ class Hero extends Entity {
 			if( onGround && options.justInTimeJump )
 				cd.setS("allowJitJump",0.15);
 
-			if( game.isMouseDown(MB_Right) && !cd.hasSetS("mouseRight",Const.INFINITE) )
-				ctrlQueue.emulatePressOnly(A_Jump);
-			else if( !game.isMouseDown(MB_Right) && cd.has("mouseRight") )
-				cd.unset("mouseRight");
+			if( !game.isMouseDown(MB_Right) && cd.has("rightMouseLocked") )
+				cd.unset("rightMouseLocked");
 
-			if( !onGround && !cd.has("allowJitJump") && cd.has("allowAirJump") && checkControlPress(A_Jump) ) {
+			if( !onGround && !cd.has("allowJitJump") && cd.has("allowAirJump") && ( checkControlPress(A_Jump) || game.isMouseDown(MB_Right) && !cd.has("rightMouseLocked") ) ) {
 				// Double jump
 				vBase.dy = -0.52;
 				cd.unset("allowAirJump");
@@ -357,13 +355,14 @@ class Hero extends Entity {
 					setSquashX(0.66);
 			}
 
-			if( ( onGround || cd.has("allowJitJump") ) && checkControlPressOrDown(A_Jump) ) {
+			if( ( onGround || cd.has("allowJitJump") ) && ( checkControlPressOrDown(A_Jump) || game.isMouseDown(MB_Right) ) ) {
 				// Normal jump
 				vBase.dy = -0.45;
 				cd.setS("reduceGravity",0.1);
 				cd.setS("extraJumping", 0.1);
 				cd.setS("allowAirJump",Const.INFINITE);
 				cd.unset("allowJitJump");
+				cd.setS("rightMouseLocked", Const.INFINITE);
 				if( options.heroSquashAndStrech )
 					setSquashX(0.55);
 			}
@@ -394,9 +393,7 @@ class Hero extends Entity {
 			}
 
 			// Shoot
-			if( game.isMouseDown(MB_Left) && !cd.hasSetS("mouseLeft",0.2) )
-				ctrlQueue.emulatePressOnly(A_Shoot);
-			if( burstCount<=0 && !cd.has("shootLock") && !isChargingAction(CA_Shoot) && !isChargingAction(CA_PrepareGun) && checkControlPressOrDown(A_Shoot) ) {
+			if( burstCount<=0 && !isChargingAction(CA_Shoot) && !isChargingAction(CA_PrepareGun) && ( checkControlPressOrDown(A_Shoot) || game.isMouseDown(MB_Left) ) ) {
 				if( !options.gunAnimations ) {
 					burstCount = 3;
 					if( options.basicAnimations )
