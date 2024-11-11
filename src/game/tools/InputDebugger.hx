@@ -11,8 +11,8 @@ class InputDebugger {
     /**
      * Constructor to initialize InputDebugger with references to ControllerAccess and an Entity.
      * 
-     * @param ca A reference to ControllerAccess.
-     * @param entity The Entity instance for accessing fx, game, and debugging visuals (e.g., popText).
+     * @param ca        A reference to ControllerAccess.
+     * @param entity    The Entity instance for accessing fx, game, and debugging visuals (e.g., popText).
      */
     public function new(ca:ControllerAccess<GameAction>, entity:Entity) {
         this.ca = ca;
@@ -20,13 +20,13 @@ class InputDebugger {
     }
 
     /**
-     * Logs the initial press of an action or mouse input.
+     * Displays the initial press of an action or mouse input.
      * 
-     * @param a The game action to check.
-     * @param label The label to display for debug logging.
-     * @param col The color for debug visualization.
+     * @param a         The game action to check.
+     * @param label     The label to display for debug logging.
+     * @param col       The color for debug visualization.
      */
-    public function logPress(a:GameAction, label:String, col:Col) {
+    public function displayOnPress(a:GameAction, label:String, col:Col) {
         var isPressed = ca.isPressed(a);
 
         // check for mouse input in case of specific actions
@@ -34,17 +34,17 @@ class InputDebugger {
 
         // log initial press only (otherwise mouseDown will persist across frames)
         if (isPressed && !wasPressed.get(a)) {
-            logDebugOutputAboveEntity(label, col);
+            displayDebugIndicator(label, col);
         }
         
         wasPressed[a] = isPressed;
     }
 
     /**
-     * Checks if a specific game action is associated with a mouse button input.
+     * Checks if a specific game action is triggered by a mouse button input.
      * 
-     * @param a The game action to check.
-     * @return True if the action is triggered by a mouse button, false otherwise.
+     * @param a         The game action to check.
+     * @return Bool     true if the action is triggered by a mouse button, false otherwise
      */
     private function isMousePressedForAction(a:GameAction):Bool {
         switch (a) {
@@ -59,12 +59,12 @@ class InputDebugger {
     }
 
     /**
-     * Logs the debug output for the given action.
+     * Displays a debug indicator for the given action, including a visual effect and label above the entity.
      * 
-     * @param label The label to display.
-     * @param col The color for visualization.
+     * @param label The label to display above the entity.
+     * @param col The color used for both the label and visual effect.
      */
-    private function logDebugOutputAboveEntity(label:String, col:Col) {
+    private function displayDebugIndicator(label:String, col:Col) {
         entity.fx.markerEntity(entity, col, 0.1);
         entity.popText(label, col);
     }

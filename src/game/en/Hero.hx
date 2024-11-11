@@ -214,9 +214,9 @@ class Hero extends Entity {
 		ctrlQueue.earlyFrameUpdate(game.stime);
 
 		if( Console.ME.hasFlag(F_ShowInputs) ) {
-			inputDebugger.logPress(A_Jump, "JUMP", "#fff756");
-			inputDebugger.logPress(A_Dash, "DASH", "#0caaff");
-			inputDebugger.logPress(A_Shoot, "SHOOT", "#ff850c");
+			inputDebugger.displayOnPress(A_Jump, "JUMP", "#fff756");
+			inputDebugger.displayOnPress(A_Dash, "DASH", "#0caaff");
+			inputDebugger.displayOnPress(A_Shoot, "SHOOT", "#ff850c");
 		}
 	}
 
