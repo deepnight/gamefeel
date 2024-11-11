@@ -1,7 +1,7 @@
 package tools;
 
 class InputDebugger {
-    private var ca:Dynamic;
+    private var ca:ControllerAccess<GameAction>;
     private var entity:Entity;
     private var wasPressed:Map<GameAction, Bool> = [
         A_Shoot => false,
@@ -14,7 +14,7 @@ class InputDebugger {
      * @param ca A reference to ControllerAccess.
      * @param entity The Entity instance for accessing fx, game, and debugging visuals (e.g. popText).
      */
-    public function new(ca:Dynamic, entity:Entity) {
+    public function new(ca:ControllerAccess<GameAction>, entity:Entity) {
         this.ca = ca;
         this.entity = entity;
     }
