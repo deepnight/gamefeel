@@ -61,8 +61,8 @@ class InputDebugger {
     /**
      * Displays a debug indicator for the given action, including a visual effect and label above the entity.
      * 
-     * @param label The label to display above the entity.
-     * @param col The color used for both the label and visual effect.
+     * @param label     The label to display above the entity.
+     * @param col       The color used for both the label and visual effect.
      */
     private function displayDebugIndicator(label:String, col:Col) {
         entity.fx.markerEntity(entity, col, 0.1);
