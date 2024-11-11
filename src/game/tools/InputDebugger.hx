@@ -12,7 +12,7 @@ class InputDebugger {
      * Constructor to initialize InputDebugger with references to ControllerAccess and an Entity.
      * 
      * @param ca A reference to ControllerAccess.
-     * @param entity The Entity instance for accessing fx, game, and debugging visuals (e.g. popText).
+     * @param entity The Entity instance for accessing fx, game, and debugging visuals (e.g., popText).
      */
     public function new(ca:ControllerAccess<GameAction>, entity:Entity) {
         this.ca = ca;
@@ -29,21 +29,33 @@ class InputDebugger {
     public function logPress(a:GameAction, label:String, col:Col) {
         var isPressed = ca.isPressed(a);
 
-        // add specific mouse checks for certain actions
-        switch (a) {
-            case A_Shoot:
-                isPressed = isPressed || entity.game.isMouseDown(MB_Left);
-            case A_Jump:
-                isPressed = isPressed || entity.game.isMouseDown(MB_Right);
-            default:
-                // no additional mouse checks for other actions
-        }
+        // check for mouse input in case of specific actions
+        isPressed = isPressed || isMousePressedForAction(a);
 
         // log initial press only (otherwise mouseDown will persist across frames)
-        if (isPressed && !wasPressed[a]) {
-            debugLog(label, col);
+        if (isPressed && !wasPressed.get(a)) {
+            logDebugOutputAboveEntity(label, col);
         }
+        
         wasPressed[a] = isPressed;
+    }
+
+    /**
+     * Checks if a specific game action is associated with a mouse button input.
+     * 
+     * @param a The game action to check.
+     * @return True if the action is triggered by a mouse button, false otherwise.
+     */
+    private function isMousePressedForAction(a:GameAction):Bool {
+        switch (a) {
+            case A_Shoot:
+                return entity.game.isMouseDown(MB_Left);
+            case A_Jump:
+                return entity.game.isMouseDown(MB_Right);
+            default:
+                // no additional mouse checks for other actions
+                return false; 
+        }
     }
 
     /**
@@ -52,7 +64,7 @@ class InputDebugger {
      * @param label The label to display.
      * @param col The color for visualization.
      */
-    private function debugLog(label:String, col:Col) {
+    private function logDebugOutputAboveEntity(label:String, col:Col) {
         entity.fx.markerEntity(entity, col, 0.1);
         entity.popText(label, col);
     }
